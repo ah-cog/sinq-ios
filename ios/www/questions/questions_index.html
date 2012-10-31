@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title>SINQ3 Prototype</title>
+                <link rel="stylesheet" href="./css/jquery.mobile-1.2.0.min.css" />
+                <script src="./js/jquery-1.8.2.min.js"></script>
+                <script src="./js/jquery.mobile-1.2.0.min.js"></script>
+                <script src="./js/json2.js"></script>
+                
+                <script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+    </head>
+    
+    <body>
+        
+        <div data-role="page" id="questions_index">
+            
+            <script type="text/javascript" charset="utf-8">
+                
+                
+                // SINQ server URL
+                var serverUrl = 'http://10.10.0.141';
+                /*
+                 if (location.host == 'localhost') {
+                 // code for local version goes here
+                 serverUrl = 'http://localhost/';
+                 } else {
+                 // code for online version goes here
+                 }
+                 */
+                
+                
+                var pictureSource;   // picture source
+                var destinationType; // sets the format of returned value
+                
+                var currentQuestionPk = null;
+                
+                // Wait for Cordova to connect with the device
+                //
+                document.addEventListener("deviceready",onDeviceReady,false);
+                
+                // Cordova is ready to be used!
+                //
+                function onDeviceReady() {
+                    pictureSource=navigator.camera.PictureSourceType;
+                    destinationType=navigator.camera.DestinationType;
+                }
+                
+                // Called when a photo is successfully retrieved
+                //
+                function onPhotoDataSuccess(imageData) {
+                    // Uncomment to view the base64 encoded image data
+                    // console.log(imageData);
+                    
+                    // Get image handle
+                    //
+                    var smallImage = document.getElementById('smallImage');
+                    
+                    // Unhide image elements
+                    //
+                    smallImage.style.display = 'block';
+                    
+                    // Show the captured photo
+                    // The inline CSS rules are used to resize the image
+                    //
+                    smallImage.src = "data:image/jpeg;base64," + imageData;
+                }
+                
+                // Called when a photo is successfully retrieved
+                //
+                function onPhotoURISuccess(imageURI) {
+                    // Uncomment to view the image file URI
+                    // console.log(imageURI);
+                    
+                    // Get image handle
+                    //
+                    // var largeImage = document.getElementById('largeImage');
+                    
+                    // Unhide image elements
+                    //
+                    // largeImage.style.display = 'block';
+                    
+                    // Show the captured photo
+                    // The inline CSS rules are used to resize the image
+                    //
+                    // largeImage.src = imageURI;
+                    
+                    // Upload the image to server
+                    function success(response) {
+                        alert("upload successful");
+                    }
+                    
+                    function fail(error) {
+                        alert("upload failed: " + error.code);
+                    }
+                    
+                    var options = new FileUploadOptions();
+                    options.fileKey = "question_image"; // parameter name of file -- in POST data?
+                    options.fileName = imageURI.substr(imageURI.lastIndexOf('/') + 1); // name of file
+                    options.mimeType = "image/jpeg";
+                    
+                    var ft = new FileTransfer();
+                    ft.upload(imageURI, serverUrl + '/sinq/questions/' + currentQuestionPk + '/images/create/', success, fail, options);
+                }
+                
+                // A button will call this function
+                //
+                function capturePhoto() {
+                    // Take picture using device camera and retrieve image as base64-encoded string
+                    navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
+                                                destinationType: destinationType.DATA_URL });
+                }
+                
+                // A button will call this function
+                //
+                function capturePhotoToURI() {
+                    // Take picture using device camera and retrieve image as base64-encoded string
+                    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                                                destinationType: navigator.camera.DestinationType.FILE_URI });
+                }
+                
+                // A button will call this function
+                //
+                function capturePhotoEdit() {
+                    // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+                    navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
+                                                destinationType: destinationType.DATA_URL });
+                }
+                
+                // A button will call this function
+                //
+                function getPhoto(source) {
+                    // Retrieve image file location from specified source
+                    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+                                                destinationType: destinationType.FILE_URI,
+                                                sourceType: source });
+                }
+                
+                // Called if something bad happens.
+                //
+                function onFail(message) {
+                    alert('Failed because: ' + message);
+                }
+                
+                
+                function getQuestions() {
+                    $.ajax({
+                           type: "GET",
+                           url: serverUrl + "/sinq/questions/?format=json",
+                           //            data: ({name: theName}),
+                           //            cache: false,
+                           success: function(responseData) {
+                           //            	alert(JSON.parse(responseData));
+                           for(i in responseData) {
+                           var item = '<li><a href="#question" onclick="openQuestion(' + responseData[i].pk + ');">' + responseData[i].fields.text + '</a></li>';
+                           $('#questions_listview').append(item).listview('refresh');
+                           }
+                           $('#questions_listview').listview('refresh');
+                           }
+                           });
+                }
+                
+                function openQuestion(pk) {
+                    currentQuestionPk = pk;
+                    $.ajax({
+                           type: "GET",
+                           url: serverUrl + "/sinq/questions/" + pk + "/?format=json",
+                           //            data: ({name: theName}),
+                           //            cache: false,
+                           success: function(responseData) {
+                           $('#question_text').html(responseData[0].fields.text);
+                           }
+                           });
+                    
+                    $.ajax({
+                           type: "GET",
+                           url: serverUrl + "/sinq/questions/" + pk + "/images/",
+                           //            data: ({name: theName}),
+                           //            cache: false,
+                           success: function(responseData) {
+                           $('#question_images').html(''); // Reset all contents
+                           for(i in responseData) {
+                           var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
+                           $('#question_images').append(
+                                                        '<img src="' + imageUrl + '" width="320" height="240" />'
+                                                        );
+                           }
+                           }
+                           });
+                }
+                
+                //$(document).ready(function() {
+                $("#questions_index").bind("pageinit", function() {
+                                           getQuestions();
+                                           });
+                
+                </script>
+            
+            
+            
+            <div data-role="header">
+                <h1>SINQ</h1>
+            </div><!-- /header -->
+            
+            <div data-role="content">
+                
+                <a href="/sinq/questions/create/" data-role="button" data-inline="false" data-theme="b">Create Question</a>
+                
+                <h2>Questions</h2>
+                
+                <!-- 		<div id="question_container" class="masonry">
+                 <div class="box"><img src="http://placehold.it/300x200" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x150" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/200x100" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/300x200" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x100" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x150" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/200x100" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x100" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/300x200" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x150" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/200x100" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x100" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/300x200" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x150" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/300x200" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/300x200" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/200x100" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x100" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/300x200" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/100x150" /><br />Question</div>
+                 <div class="box"><img src="http://placehold.it/200x100" /><br />Question</div>
+                 </div> -->
+                
+                <p>
+                <ul data-role="listview" id="questions_listview">
+                </ul>
+                </p>
+                
+            </div><!-- /content -->
+            
+            
+            <div data-role="footer">
+                <h4>2011&ndash;2012.  Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.</h4>
+            </div><!-- /footer -->
+            
+        </div><!-- /page -->
+        
+    </body>
+</html>

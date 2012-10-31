@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SINQ3 Prototype</title>
+
+    <link rel="stylesheet" href="./css/jquery.mobile-1.2.0.min.css" />
+    <link rel="stylesheet" href="./css/sinq.css" />
+
+    <script src="./js/jquery-1.8.2.min.js"></script>
+    <script src="./js/jquery.mobile-1.2.0.min.js"></script>
+    <script src="./js/json2.js"></script>
+    <script type="text/javascript" charset="utf-8" src="cordova-2.1.0.js"></script>
+    <script src="./js/jquery.masonry.min.js"></script>
+
+    <script src="./js/sinq.js"></script>
+
+    <style>
+        .ui-page { background: #96d4f0;}
+        body { background-color: #96d4f0; }
+    </style>
+</head>
+
+<body>
+    
+    <div data-role="page" id="questions_index">
+        
+        <script type="text/javascript" charset="utf-8">
+            
+            //$(document).ready(function() {
+            $("#questions_index").bind("pagebeforeshow", function() {
+                getQuestions();
+            });
+            
+            $('#question_container').masonry({
+                itemSelector: '.box',
+                columnWidth: 10
+            });
+            
+            $('#question_container').imagesLoaded(function() {
+                $('#question_container').masonry('reload');
+            });
+            
+        </script>
+        
+        
+        
+        <!--
+        <div data-role="header">
+            <h1>SINQ</h1>
+        </div>
+        -->
+        <!-- /header -->
+        
+        <div data-role="content">
+
+            <div style="margin: 0 auto;">
+                <center>
+                <img src="./img/sinq_logo_small.png" style="margin: 0 auto;" />
+                </center>
+            </div>
+            
+            <a href="./question_create.html" data-role="button" data-inline="false" data-theme="b">Ask a question</a>
+            
+            <h1>Questions others wonder about</h1>
+            
+            <p>
+			<ul data-role="listview" id="questions_listview">
+			</ul>
+			</p>
+
+            <p>&nbsp;</p>
+            
+        </div><!-- /content -->
+
+        
+        <!--
+        <div data-role="footer">
+            <h4>2011&ndash;2012.  Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.</h4>
+        </div>
+        -->
+        <!-- /footer -->
+        
+    </div><!-- /page -->
+    
+</body>
+</html>
