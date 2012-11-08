@@ -7,52 +7,41 @@
 	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.css" />
 	<script src="http://code.jquery.com/jquery-1.8.2.min.js"></script>
 	<script src="http://code.jquery.com/mobile/1.2.0/jquery.mobile-1.2.0.min.js"></script>
+	<script src="./assets/js/sinq.js"></script>
 </head> 
 
-<body> 
+<body>
+
+<div data-role="page" id="question_create">
+	
 	<script type="text/javascript" charset="utf-8">
-		$("#questions_index").bind("pageinit", function() {
+		$("#question_create").bind("pageinit", function() {
 			lastImageURI = null;
 		});
 	</script>
 
-<div data-role="page">
-
-	<!--
-        <div data-role="header">
-            <h1>SINQ</h1>
-        </div>
-        -->
-        <!-- /header -->
-
 	<div data-role="content">
 
-            <div style="margin: 0 auto;">
-                <center>
-                <img src="./img/sinq_logo_small.png" style="margin: 0 auto;" />
-                </center>
-            </div>
-
-		<!--
-		{% if error_message %}
-		<p><strong>{{ error_message }}</strong></p>
-		{% endif %}
-		-->
+        <div style="margin: 0 auto;">
+            <center>
+            <img src="./img/sinq_logo_small.png" style="margin: 0 auto;" />
+            </center>
+        </div>
 
 		<h1>What do you wonder about?</h1>
 
 		<form onsubmit="return addQuestion(); return false;">
 		<!-- <form action="/sinq/questions/create/" method="post"> -->
 
-			<p>1. Take a photo.</p>
-			<p><a href="javascript:void(0);" data-theme="b" id="question_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
-			<img style="display: none; width: 200px; height: 200px;" id="largeImage" src="" />
+			<h2>1. Take a photo.</h2>
+			<p><a href="javascript:void(0);" data-theme="a" id="question_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
+			<img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
 			
 			<!-- <label for="question_text">What do you wonder about?</label> -->
-			<p>2. Type your question in this box.</p>
+			<h2>2. Type your question in this box.</h2>
 			<input id="question_text" name="question_text" type="text" />
 
-			<p>3. Click the <strong>Done</strong> button.</p>
+			<h2>3. Click the <strong>Done</strong> button.</h2>
 			<p><input type="submit" value="Done" /></p>
 
 		</form>

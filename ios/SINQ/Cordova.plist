@@ -27,6 +27,7 @@
 		<string>http://10.10.0.141*</string>
 		<string>http://127.0.0.1*</string>
 		<string>http://129.2.101.49*</string>
+		<string>http://129.2.101.49/sinq*</string>
 		<string>*</string>
 	</array>
 	<key>Plugins</key>
