@@ -13,7 +13,7 @@
 <body>
 
 <div data-role="page" id="question_create">
-	
+
 	<script type="text/javascript" charset="utf-8">
 		$("#question_create").bind("pageinit", function() {
 			lastImageURI = null;
@@ -24,7 +24,7 @@
 
         <div style="margin: 0 auto;">
             <center>
-            <img src="./img/sinq_logo_small.png" style="margin: 0 auto;" />
+            <img src="./assets/img/sinq_logo_small.png" style="margin: 0 auto;" />
             </center>
         </div>
 
@@ -33,20 +33,20 @@
 		<form onsubmit="return addQuestion(); return false;">
 		<!-- <form action="/sinq/questions/create/" method="post"> -->
 
-			<h2>1. Take a photo.</h2>
+			<!-- <h2>1. Take a photo.</h2>
 			<p><a href="javascript:void(0);" data-theme="a" id="question_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
-			<img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+			<img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" /> -->
 			
 			<!-- <label for="question_text">What do you wonder about?</label> -->
-			<h2>2. Type your question in this box.</h2>
+			<h2>1. Type your question in this box.</h2>
 			<input id="question_text" name="question_text" type="text" />
 
-			<h2>3. Click the <strong>Done</strong> button.</h2>
+			<h2>2. Click the <strong>Done</strong> button.</h2>
 			<p><input type="submit" value="Done" /></p>
 
 		</form>
 
-		<a href="./index.html" data-role="button" data-inline="false" data-theme="b">Back to Questions</a>
+		<a href="#dashboard" data-role="button" data-inline="false" data-theme="b">Back to Questions</a>
 
 	</div><!-- /content -->
 	

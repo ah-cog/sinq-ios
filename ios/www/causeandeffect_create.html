@@ -23,6 +23,26 @@
 		$("#causeandeffect_create").bind("pageinit", function() {
 			lastImageURI = null;
 		});
+
+		$("#causeandeffect_create").bind("pageshow", function() {
+
+			// Initialize page
+			var url = location.href;
+			var pk_index = url.lastIndexOf("question_id=");
+			if (pk_index == -1) {
+				// alert("Error: Could not find \"question_id\" value in URL.");
+				return;
+
+			} else {
+
+				// Extract pk (primary key) from URL
+				var question_id = url.substr(pk_index + 12);
+
+				$('#question_id').val(question_id);
+
+				openQuestion(question_id);
+			}
+		});
 	</script>
 
 	<!--
@@ -36,7 +56,7 @@
 
             <div style="margin: 0 auto;">
                 <center>
-                <img src="./img/sinq_logo_small.png" style="margin: 0 auto;" />
+                <img src="./assets/img/sinq_logo_small.png" style="margin: 0 auto;" />
                 </center>
             </div>
 
@@ -46,10 +66,17 @@
 		{% endif %}
 		-->
 
+		<h1 id="question_text"></h1>
+
+		<div id="question_images">
+		</div>
+
 		<h1>What do you see happening?</h1>
 
 		<form onsubmit="return addHypothesis(); return false;">
 		<!-- <form action="/sinq/questions/create/" method="post"> -->
+
+			<input id="question_id" name="question_id" type="hidden" value="" />
 			
 			<!-- <label for="question_text">What do you wonder about?</label> -->
 			<h2>1. What's the cause?</h2>
@@ -67,7 +94,9 @@
 
 		</form>
 
-		<a href="./index.html" data-role="button" data-inline="false" data-theme="b">Back to Questions</a>
+		<br />
+
+		<a href="#dashboard" data-role="button" data-inline="false" data-theme="b">Back to Questions</a>
 
 	</div><!-- /content -->
 	

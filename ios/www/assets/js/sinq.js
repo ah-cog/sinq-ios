@@ -1,7 +1,23 @@
+//    .-'''-. .-./`) ,---.   .--.    ,-----.     
+//   / _     \\ .-.')|    \  |  |  .'  .-,  '.   
+//  (`' )/`--'/ `-' \|  ,  \ |  | / ,-.|  \ _ \  
+// (_ o _).    `-'`"`|  |\_ \|  |;  \  '_ /  | : 
+//  (_,_). '.  .---. |  _( )_\  ||  _`,/ \ _/  | 
+// .---.  \  : |   | | (_ o _)  |: (  '\_/ \   ; 
+// \    `-'  | |   | |  (_,_)\  | \ `"/  \  )  \ 
+//  \       /  |   | |  |    |  |  '. \_/``"/)  )
+//   `-...-'   '---' '--'    '--'    '-----' `-' 
+//
+// Author: Michael Gubbels
+// Date: 2012-11-11
+//
+// Header ASCII art text generator:
+//    http://patorjk.com/software/taag/
+
 // SINQ server URL
 var serverUrl = 'http://10.10.0.141';
-//var serverUrl = 'http://10.109.94.103'; // 129.2.129.39
-//var serverUrl = 'http://129.2.101.49';
+// var serverUrl = 'http://129.2.101.49';
+
 /*
  if (location.host == 'localhost') {
  // code for local version goes here
@@ -12,10 +28,19 @@ var serverUrl = 'http://10.10.0.141';
  }
  */
 
+ //  _____  _                       _____             
+ // |  __ \| |                     / ____|            
+ // | |__) | |__   ___  _ __   ___| |  __  __ _ _ __  
+ // |  ___/| '_ \ / _ \| '_ \ / _ \ | |_ |/ _` | '_ \ 
+ // | |    | | | | (_) | | | |  __/ |__| | (_| | |_) |
+ // |_|    |_| |_|\___/|_| |_|\___|\_____|\__,_| .__/ 
+ //                                            | |    
+ //                                            |_|    
+
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
 
-var currentQuestionPk = null;
+var lastImageURI = null;
 
 // Wait for Cordova to connect with the device
 //
@@ -24,8 +49,8 @@ document.addEventListener("deviceready", onDeviceReady, false);
 // Cordova is ready to be used!
 //
 function onDeviceReady() {
-  pictureSource=navigator.camera.PictureSourceType;
-  destinationType=navigator.camera.DestinationType;
+    pictureSource = navigator.camera.PictureSourceType;
+    destinationType = navigator.camera.DestinationType;
 }
 
 // Called when a photo is successfully retrieved
@@ -48,8 +73,6 @@ function onPhotoDataSuccess(imageData) {
     smallImage.src = "data:image/jpeg;base64," + imageData;
 }
 
-var lastImageURI = null;
-
 // Called when a photo is successfully retrieved
 //
 function onPhotoURISuccess(imageURI) {
@@ -71,23 +94,12 @@ function onPhotoURISuccess(imageURI) {
     // The inline CSS rules are used to resize the image
     //
     photo_preview.src = lastImageURI;
-    
-    // // Upload the image to server
-    // function success(response) {
-    //     alert("upload successful");
-    // }
-    
-    // function fail(error) {
-    //     alert("upload failed: " + error.code);
-    // }
-    
-    // var options = new FileUploadOptions();
-    // options.fileKey = "question_image"; // parameter name of file -- in POST data?
-    // options.fileName = lastImageURI.substr(lastImageURI.lastIndexOf('/') + 1); // name of file
-    // options.mimeType = "image/jpeg";
-    
-    // var ft = new FileTransfer();
-    // //ft.upload(lastImageURI, serverUrl + '/sinq/questions/' + currentQuestionPk + '/images/create/', success, fail, options);
+}
+
+// Called if something bad happens.
+//
+function onFail(message) {
+    alert('Failed because: ' + message);
 }
 
 // A button will call this function
@@ -106,33 +118,42 @@ function capturePhoto() {
 // A button will call this function
 //
 function capturePhotoToURI() {
-
     // Take picture using device camera and retrieve image as base64-encoded string
-    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-                                destinationType: navigator.camera.DestinationType.FILE_URI });
+    navigator.camera.getPicture(
+        onPhotoURISuccess, 
+        onFail, 
+        {
+            quality: 50, 
+            destinationType: navigator.camera.DestinationType.FILE_URI 
+        });
 }
 
 // A button will call this function
 //
 function capturePhotoEdit() {
     // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
-    navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
-                                destinationType: destinationType.DATA_URL });
+    navigator.camera.getPicture(
+        onPhotoDataSuccess, 
+        onFail, 
+        {
+            quality: 20,
+            allowEdit: true,
+            destinationType: destinationType.DATA_URL 
+        });
 }
 
 // A button will call this function
 //
 function getPhoto(source) {
     // Retrieve image file location from specified source
-    navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
-                                destinationType: destinationType.FILE_URI,
-                                sourceType: source });
-}
-
-// Called if something bad happens.
-//
-function onFail(message) {
-    alert('Failed because: ' + message);
+    navigator.camera.getPicture(
+        onPhotoURISuccess, 
+        onFail, 
+        { 
+            quality: 50,
+            destinationType: destinationType.FILE_URI,
+            sourceType: source
+        });
 }
 
 //  _    _                   _   _                         
@@ -148,8 +169,8 @@ function getHypotheses() {
     $.ajax({
         type: "GET",
         url: serverUrl + "/sinq/hypotheses/?format=json",
-        //            data: ({name: theName}),
-        //            cache: false,
+        // data: ({name: theName}),
+        cache: false,
         success: function(data) {
 
             // proceed only if we have data
@@ -163,17 +184,8 @@ function getHypotheses() {
             // Create HTML markup for retreived questions and add to a list
             for ( var i=0, len = data.length; i < len; i++ ) {
                 datum = data[i];
-                // item = '<li><a href="' + datum.url + '">'
-                //     + '<img src="' + datum.image.replace('/l.', '/m.') + '" />'
-                //     + '<b>' + datum.title + '</b>'
-                //     + '</a></li>';
 
-                // var item = '<li><a href="./question_view.html?pk=' + dataum.pk + '">'
-                //     + '<img id="question_' + datum.pk + '_image" width="100" height="100" />'
-                //     + '<h3>' + dataum.fields.text + '</h3>'
-                //     + '</a></li>';
-
-                var item = '<div id="hypothesis_' + datum.pk + '" class="hypothesis element feature  width2 height2 alkaline-earth metal" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
+                var item = '<div id="hypothesis_' + datum.pk + '" class="hypothesis hypothesis-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".hypothesis-' + datum.pk + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
                             + '<a href="./hypothesis_view.html?pk=' + datum.pk + '">'
                             + '<div style="width: 230px; height: 230px;">'
                                 + '<h2 class="cause">' + datum.fields.cause + '</h2>'
@@ -217,12 +229,15 @@ function getHypotheses() {
     });
 }
 
+/**
+ * Retreive images for the hypothesis with the specified primary key.
+ */
 function getHypothesisImages(pk) {
     $.ajax({
        type: "GET",
        url: serverUrl + "/sinq/hypotheses/" + pk + "/images/?format=json",
-       //            data: ({name: theName}),
-       //            cache: false,
+       // data: ({name: theName}),
+       cache: false,
        success: function(responseData) {
            for(i in responseData) {
                var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
@@ -238,7 +253,8 @@ function getHypothesisImages(pk) {
 function addHypothesis() {
 
     // Get form data
-    var cause_text = $('#cause_text').val();
+    //var question_id = $('#question_id').val();
+    var cause_text  = $('#cause_text').val();
     var effect_text = $('#effect_text').val();
 
     // Validate form
@@ -248,10 +264,14 @@ function addHypothesis() {
 
     // Serialize data in JSON format
     var hypothesis = new Object();
+    // if (question_id != '') {
+    //     hypothesis.question_id = question_id;
+    //     alert('has question id');
+    // }
     hypothesis.cause_text = cause_text;
     hypothesis.effect_text = effect_text;
 
-    var data = new Object();
+    var data = new Object(); // "Wrapper object" for hypothesis to be sent to server.
     data.hypothesis = hypothesis;
 
     var hypothesis_json = JSON.stringify(data);
@@ -279,7 +299,7 @@ function addHypothesisImage(hypothesis_pk) {
         // var response_json = JSON.stringify(response);
         // alert("upload successful" + response_json);
         // $.mobile.changePage( "./index.html" );
-        // $.mobile.changePage( "./question_view.html?pk=" + hypothesis_pk);
+        $.mobile.changePage( "./hypothesis_view.html?pk=" + hypothesis_pk);
     }
     
     function fail(error) {
@@ -298,34 +318,33 @@ function addHypothesisImage(hypothesis_pk) {
     lastImageURI = null;
 }
 
-// function addHypothesisImage(hypothesis_pk) {
-
-//     // Upload the image to server
-//     function success(response) {
-//         alert('Success: ' + response);
-//         // alert("upload successful");
-//         // $.mobile.changePage( "./index.html" );
-//         $.mobile.changePage( "./hypothesis_view.html?pk=" + hypothesis_pk);
-//     }
+function openHypothesis(pk) {
+    $.ajax({
+        type: "GET",
+        url: serverUrl + "/sinq/api/hypotheses/" + pk + "/?format=json",
+        //            data: ({name: theName}),
+        //            cache: false,
+        success: function(responseData) {
+            $('#hypothesis_cause').html(responseData[0].fields.cause);
+            $('#hypothesis_effect').html(responseData[0].fields.effect);
+        }
+    });
     
-//     function fail(error) {
-//         alert("Your photo could not be saved.  (Error code " + error.code + ")");
-//     }
-    
-//     // Configure file upload options
-//     var options      = new FileUploadOptions();
-//     options.fileKey  = "hypothesis_image"; // Name of form element (used by server to access file in POST data).
-//     options.fileName = lastImageURI.substr(lastImageURI.lastIndexOf('/') + 1); // File name (not full path, just the file)
-//     options.mimeType = "image/jpeg";
-    
-//     // Set up file transfer and upload the file
-//     var ft = new FileTransfer();
-//     var requestUrl = serverUrl + '/sinq/api/hypotheses/' + hypothesis_pk + '/images/create/';
-//     ft.upload(lastImageURI, requestUrl, success, fail, options);
-
-//     // Reset image URI
-//     //lastImageURI = null;
-// }
+    $.ajax({
+       type: "GET",
+       url: serverUrl + "/sinq/hypotheses/" + pk + "/images/?format=json",
+       //            data: ({name: theName}),
+       //            cache: false,
+       success: function(responseData) {
+           $('#hypothesis_images').html(''); // Reset all contents
+           for(i in responseData) {
+               var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
+               // alert(imageUrl);
+               $('#hypothesis_images').append('<img src="' + imageUrl + '" width="320" height="240" />');
+           }
+       }
+    });
+}
 
 //   ____                  _   _                 
 //  / __ \                | | (_)                
@@ -339,10 +358,10 @@ function addQuestion() {
     // Get form data
     var question_text = $('#question_text').val();
 
-    // Validate form
-    if($("#photo_preview").attr('src') == '' || question_text == '') {
-        alert("You have to snap a photo and type a question.");
-    }
+    // // Validate form
+    // if($("#photo_preview").attr('src') == '' || question_text == '') {
+    //     alert("You have to snap a photo and type a question.");
+    // }
 
     // Serialize data in JSON format
     var question = new Object();
@@ -362,14 +381,18 @@ function addQuestion() {
         data: question_json,
         success: function(responseData) {
             // alert('pk: ' + responseData[0].pk);
-            var question_image_pk = parseInt(responseData[0].pk)
-            addQuestionImage(question_image_pk);
+            var question_image_pk = parseInt(responseData[0].pk);
+            // addQuestionImage(question_image_pk);
+
+            $.mobile.changePage( "./question_view.html?pk=" + question_pk);
         }
         // dataType: 'json'
     });
 }
 
 function addQuestionImage(question_pk) {
+
+    alert("addQuestionImage: " + question_pk);
 
     // Upload the image to server
     function success(response) {
@@ -379,7 +402,7 @@ function addQuestionImage(question_pk) {
     }
     
     function fail(error) {
-        alert("upload failed: " + error.code);
+        alert("Your photo could not be uploaded.  (Error " + error.code + ")");
     }
     
     var options = new FileUploadOptions();
@@ -415,8 +438,9 @@ function getQuestions() {
                 datum = data[i];
 
                 // Create HTML element to show in Isotope container
-                var item = '<div id="question_' + datum.pk + '" class="question element feature  width2 height2 alkaline-earth metal" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
-                            + '<a href="./question_view.html?pk=' + datum.pk + '">'
+                var item = '<div id="question_' + datum.pk + '" class="question question-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
+                            // + '<a href="./question_view.html?pk=' + datum.pk + '" data-option-value=".question-' + datum.pk + '">'
+                            + '<a href="#question-' + datum.pk + '" data-option-value=".question-' + datum.pk + '">'
                             + '<div style="width: 230px; height: 230px;">'
                                 + '<h2 class="text">' + datum.fields.text + '</h2>'
                             + '</div>'
@@ -450,37 +474,55 @@ function getQuestions() {
                 $container.isotope( 'insert', $items );
             });
 
+
+
+
+
+            /**
+             * Set up per-question-element filtering to occur when clicked
+             */
+
+            var $questionSets = $('#container .question'),
+                $questionLinks = $questionSets.find('a');
+
+            $questionLinks.click(function() {
+                var $this = $(this);
+                // don't proceed if already selected
+                if ( $this.hasClass('selected') ) {
+                    return false;
+                }
+
+                // Remove ".selected" class from all currently-selected elements with class ".questions"
+                var $questionSet = $this.parents('.question');
+                $questionSet.find('.selected').removeClass('selected');
+                $this.addClass('selected'); // Add ".selected" class to the current element
+
+                // make option object dynamically, i.e. { filter: '.my-filter-class' }
+                var options = {},
+                    key     = $questionSet.attr('data-option-key'),
+                    value   = $this.attr('data-option-value');
+                // parse 'false' as false boolean
+                value = value === 'false' ? false : value;
+                options[ key ] = value;
+                if ( key === 'layoutMode' && typeof changeLayoutMode === 'function' ) {
+                    // changes in layout modes need extra logic
+                    changeLayoutMode( $this, options );
+                } else {
+                    // otherwise, apply new options
+                    $container.isotope( options );
+                }
+
+                return false;
+            });
+
+
+
+
+
             // Request images
             for(var i = 0   , len = item_ids.length; i < len; i++) {
                 getQuestionImages(item_ids[i]);
             }
-        }
-    });
-}
-
-function getQuestions2() {
-    $.ajax({
-        type: "GET",
-        url: serverUrl + "/sinq/questions/?format=json",
-        //            data: ({name: theName}),
-        //            cache: false,
-        success: function(responseData) {
-            //              alert(JSON.parse(responseData));
-            $("#questions_listview").html('');
-            for(i in responseData) {
-                //var item = '<li><a href="#question" onclick="openQuestion(' + responseData[i].pk + ');">' + responseData[i].fields.text + '</a></li>';
-                //var item = '<li><a href="./question_view.html?pk=' + responseData[i].pk + '" data-icon="arrow-r">' + responseData[i].fields.text + '</a></li>';
-                var item = '<li><a href="./question_view.html?pk=' + responseData[i].pk + '">'
-                    + '<img id="question_' + responseData[i].pk + '_image" width="100" height="100" />'
-                    + '<h3>' + responseData[i].fields.text + '</h3>'
-                    // + '<p>Ask your questions.</p>'
-                    + '</a></li>';
-                $('#questions_listview').append(item).listview('refresh');
-
-                // Get thumbnail image
-                getQuestionImages(responseData[i].pk);
-            }
-            $('#questions_listview').listview('refresh');
         }
     });
 }

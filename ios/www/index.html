@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -10,23 +10,25 @@
 
     <link rel="stylesheet" href="./assets/css/jquery.isotope.min.css" />
 
-    <script src="./assets/js/jquery-1.8.2.min.js"></script>
-    <script src="./assets/js/json2.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="./assets/js/json2.js"></script>
 
     <link rel="stylesheet" href="./assets/css/jquery.mobile-1.2.0.min.css" />
-    <script src="./assets/js/jquery.mobile-1.2.0.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery.mobile-1.2.0.min.js"></script>
 
-    <script src="./assets/js/jquery.isotope.min.js"></script>
+    <script type="text/javascript" src="./assets/js/jquery.isotope.min.js"></script>
 
     <link rel="stylesheet" href="./assets/css/sinq.css" />
 
-    <script src="./assets/js/sinq.js"></script>
+    <script type="text/javascript" src="./assets/js/sinq.js"></script>
+
+    <link href='http://fonts.googleapis.com/css?family=Sirin+Stencil' rel='stylesheet' type='text/css'>
 
     <!-- scripts at bottom of page -->
 
     <style>
-        .ui-page { background: #4584be;}
-        body { background-color: #4584be; }
+        .ui-page { background: #fbfbfb;}
+        body { background-color: #fbfbfb; }
     </style>
 </head>
 <body class="homepage">
@@ -35,114 +37,105 @@
 
         <script type="text/javascript" charset="utf-8">
             
-            //$(document).ready(function() {
-            // $("#questions_index").bind("pagebeforeshow", function() {
             $("#dashboard").bind("pageshow", function() {
-                // getQuestions();
+
+                $("#container").isotope( 'remove', $('#container').find('.element'));
+
+                // Load questions and hypotheses from server
+                getQuestions();
+                getHypotheses();
             });
-            
-            // $('#question_container').masonry({
-            //     itemSelector: '.box',
-            //     columnWidth: 10
-            // });
-            
-            // $('#question_container').imagesLoaded(function() {
-            //     $('#question_container').masonry('reload');
-            // });
             
         </script>
 
-        <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 50px; padding-bottom: 50px;">
-            <center>
-            <img src="./assets/img/sinq_logo.png" />
-            </center>
-        </div>
 
-        <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 50px; border-bottom: 10px solid #2f5b7f;">
-            <center>
-                <ul id="navigation">
-                    <li><a href="./question_create.html">Questions</a></li>
-                    <li><a href="./causeandeffect_create.html">Cause and Effect</a></li>
-                    <!-- 
-                    TODO: Add "Experiments" link
-                    -->
-                </ul>
-            </center>
-        </div>
 
-        <div data-role="content" id="content_page">
-  
-            <section id="content">
 
-                <section id="options" class="clearfix">
-                    <div class="option-combo">
-                    <h2>Filter:</h2>
-                    <ul id="filter" class="option-set clearfix" data-option-key="filter">
-                        <li><a href="#show-all" data-option-value="*" class="selected">Show all</a></li>
-                        <!-- <li><a href="#elements" data-option-value=".element:not(.feature)">elements</a></li> -->
-                        <!-- <li><a href="#features" data-option-value=".feature">features</a></li> -->
-                        <!-- <li><a href="#examples" data-option-value=".example">examples</a></li> -->
+        <div data-role="header">
+            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 50px; padding-bottom: 50px;">
+                <center>
+                <img src="./assets/img/sinq_logo.png" />
+                </center>
+            </div>
 
-                        <li><a href="#questions" data-option-value=".question">Questions</a></li>
-                        <li><a href="#hypotheses" data-option-value=".hypothesis">Cause and Effect</a></li>
-                        <!-- <li><a href="#experiments" data-option-value=".experiment">Experiments</a></li> -->
+            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 50px; border-bottom: 10px solid #2f5b7f;">
+                <center>
+                    <ul id="navigation">
+                        <li><a href="./question_create.html">Questions</a></li>
+                        <li><a href="./causeandeffect_create.html">Cause and Effect</a></li>
                         <!-- 
-                        TODO:
-                        - Add filters for "my stuff", "everyone else's stuff"
+                        TODO: Add "Experiments" link
                         -->
                     </ul>
-                    </div>
-                    <div class="option-combo">
-                    <h2>Sort:</h2>
+                </center>
+            </div>
+
+            <!-- <li id="toggle-sizes"><a href="#toggle-sizes">Toggle Thought List View</a></li> -->
+
+        </div><!-- /header -->
+
+
+
+
+        <div data-role="content">
+            <div id="options" class="clearfix">
+                <div class="option-combo">
+                <h2>Show:</h2>
+                <ul id="filter" class="option-set clearfix" data-option-key="filter">
+                    <li><a href="#show-all" data-option-value="*" class="selected">Everything</a></li>
+                    <li><a href="#questions" data-option-value=".question">Questions</a></li>
+                    <li><a href="#hypotheses" data-option-value=".hypothesis">Cause and Effect</a></li>
+                    <!-- <li><a href="#experiments" data-option-value=".experiment">Experiments</a></li> -->
+                    <!-- 
+                    TODO:
+                    - Add filters for "my stuff", "everyone else's stuff"
+                    -->
+                </ul>
+                </div>
+                <div class="option-combo">
+                    <h2>Order:</h2>
                     <ul id="sort" class="option-set clearfix" data-option-key="sortBy">
-                        <li><a href="#mixed" data-option-value="number" class="selected">mixed</a></li>
-                        <li><a href="#original" data-option-value="original-order">original</a></li>
+                        <li><a href="#mixed" data-option-value="number" class="selected">Mixed</a></li>
+                        <li><a href="#original" data-option-value="original-order">Original</a></li>
                         <li><a href="#alphabetical" data-option-value="alphabetical">ABC</a></li>
                         <!-- 
                         TODO:
                         - Add options to sort by datetime created, datetime last modified, highest rated, most popular
                         -->
                     </ul>
-                    </div>
-                    <div class="option-combo">
+                </div>
+                <div class="option-combo">
                     <h2>Layout: </h2>
                     <ul id="layouts" class="option-set clearfix" data-option-key="layoutMode">
                         <li><a href="#masonry" data-option-value="masonry" class="selected">Many</a></li>
                         <li><a href="#fitRows" data-option-value="fitRows">Fit Rows</a></li>
                         <li><a href="#straightDown" data-option-value="straightDown">List</a></li>
                     </ul>
-                    </div>
-                </section>
+                </div>
+            </div>
   
-                <div id="container" class="super-list variable-sizes clearfix">
+            <div id="container" class="super-list variable-sizes clearfix">
+                <!--
+                Example use of Isotope:
 
-
-                    
-
-
-                    <!--
-                    Example use of Isotope:
-
-                    <div class="element alkaline-earth metal   " data-symbol="Mg" data-category="alkaline-earth">
-                    <p class="number">12</p>
-                    <h3 class="symbol">Mg</h3>
-                    <h2 class="name">Magnesium</h2>
-                    <p class="weight">24.305</p>
-                    </div>
-
-                    <div class="link" data-number="5"><a href="jquery.isotope.min.js">Down&#8203;load jquery&#8203;.isotope&#8203;.min.js</a></div>
-                    <div class="link" data-number="13"><a href="http://meta.metafizzy.co/files/isotope-site.zip">Down&#8203;load this project</a></div> 
-                    <div class="link away" data-number="35"><a href="http://github.com/desandro/isotope">Isotope on GitHub</a></div>
-                    -->
+                <div class="element alkaline-earth metal   " data-symbol="Mg" data-category="alkaline-earth">
+                <p class="number">12</p>
+                <h3 class="symbol">Mg</h3>
+                <h2 class="name">Magnesium</h2>
+                <p class="weight">24.305</p>
                 </div>
 
-                <div id="sites"></div>
-
-            </section><!-- /content -->
-
+                <div class="link" data-number="5"><a href="jquery.isotope.min.js">Down&#8203;load jquery&#8203;.isotope&#8203;.min.js</a></div>
+                <div class="link" data-number="13"><a href="http://meta.metafizzy.co/files/isotope-site.zip">Down&#8203;load this project</a></div> 
+                <div class="link away" data-number="35"><a href="http://github.com/desandro/isotope">Isotope on GitHub</a></div>
+                -->
+            </div>
         </div><!-- /content -->
 
-        <script>
+
+
+
+        <script type="text/javascript">
         $(function(){
 
             var $container = $('#container');
@@ -168,10 +161,13 @@
             });
 
 
+            /**
+             * Set up filtering and sorting option buttons
+             */
             var $optionSets = $('#options .option-set'),
                 $optionLinks = $optionSets.find('a');
 
-            $optionLinks.click(function(){
+            $optionLinks.click(function() {
                 var $this = $(this);
                 // don't proceed if already selected
                 if ( $this.hasClass('selected') ) {
@@ -190,7 +186,7 @@
                 options[ key ] = value;
                 if ( key === 'layoutMode' && typeof changeLayoutMode === 'function' ) {
                     // changes in layout modes need extra logic
-                    changeLayoutMode( $this, options )
+                    changeLayoutMode( $this, options );
                 } else {
                     // otherwise, apply new options
                     $container.isotope( options );
@@ -199,38 +195,39 @@
                 return false;
             });
 
-            // Sites using Isotope markup
-            /*
-            var $sites = $('#sites'),
-            $sitesTitle = $('<h2 class="loading"><img src="http://i.imgur.com/qkKy8.gif" />Loading sites using Isotope</h2>'),
-            $sitesList = $('<ul class="clearfix"></ul>');
 
-            $sites.append( $sitesTitle ).append( $sitesList );
 
-            $sitesList.isotope({
-                layoutMode: 'cellsByRow',
-                cellsByRow: {
-                    columnWidth: 290,
-                    rowHeight: 400
-                }
+
+
+
+            /**
+             * Set up button to change size of items for vertical list
+             */
+
+            // Change size of clicked element
+            // $container.delegate( '.element', 'click', function(){
+            //     $(this).toggleClass('large');
+            //     $container.isotope('reLayout');
+            // });
+
+            // Toggle variable sizes of all elements
+            $('#toggle-sizes').find('a').click(function() {
+                // Change layout mode
+                var options = { layoutMode: 'straightDown' };
+                $container.isotope( options );
+
+                // Toggle sizes
+                $container
+                    .toggleClass('expanded-element')
+                    .isotope('reLayout');
+                return false;
             });
-            */
-
-            // var ajaxError = function(){
-            //     $sitesTitle.removeClass('loading').addClass('error')
-            //     .text('Could not load sites using Isotope :(');
-            // };
-
-            // Dynamically load questions and place into Isotope container
-            getQuestions();
-
-            getHypotheses();
-
 
         });
         </script>
 
-        
+
+
 
         <div data-role="footer">
             <h4>2011&ndash;2012.  Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.</h4>

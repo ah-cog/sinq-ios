@@ -3,16 +3,20 @@
   list-style-type: none;
   padding-right: 20px;
 
-  font-size: 23pt;
+  font-size: 26pt;
   font-style: none;
   font-weight: normal;
+
+  font-family: 'Sirin Stencil', cursive;
 }
 
 #navigation li a {
 
-  font-size: 23pt;
+  font-size: 26pt;
   font-style: none;
   font-weight: normal;
+
+  font-family: 'Sirin Stencil', cursive;
 }
 
 /**
@@ -22,7 +26,16 @@
 /** Override Isotope default Styles **/
 
 #container {
-  background-color: #e6c92e;
+  background-color: #54bef9;
+  margin-left: -15px;
+  margin-right: -15px;
+  border: 0px solid #666;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.horizontal #container {
+  height: 80%;
 }
 
 /** Isotope Styles **/
@@ -36,6 +49,9 @@
   position: relative;
   background: #888;
   color: #222;
+  -webkit-border-top-right-radius: 0em;
+      -moz-border-radius-topright: 0em;
+          border-top-right-radius: 0em;
 }
 
 .element.alkali          { background: #F00; background: hsl(   0, 100%, 50%); }
@@ -80,6 +96,7 @@
 .question .text {
   top: 0.4em;
   left: 0.5em;
+  right: 0.5em;
   /*bottom: 1.6em;*/
   font-size: 1.05em;
   color: #FFF;
@@ -115,17 +132,17 @@
   top: 0.5em;
 }
 
-.variable-sizes .element.width2 { width: 230px; }
+.expanded-element .element.width2 { width: 100%; }
 
-.variable-sizes .element.height2 { height: 230px; }
+.expanded-element .element.height2 { height: 230px; }
 
-.variable-sizes .element.width2.height2 {
+.expanded-element .element.width2.height2 {
   font-size: 2.0em;
 }
 
 .element.large,
-.variable-sizes .element.large,
-.variable-sizes .element.large.width2.height2 {
+.expanded-element .element.large,
+.expanded-element .element.large.width2.height2 {
   font-size: 3.0em;
   width: 350px;
   height: 350px;
