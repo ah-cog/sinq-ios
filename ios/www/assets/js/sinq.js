@@ -353,15 +353,19 @@ function openHypothesis(pk) {
 // | |__| | |_| |  __/\__ \ |_| | (_) | | | \__ \
 //  \___\_\\__,_|\___||___/\__|_|\___/|_| |_|___/
 
+function showMessage(message) {
+    alert(message);
+}
+
 function addQuestion() {
 
     // Get form data
     var question_text = $('#question_text').val();
 
     // // Validate form
-    // if($("#photo_preview").attr('src') == '' || question_text == '') {
-    //     alert("You have to snap a photo and type a question.");
-    // }
+    if($("#photo_preview").attr('src') == '' || question_text == '') {
+        showMessage("You have to snap a photo and type a question.");
+    }
 
     // Serialize data in JSON format
     var question = new Object();
