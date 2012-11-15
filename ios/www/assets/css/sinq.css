@@ -7,7 +7,7 @@
   font-style: none;
   font-weight: normal;
 
-  font-family: 'Sirin Stencil', cursive;
+  font-family: 'Josefin Sans', sans-serif;
 }
 
 #navigation li a {
@@ -16,7 +16,49 @@
   font-style: none;
   font-weight: normal;
 
-  font-family: 'Sirin Stencil', cursive;
+  font-family: 'Raleway', sans-serif;
+
+  text-shadow: none;
+}
+
+.selected-element h1 {
+    font-size: 26pt;
+    font-style: none;
+    font-weight: normal;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 100;
+    text-shadow: none;
+}
+
+.selected-element #selected-question-text {
+    font-size: 18pt;
+    font-style: none;
+    font-weight: normal;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    text-shadow: none;
+}
+
+.selected-element {
+    background-color: #54bef9;
+    margin-left: -15px;
+    margin-right: -15px;
+    border: 0px solid #666;
+    padding: 5px;
+    margin-bottom: 0px;
+    display: none;
+}
+
+#selected-question-element {
+    background-color: #54bef9;
+}
+
+#selected-causeandeffect-element {
+    background-color: #30a382;
+}
+
+#selected-investigation-element {
+    background-color: #fb6567;
 }
 
 /**
@@ -26,7 +68,8 @@
 /** Override Isotope default Styles **/
 
 #container {
-  background-color: #54bef9;
+  /*background-color: #54bef9;*/
+  background-color: #ffffff;
   margin-left: -15px;
   margin-right: -15px;
   border: 0px solid #666;

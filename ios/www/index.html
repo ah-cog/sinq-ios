@@ -18,11 +18,13 @@
 
     <script type="text/javascript" src="./assets/js/jquery.isotope.min.js"></script>
 
+    <link rel="stylesheet" href="./assets/css/iscroll-lite.css" />
+
     <link rel="stylesheet" href="./assets/css/sinq.css" />
 
     <script type="text/javascript" src="./assets/js/sinq.js"></script>
 
-    <link href='http://fonts.googleapis.com/css?family=Sirin+Stencil' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Poiret+One|Quicksand|Josefin+Sans:100,400|Raleway+Dots|Raleway:400,100|Press+Start+2P' rel='stylesheet' type='text/css'>
 
     <!-- scripts at bottom of page -->
 
@@ -56,14 +58,12 @@
 
 
 
-        <div data-role="header">
-            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 50px; padding-bottom: 50px;">
-                <center>
+        <div data-role="header" style="position: fixed; z-index: 2147483647; width: 100%;">
+            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 10px; padding-bottom: 10px;">
                 <img src="./assets/img/sinq_logo.png" />
-                </center>
             </div>
 
-            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 50px; border-bottom: 10px solid #2f5b7f;">
+            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 10px; border-bottom: 1px solid #2f5b7f;">
                 <center>
                     <ul id="navigation">
                         <li><a href="./question_create.html">Questions</a></li>
@@ -82,15 +82,15 @@
 
 
 
-        <div data-role="content">
+        <div data-role="content" style="margin-top: 100px;">
             <div id="options" class="clearfix">
                 <div class="option-combo">
                 <h2>Show:</h2>
                 <ul id="filter" class="option-set clearfix" data-option-key="filter">
                     <li><a href="#show-all" data-option-value="*" class="selected">Everything</a></li>
                     <li><a href="#questions" data-option-value=".question">Questions</a></li>
-                    <li><a href="#hypotheses" data-option-value=".hypothesis">Cause and Effect</a></li>
-                    <!-- <li><a href="#experiments" data-option-value=".experiment">Experiments</a></li> -->
+                    <li><a href="#causeandeffects" data-option-value=".causeandeffect">Cause and Effect</a></li>
+                    <li><a href="#investigations" data-option-value=".investigation">Investigation</a></li>
                     <!-- 
                     TODO:
                     - Add filters for "my stuff", "everyone else's stuff"
@@ -115,8 +115,65 @@
                         <li><a href="#masonry" data-option-value="masonry" class="selected">Many</a></li>
                         <li><a href="#fitRows" data-option-value="fitRows">Fit Rows</a></li>
                         <li><a href="#straightDown" data-option-value="straightDown">List</a></li>
+                        <li><a href="#straightAcross" data-option-value="straightAcross">List</a></li>
                     </ul>
                 </div>
+            </div>
+
+            <div id="selected-question-element" data-role="none" class="selected-element">
+                <h1>Question</h1>
+                <p id="selected-question-text"></p>
+
+                <div class="scroller">
+                    <div id="horizontalWrapper">
+                        <div id="horizontalScroller">
+                            <ul>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+
+                <p>
+                    <img src="./assets/img/noun_project_781.svg" height="30" /> 
+                    [+Cause and Effect]
+                    <img src="./assets/img/noun_project_95.svg" height="30" /> 
+                    | [ EDIT ]
+                </p>
+            </div>
+
+            <div id="selected-causeandeffect-element" class="selected-element">
+                <h1>Cause and Effect</h1>
+            </div>
+
+            <div id="selected-investigation-element" class="selected-element">
+                <h1>Investigation</h1>
             </div>
   
             <div id="container" class="super-list variable-sizes clearfix">
@@ -138,6 +195,9 @@
         </div><!-- /content -->
 
 
+
+    <script type="text/javascript" src="./assets/js/iscroll-lite.js"></script>
+    <script type="text/javascript" src="./assets/js/iscroll-lite-app.js"></script>
 
 
         <script type="text/javascript">
@@ -228,13 +288,18 @@
                 return false;
             });
 
+
+
+
+            iscroll_init();
+
         });
         </script>
 
 
 
 
-        <div data-role="footer">
+        <div data-role="footer" style="position: fixed; z-index: 2147483647;">
             <h4>2011&ndash;2012.  Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.</h4>
         </div><!-- /footer -->
 

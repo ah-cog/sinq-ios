@@ -165,6 +165,16 @@ function getPhoto(source) {
 //          __/ | |                                        
 //         |___/|_|                                        
 
+var local_questions = new Array();
+var local_causeandeffects = new Array();
+
+// if(typeof(Storage) !== "undefined") {
+//     // localStorage and sessionStorage are supported.
+//     localStorage.clear();
+// } else {
+//     // No web storage support.
+// }
+
 function getHypotheses() {
     $.ajax({
         type: "GET",
@@ -441,10 +451,13 @@ function getQuestions() {
             for ( var i=0, len = data.length; i < len; i++ ) {
                 datum = data[i];
 
+                // Create or update locally cached copy
+                local_questions[datum.pk] = datum;
+
                 // Create HTML element to show in Isotope container
                 var item = '<div id="question_' + datum.pk + '" class="question question-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
-                            // + '<a href="./question_view.html?pk=' + datum.pk + '" data-option-value=".question-' + datum.pk + '">'
-                            + '<a href="#question-' + datum.pk + '" data-option-value=".question-' + datum.pk + '">'
+                            // + '<a href="#question-' + datum.pk + '" data-option-value=".question-' + datum.pk + '">'
+                            + '<a href="javascript:handleQuestionClick(' + datum.pk + ');" data-option-value=".question-' + datum.pk + '">'
                             + '<div style="width: 230px; height: 230px;">'
                                 + '<h2 class="text">' + datum.fields.text + '</h2>'
                             + '</div>'
@@ -486,38 +499,41 @@ function getQuestions() {
              * Set up per-question-element filtering to occur when clicked
              */
 
-            var $questionSets = $('#container .question'),
-                $questionLinks = $questionSets.find('a');
+            // var $questionSets = $('#container .question'),
+            //     $questionLinks = $questionSets.find('a');
 
-            $questionLinks.click(function() {
-                var $this = $(this);
-                // don't proceed if already selected
-                if ( $this.hasClass('selected') ) {
-                    return false;
-                }
+            // $questionLinks.click(function() {
 
-                // Remove ".selected" class from all currently-selected elements with class ".questions"
-                var $questionSet = $this.parents('.question');
-                $questionSet.find('.selected').removeClass('selected');
-                $this.addClass('selected'); // Add ".selected" class to the current element
+            //     $('#selected-question-text').html("BLAH");
 
-                // make option object dynamically, i.e. { filter: '.my-filter-class' }
-                var options = {},
-                    key     = $questionSet.attr('data-option-key'),
-                    value   = $this.attr('data-option-value');
-                // parse 'false' as false boolean
-                value = value === 'false' ? false : value;
-                options[ key ] = value;
-                if ( key === 'layoutMode' && typeof changeLayoutMode === 'function' ) {
-                    // changes in layout modes need extra logic
-                    changeLayoutMode( $this, options );
-                } else {
-                    // otherwise, apply new options
-                    $container.isotope( options );
-                }
+            //     var $this = $(this);
+            //     // don't proceed if already selected
+            //     if ( $this.hasClass('selected') ) {
+            //         return false;
+            //     }
 
-                return false;
-            });
+            //     // Remove ".selected" class from all currently-selected elements with class ".questions"
+            //     var $questionSet = $this.parents('.question');
+            //     $questionSet.find('.selected').removeClass('selected');
+            //     $this.addClass('selected'); // Add ".selected" class to the current element
+
+            //     // make option object dynamically, i.e. { filter: '.my-filter-class' }
+            //     var options = {},
+            //         key     = $questionSet.attr('data-option-key'),
+            //         value   = $this.attr('data-option-value');
+            //     // parse 'false' as false boolean
+            //     value = value === 'false' ? false : value;
+            //     options[ key ] = value;
+            //     if ( key === 'layoutMode' && typeof changeLayoutMode === 'function' ) {
+            //         // changes in layout modes need extra logic
+            //         changeLayoutMode( $this, options );
+            //     } else {
+            //         // otherwise, apply new options
+            //         $container.isotope( options );
+            //     }
+
+            //     return false;
+            // });
 
 
 
@@ -529,6 +545,41 @@ function getQuestions() {
             }
         }
     });
+}
+
+function handleQuestionClick(pk) {
+
+    // Add question to top (expand it)
+    // Remove all questions from container
+    // Filter out everything that isn't associated with the current question
+
+    // local_questions[datum.pk].pk;
+    // local_questions[datum.pk].fields.text;
+
+    $('#selected-question-text').html(local_questions[pk].fields.text);
+
+    // Get number of cause and effect
+    // Get number of investigations
+
+
+    $('#selected-question-element').slideDown('slow', function() {
+        myScroll = new iScroll('horizontalWrapper');
+    });
+
+    
+
+
+    // Hide all question elements
+    var options = {
+        filter: ':not(.question)'
+    };
+    $('#container').isotope(options);
+
+    // Show cause and effect elements for selected question
+    // TODO: Query database and some number of random CEs
+
+    // Show investigation elements for selected question
+    // TODO: Query database to get some number of random INVs
 }
 
 function getQuestionImages(pk) {
