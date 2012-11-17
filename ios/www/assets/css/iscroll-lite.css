@@ -46,19 +46,57 @@
 }
 
 /* only for horizontal scrolling */
-#horizontalWrapper {
+#question-horizontalWrapper {
 	width: 100%;
 	height: 240px;   /* will be changed by JavaScript to the height of the content area */
 	overflow: auto;
 }
 
-#horizontalScroller {
+#question-horizontalScroller {
 	width: 3240px;  /* max number scroll elements + 1 times their width */
 	height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
 	background-color: #0f0;
 }
 
-#horizontalScroller li {
+#question-horizontalScroller li {
+	width: 200px;       /* this is the width of an individual element */
+	height: 100%;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #fff;
+}
+
+#causeandeffect-horizontalWrapper {
+	width: 100%;
+	height: 240px;   /* will be changed by JavaScript to the height of the content area */
+	overflow: auto;
+}
+
+#causeandeffect-horizontalScroller {
+	width: 3240px;  /* max number scroll elements + 1 times their width */
+	height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
+	background-color: #0f0;
+}
+
+#causeandeffect-horizontalScroller li {
+	width: 200px;       /* this is the width of an individual element */
+	height: 100%;
+	border-left: 1px solid #ccc;
+	border-right: 1px solid #fff;
+}
+
+#investigation-horizontalWrapper {
+	width: 100%;
+	height: 240px;   /* will be changed by JavaScript to the height of the content area */
+	overflow: auto;
+}
+
+#investigation-horizontalScroller {
+	width: 3240px;  /* max number scroll elements + 1 times their width */
+	height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
+	background-color: #0f0;
+}
+
+#investigation-horizontalScroller li {
 	width: 200px;       /* this is the width of an individual element */
 	height: 100%;
 	border-left: 1px solid #ccc;

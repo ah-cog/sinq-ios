@@ -6,23 +6,23 @@
 
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 
-    <script type="text/javascript" charset="utf-8" src="./assets/js/cordova-2.1.0.js"></script>
+    <script charset="utf-8" src="./assets/js/cordova-2.1.0.js"></script>
 
     <link rel="stylesheet" href="./assets/css/jquery.isotope.min.css" />
 
-    <script type="text/javascript" src="./assets/js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="./assets/js/json2.js"></script>
+    <script src="./assets/js/jquery-1.8.2.min.js"></script>
+    <script src="./assets/js/json2.js"></script>
 
     <link rel="stylesheet" href="./assets/css/jquery.mobile-1.2.0.min.css" />
-    <script type="text/javascript" src="./assets/js/jquery.mobile-1.2.0.min.js"></script>
+    <script src="./assets/js/jquery.mobile-1.2.0.min.js"></script>
 
-    <script type="text/javascript" src="./assets/js/jquery.isotope.min.js"></script>
+    <script src="./assets/js/jquery.isotope.min.js"></script>
 
     <link rel="stylesheet" href="./assets/css/iscroll-lite.css" />
 
     <link rel="stylesheet" href="./assets/css/sinq.css" />
 
-    <script type="text/javascript" src="./assets/js/sinq.js"></script>
+    <script src="./assets/js/sinq.js"></script>
 
     <link href='http://fonts.googleapis.com/css?family=Poiret+One|Quicksand|Josefin+Sans:100,400|Raleway+Dots|Raleway:400,100|Press+Start+2P' rel='stylesheet' type='text/css'>
 
@@ -60,17 +60,15 @@
 
         <div data-role="header" style="position: fixed; z-index: 2147483647; width: 100%;">
             <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 10px; padding-bottom: 10px;">
-                <img src="./assets/img/sinq_logo.png" />
+                <img id="dashboard_header_logo" src="./assets/img/sinq_logo.png" />
             </div>
 
             <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 10px; border-bottom: 1px solid #2f5b7f;">
                 <center>
                     <ul id="navigation">
-                        <li><a href="./question_create.html">Questions</a></li>
-                        <li><a href="./causeandeffect_create.html">Cause and Effect</a></li>
-                        <!-- 
-                        TODO: Add "Experiments" link
-                        -->
+                        <li><a id="dashboard_header_question" href="javascript:void(0);">Question</a></li>
+                        <li><a id="dashboard_header_causeandeffect" href="javascript:void(0);">Cause and Effect</a></li>
+                        <li><a id="dashboard_header_investigation" href="javascript:void(0);">Investigation</a></li>
                     </ul>
                 </center>
             </div>
@@ -82,7 +80,7 @@
 
 
 
-        <div data-role="content" style="margin-top: 100px;">
+        <div data-role="content" style="margin-top: 130px;">
             <div id="options" class="clearfix">
                 <div class="option-combo">
                 <h2>Show:</h2>
@@ -125,8 +123,8 @@
                 <p id="selected-question-text"></p>
 
                 <div class="scroller">
-                    <div id="horizontalWrapper">
-                        <div id="horizontalScroller">
+                    <div id="question-horizontalWrapper">
+                        <div id="question-horizontalScroller">
                             <ul>
                                 <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
                                 <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
@@ -160,21 +158,131 @@
                 </div>
 
 
-                <p>
-                    <img src="./assets/img/noun_project_781.svg" height="30" /> 
-                    [+Cause and Effect]
-                    <img src="./assets/img/noun_project_95.svg" height="30" /> 
-                    | [ EDIT ]
-                </p>
+                <div id="selected-question-options">
+                    <img id="selected-question-add-photo" src="./assets/img/noun_project_781.svg" height="30" /> 
+                    <a id="selected-question-add-causeandeffect"><img src="./assets/img/noun_project_712.svg" height="30" /></a>
+                    <a id="selected-question-add-investigation"><img id="selected-question-add-investigation" src="./assets/img/noun_project_95.svg" height="30" /></a>
+                     | 
+                    <a id="selected-question-add-investigation"><img id="selected-question-add-investigation" src="./assets/img/noun_project_1521.svg" height="30" /></a>
+                </div>
+            </div>
+
+            <div id="create-question-section" data-role="none" class="create-element-section">
+                <h1>What do you wonder about?</h1>
+
+                <form onsubmit="return addQuestion(); return false;">
+                <!-- <form action="/sinq/questions/create/" method="post"> -->
+
+                    <div data-role="fieldcontain">
+                    <h2>1. Take a photo.</h2>
+                    <p><a href="javascript:void(0);" data-theme="a" id="question_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
+                    <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+                    </div>
+                    
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <h2>2. What do you wonder about</h2>
+                        <label for="question_text">Type your question below:</label>
+                        <input id="question_text" name="question_text" type="text" placeholder="Touch here to type your question" />
+                    </div>
+
+                    <h2>3. Click the <strong>Done</strong> button.</h2>
+                    <p><input type="submit" value="Done" /></p>
+
+                </form>
+            </div>
+
+
+
+            <div id="create-causeandeffect-section" data-role="none" class="create-element-section">
+                <h1>Create Cause and Effect</h1>
+
+                <h2 id="question_text"></h2>
+
+                <div id="question_images">
+                </div>
+
+                <form onsubmit="return addHypothesis(); return false;">
+                <!-- <form action="/sinq/questions/create/" method="post"> -->
+
+                    <input id="question_id" name="question_id" type="hidden" value="" />
+                    
+                    <!-- <label for="question_text">What do you wonder about?</label> -->
+                    <h2>1. What's the cause?</h2>
+                    <input id="cause_text" name="cause_text" type="text" />
+
+                    <h2>2. What's the effect?</h2>
+                    <input id="effect_text" name="effect_text" type="text" />
+
+                    <h2>3. Take a photo!</h2>
+                    <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
+                    <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+
+                    <h2>3. Click the <strong>Done</strong> button.</h2>
+                    <p><input type="submit" value="Done" /></p>
+
+                </form>
             </div>
 
             <div id="selected-causeandeffect-element" class="selected-element">
                 <h1>Cause and Effect</h1>
+                <h2 id="selected-causeandeffect-cause"></h2>
+                <h2 id="selected-causeandeffect-effect"></h2>
+
+                <div class="scroller">
+                    <div id="causeandeffect-horizontalWrapper">
+                        <div id="causeandeffect-horizontalScroller">
+                            <ul>
+                                <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="selected-causeandeffect-options">
+                    <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_781.svg" height="30" /> 
+                    <a id="selected-causeandeffect-add-question"><img src="./assets/img/noun_project_2036.svg" height="30" /></a>
+                    <a id="selected-causeandeffect-add-investigation"><img id="selected-causeandeffect-add-investigation" src="./assets/img/noun_project_95.svg" height="30" /></a>
+                     | 
+                    <a id="selected-causeandeffect-add-investigation"><img id="selected-causeandeffect-add-investigation" src="./assets/img/noun_project_1521.svg" height="30" /></a>
+                </div>
+            </div>
+
+
+
+            <div id="create-investigation-section" data-role="none" class="create-element-section">
+                <h1>Create Investigation</h1>
             </div>
 
             <div id="selected-investigation-element" class="selected-element">
                 <h1>Investigation</h1>
             </div>
+
+
   
             <div id="container" class="super-list variable-sizes clearfix">
                 <!--
@@ -196,12 +304,12 @@
 
 
 
-    <script type="text/javascript" src="./assets/js/iscroll-lite.js"></script>
-    <script type="text/javascript" src="./assets/js/iscroll-lite-app.js"></script>
+        <script src="./assets/js/iscroll-lite.js"></script>
+        <script src="./assets/js/iscroll-lite-app.js"></script>
 
 
         <script type="text/javascript">
-        $(function(){
+        $(function() {
 
             var $container = $('#container');
 
@@ -260,6 +368,105 @@
                 return false;
             });
 
+            /**
+             * Initialize JavaScript callbacks
+             */
+
+            $('#dashboard_header_logo').click(function() {
+                hideSections();
+                $('#container').slideDown('slow');
+            });
+
+            $('#dashboard_header_question').click(function() {
+                hideSections();
+                $('#create-question-section').slideDown('slow');
+            });
+
+            $('#dashboard_header_causeandeffect').click(function() {
+                hideSections();
+                $('#create-causeandeffect-section').slideDown('slow');
+            });
+
+            $('#dashboard_header_investigation').click(function() {
+                hideSections();
+                $('#create-investigation-section').slideDown('slow');
+            });
+
+
+
+
+            /**
+             * Chosen question options
+             */
+            $('#selected-question-add-causeandeffect').click(function() {
+                // Hide sections after question section
+                $('#container').slideUp('slow');
+
+                // $('#selected-question-element').slideUp('slow');
+                $('#selected-causeandeffect-element').slideUp('slow');
+                $('#selected-investigation-element').slideUp('slow');
+
+                // $('#create-question-section').slideUp('slow');
+                $('#create-causeandeffect-section').slideUp('slow');
+                $('#create-investigation-section').slideUp('slow');
+
+                // Open section
+                $('#create-causeandeffect-section').slideDown('slow');
+            });
+
+            $('#selected-question-add-investigation').click(function() {
+                // Hide sections after question section
+                $('#container').slideUp('slow');
+
+                // $('#selected-question-element').slideUp('slow');
+                // $('#selected-causeandeffect-element').slideUp('slow');
+                $('#selected-investigation-element').slideUp('slow');
+
+                // $('#create-question-section').slideUp('slow');
+                // $('#create-causeandeffect-section').slideUp('slow');
+                $('#create-investigation-section').slideUp('slow');
+
+                // Open section
+                $('#create-investigation-section').slideDown('slow');
+            });
+
+
+
+            /**
+             * Chosen cause-and-effect options
+             */
+            $('#selected-causeandeffect-add-question').click(function() {
+                // Hide sections after question section
+                $('#container').slideUp('slow');
+
+                $('#selected-question-element').slideUp('slow');
+                // $('#selected-causeandeffect-element').slideUp('slow');
+                // $('#selected-investigation-element').slideUp('slow');
+
+                $('#create-question-section').slideUp('slow');
+                $('#create-causeandeffect-section').slideUp('slow');
+                $('#create-investigation-section').slideUp('slow');
+
+                // Open section
+                $('#create-question-section').slideDown('slow');
+            });
+
+            $('#selected-causeandeffect-add-investigation').click(function() {
+                // Hide sections after question section
+                $('#container').slideUp('slow');
+
+                // $('#selected-question-element').slideUp('slow');
+                // $('#selected-causeandeffect-element').slideUp('slow');
+                $('#selected-investigation-element').slideUp('slow');
+
+                $('#create-question-section').slideUp('slow');
+                $('#create-causeandeffect-section').slideUp('slow');
+                $('#create-investigation-section').slideUp('slow');
+
+                // Open section
+                $('#create-investigation-section').slideDown('slow');
+            });
+
 
 
 
@@ -299,7 +506,7 @@
 
 
 
-        <div data-role="footer" style="position: fixed; z-index: 2147483647;">
+        <div data-role="footer" style="position: fixed; z-index: 2147483646;">
             <h4>2011&ndash;2012.  Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.</h4>
         </div><!-- /footer -->
 

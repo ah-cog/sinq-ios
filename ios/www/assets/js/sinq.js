@@ -195,9 +195,12 @@ function getHypotheses() {
             for ( var i=0, len = data.length; i < len; i++ ) {
                 datum = data[i];
 
-                var item = '<div id="hypothesis_' + datum.pk + '" class="hypothesis hypothesis-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".hypothesis-' + datum.pk + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
-                            + '<a href="./hypothesis_view.html?pk=' + datum.pk + '">'
-                            + '<div style="width: 230px; height: 230px;">'
+                local_causeandeffects[datum.pk] = datum;
+
+                var item = '<div id="hypothesis_' + datum.pk + '" class="causeandeffect hypothesis-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".hypothesis-' + datum.pk + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
+                            // + '<a href="./hypothesis_view.html?pk=' + datum.pk + '">'
+                            + '<a href="javascript:handleCauseAndEffectClick(' + datum.pk + ');" data-option-value=".causeandeffect-' + datum.pk + '">'
+                            + '<div style="width: 220px; height: 220px; border: 1px solid #30a382; padding: 2px; margin: 2px;">'
                                 + '<h2 class="cause">' + datum.fields.cause + '</h2>'
                                 + '<h2 class="effect">' + datum.fields.effect + '</h2>'
                             + '</div>'
@@ -209,7 +212,7 @@ function getHypotheses() {
             }
 
             // Add class to queestion markup
-            var $items = $( items.join('') ).addClass('hypothesis');
+            var $items = $( items.join('') ).addClass('causeandeffect');
 
             // set random number for each item
             $items.each(function() {
@@ -458,7 +461,7 @@ function getQuestions() {
                 var item = '<div id="question_' + datum.pk + '" class="question question-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
                             // + '<a href="#question-' + datum.pk + '" data-option-value=".question-' + datum.pk + '">'
                             + '<a href="javascript:handleQuestionClick(' + datum.pk + ');" data-option-value=".question-' + datum.pk + '">'
-                            + '<div style="width: 230px; height: 230px;">'
+                            + '<div style="width: 220px; height: 220px; border: 1px solid #54bef9; padding: 2px; margin: 2px;">'
                                 + '<h2 class="text">' + datum.fields.text + '</h2>'
                             + '</div>'
                             + '</a>'
@@ -547,6 +550,18 @@ function getQuestions() {
     });
 }
 
+function hideSections() {
+    $('#container').slideUp('fast');
+
+    $('#selected-question-element').slideUp('fast');
+    $('#selected-causeandeffect-element').slideUp('fast');
+    $('#selected-investigation-element').slideUp('fast');
+
+    $('#create-question-section').slideUp('fast');
+    $('#create-causeandeffect-section').slideUp('fast');
+    $('#create-investigation-section').slideUp('fast');
+}
+
 function handleQuestionClick(pk) {
 
     // Add question to top (expand it)
@@ -558,22 +573,97 @@ function handleQuestionClick(pk) {
 
     $('#selected-question-text').html(local_questions[pk].fields.text);
 
+    // Hide sections after question section
+    $('#container').slideUp('slow');
+
+    $('#selected-causeandeffect-element').slideUp('slow');
+    $('#selected-investigation-element').slideUp('slow');
+
+    $('#create-question-section').slideUp('slow');
+    $('#create-causeandeffect-section').slideUp('slow');
+    $('#create-investigation-section').slideUp('slow');
+
     // Get number of cause and effect
     // Get number of investigations
 
+    $('#container').slideUp('fast', function() {
 
-    $('#selected-question-element').slideDown('slow', function() {
-        myScroll = new iScroll('horizontalWrapper');
+        $('#selected-question-element').slideDown('slow', function() {
+            // Initialize iScroll element
+            myScroll = new iScroll('question-horizontalWrapper');
+
+            // Hide all question elements
+            var options = {
+                filter: ':not(.question)'
+            };
+            $('#container').isotope(options);
+
+            // Open the container again, showing only cause-and-effects and investigations for the selected question
+            $('#container').slideDown('slow');
+        });
+
     });
 
     
 
 
-    // Hide all question elements
-    var options = {
-        filter: ':not(.question)'
-    };
-    $('#container').isotope(options);
+    
+
+    // Show cause and effect elements for selected question
+    // TODO: Query database and some number of random CEs
+
+    // Show investigation elements for selected question
+    // TODO: Query database to get some number of random INVs
+}
+
+function handleCauseAndEffectClick(pk) {
+
+    // Add question to top (expand it)
+    // Remove all questions from container
+    // Filter out everything that isn't associated with the current question
+
+    // local_questions[datum.pk].pk;
+    // local_questions[datum.pk].fields.text;
+
+    $('#selected-causeandeffect-cause').html(local_causeandeffects[pk].fields.cause);
+    $('#selected-causeandeffect-effect').html(local_causeandeffects[pk].fields.effect);
+
+    // Hide sections after question section
+    $('#container').slideUp('slow');
+
+    // $('#selected-question-element').slideUp('slow');
+    $('#selected-causeandeffect-element').slideUp('slow');
+    $('#selected-investigation-element').slideUp('slow');
+
+    // $('#create-question-section').slideUp('slow');
+    $('#create-causeandeffect-section').slideUp('slow');
+    $('#create-investigation-section').slideUp('slow');
+
+    // Get number of questions
+    // Get number of investigations
+
+    $('#container').slideUp('fast', function() {
+
+        $('#selected-causeandeffect-element').slideDown('slow', function() {
+            // Initialize iScroll element
+            myScroll = new iScroll('causeandeffect-horizontalWrapper');
+
+            // Hide all question elements
+            var options = {
+                filter: ':not(.question):not(.causeandeffect)'
+            };
+            $('#container').isotope(options);
+
+            // Open the container again, showing only cause-and-effects and investigations for the selected question
+            $('#container').slideDown('slow');
+        });
+
+    });
+
+    
+
+
+    
 
     // Show cause and effect elements for selected question
     // TODO: Query database and some number of random CEs
