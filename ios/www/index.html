@@ -18,13 +18,9 @@
 
     <script src="./assets/js/jquery.isotope.min.js"></script>
 
-    <link rel="stylesheet" href="./assets/css/iscroll-lite.css" />
-
     <link rel="stylesheet" href="./assets/css/sinq.css" />
 
-    <script src="./assets/js/sinq.js"></script>
-
-    <link href='http://fonts.googleapis.com/css?family=Poiret+One|Quicksand|Josefin+Sans:100,400|Raleway+Dots|Raleway:400,100|Press+Start+2P' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
 
     <!-- scripts at bottom of page -->
 
@@ -41,11 +37,12 @@
             
             $("#dashboard").bind("pageshow", function() {
 
-                $("#container").isotope( 'remove', $('#container').find('.element'));
+                $("#container").isotope('remove', $('#container').find('.element'));
 
-                // Load questions and hypotheses from server
-                getQuestions();
-                getHypotheses();
+                // Load questions and cause-and-effects from server
+                loadQuestions();
+                loadCauseAndEffects();
+                // loadInvestigations();
             });
             
         </script>
@@ -53,17 +50,12 @@
 
 
 
-        <a id='lnkDialog' href="#question_view" data-rel="dialog" data-transition="pop" style='display:none;'></a>
-
-
-
-
-        <div data-role="header" style="position: fixed; z-index: 2147483647; width: 100%;">
-            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 10px; padding-bottom: 10px;">
+        <div data-role="header" data-position="fixed">
+            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 5px; padding-bottom: 0px;">
                 <img id="dashboard_header_logo" src="./assets/img/sinq_logo.png" />
             </div>
 
-            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 10px; border-bottom: 1px solid #2f5b7f;">
+            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 0px; border-bottom: 1px solid #2f5b7f;">
                 <center>
                     <ul id="navigation">
                         <li><a id="dashboard_header_question" href="javascript:void(0);">Question</a></li>
@@ -73,14 +65,12 @@
                 </center>
             </div>
 
-            <!-- <li id="toggle-sizes"><a href="#toggle-sizes">Toggle Thought List View</a></li> -->
-
         </div><!-- /header -->
 
 
 
 
-        <div data-role="content" style="margin-top: 130px;">
+        <div data-role="content">
             <div id="options" class="clearfix">
                 <div class="option-combo">
                 <h2>Show:</h2>
@@ -125,32 +115,7 @@
                 <div class="scroller">
                     <div id="question-horizontalWrapper">
                         <div id="question-horizontalScroller">
-                            <ul>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                            <ul id="selected-question-images">
                                 <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
                             </ul>
                         </div>
@@ -168,25 +133,20 @@
             </div>
 
             <div id="create-question-section" data-role="none" class="create-element-section">
-                <h1>What do you wonder about?</h1>
 
-                <form onsubmit="return addQuestion(); return false;">
-                <!-- <form action="/sinq/questions/create/" method="post"> -->
+                <form id="create-question-form">
+
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <h2>What do you wonder about?</h2>
+                        <label for="question_text">Type your question below:</label>
+                        <input id="question_text" name="question_text" type="text" placeholder="Touch this box to type your question." />
+                    </div>
 
                     <div data-role="fieldcontain">
-                    <h2>1. Take a photo.</h2>
-                    <p><a href="javascript:void(0);" data-theme="a" id="question_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
-                    <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+                        <h2>Snap a photo.</h2>
+                        <p><a href="javascript:void(0);" data-theme="a" id="question_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
+                        <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
                     </div>
-                    
-                    <div data-role="fieldcontain" class="ui-hide-label">
-                        <h2>2. What do you wonder about</h2>
-                        <label for="question_text">Type your question below:</label>
-                        <input id="question_text" name="question_text" type="text" placeholder="Touch here to type your question" />
-                    </div>
-
-                    <h2>3. Click the <strong>Done</strong> button.</h2>
-                    <p><input type="submit" value="Done" /></p>
 
                 </form>
             </div>
@@ -194,31 +154,29 @@
 
 
             <div id="create-causeandeffect-section" data-role="none" class="create-element-section">
-                <h1>Create Cause and Effect</h1>
 
-                <h2 id="question_text"></h2>
-
-                <div id="question_images">
-                </div>
-
-                <form onsubmit="return addHypothesis(); return false;">
+                <form id="create-causeandeffect-form">
                 <!-- <form action="/sinq/questions/create/" method="post"> -->
 
                     <input id="question_id" name="question_id" type="hidden" value="" />
-                    
-                    <!-- <label for="question_text">What do you wonder about?</label> -->
-                    <h2>1. What's the cause?</h2>
-                    <input id="cause_text" name="cause_text" type="text" />
 
-                    <h2>2. What's the effect?</h2>
-                    <input id="effect_text" name="effect_text" type="text" />
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <h2>What is the cause?</h2>
+                        <label for="question_text">Type your question below:</label>
+                        <input id="cause_text" name="cause_text" type="text" placeholder="Touch this box to type the cause." />
+                    </div>
 
-                    <h2>3. Take a photo!</h2>
-                    <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
-                    <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <h2>What is the effect?</h2>
+                        <label for="question_text">Type your question below:</label>
+                        <input id="effect_text" name="effect_text" type="text" placeholder="Touch this box to type the effect." />
+                    </div>
 
-                    <h2>3. Click the <strong>Done</strong> button.</h2>
-                    <p><input type="submit" value="Done" /></p>
+                    <div data-role="fieldcontain">
+                        <h2>Snap a photo.</h2>
+                        <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
+                        <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+                    </div>
 
                 </form>
             </div>
@@ -275,7 +233,20 @@
 
 
             <div id="create-investigation-section" data-role="none" class="create-element-section">
-                <h1>Create Investigation</h1>
+                <form id="create-investigation-form">
+
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <h2>What is the first step?</h2>
+                        <label for="question_text">Type your question below:</label>
+                        <input id="cause_text" name="cause_text" type="text" placeholder="Touch this box to type the cause." />
+                    </div>
+
+                    <div data-role="fieldcontain">
+                        <h2>Snap a photo.</h2>
+                        <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
+                        <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+                    </div>
+                </form>
             </div>
 
             <div id="selected-investigation-element" class="selected-element">
@@ -302,212 +273,19 @@
             </div>
         </div><!-- /content -->
 
+        <div>
+            <p>2011&ndash;2012.  Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.</p>
+        </div>
+
 
 
         <script src="./assets/js/iscroll-lite.js"></script>
-        <script src="./assets/js/iscroll-lite-app.js"></script>
-
-
-        <script type="text/javascript">
-        $(function() {
-
-            var $container = $('#container');
-
-            $container.isotope({
-                masonry: {
-                    columnWidth: 120
-                },
-                sortBy: 'number',
-                getSortData: {
-                    number: function( $elem ) {
-                        var number = $elem.hasClass('element') ? 
-                            $elem.find('.number').text() :
-                            $elem.attr('data-number');
-                        return parseInt( number, 10 );
-                    },
-                    alphabetical: function( $elem ) {
-                        var text = $elem.find('.text'),
-                        itemText = name.length ? text : $elem;
-                        return itemText.text();
-                    }
-                }
-            });
-
-
-            /**
-             * Set up filtering and sorting option buttons
-             */
-            var $optionSets = $('#options .option-set'),
-                $optionLinks = $optionSets.find('a');
-
-            $optionLinks.click(function() {
-                var $this = $(this);
-                // don't proceed if already selected
-                if ( $this.hasClass('selected') ) {
-                    return false;
-                }
-                var $optionSet = $this.parents('.option-set');
-                $optionSet.find('.selected').removeClass('selected');
-                $this.addClass('selected');
-
-                // make option object dynamically, i.e. { filter: '.my-filter-class' }
-                var options = {},
-                    key = $optionSet.attr('data-option-key'),
-                    value = $this.attr('data-option-value');
-                // parse 'false' as false boolean
-                value = value === 'false' ? false : value;
-                options[ key ] = value;
-                if ( key === 'layoutMode' && typeof changeLayoutMode === 'function' ) {
-                    // changes in layout modes need extra logic
-                    changeLayoutMode( $this, options );
-                } else {
-                    // otherwise, apply new options
-                    $container.isotope( options );
-                }
-
-                return false;
-            });
-
-            /**
-             * Initialize JavaScript callbacks
-             */
-
-            $('#dashboard_header_logo').click(function() {
-                hideSections();
-                $('#container').slideDown('slow');
-            });
-
-            $('#dashboard_header_question').click(function() {
-                hideSections();
-                $('#create-question-section').slideDown('slow');
-            });
-
-            $('#dashboard_header_causeandeffect').click(function() {
-                hideSections();
-                $('#create-causeandeffect-section').slideDown('slow');
-            });
-
-            $('#dashboard_header_investigation').click(function() {
-                hideSections();
-                $('#create-investigation-section').slideDown('slow');
-            });
+        <script src="./assets/js/sinq.js"></script>
 
 
 
-
-            /**
-             * Chosen question options
-             */
-            $('#selected-question-add-causeandeffect').click(function() {
-                // Hide sections after question section
-                $('#container').slideUp('slow');
-
-                // $('#selected-question-element').slideUp('slow');
-                $('#selected-causeandeffect-element').slideUp('slow');
-                $('#selected-investigation-element').slideUp('slow');
-
-                // $('#create-question-section').slideUp('slow');
-                $('#create-causeandeffect-section').slideUp('slow');
-                $('#create-investigation-section').slideUp('slow');
-
-                // Open section
-                $('#create-causeandeffect-section').slideDown('slow');
-            });
-
-            $('#selected-question-add-investigation').click(function() {
-                // Hide sections after question section
-                $('#container').slideUp('slow');
-
-                // $('#selected-question-element').slideUp('slow');
-                // $('#selected-causeandeffect-element').slideUp('slow');
-                $('#selected-investigation-element').slideUp('slow');
-
-                // $('#create-question-section').slideUp('slow');
-                // $('#create-causeandeffect-section').slideUp('slow');
-                $('#create-investigation-section').slideUp('slow');
-
-                // Open section
-                $('#create-investigation-section').slideDown('slow');
-            });
-
-
-
-            /**
-             * Chosen cause-and-effect options
-             */
-            $('#selected-causeandeffect-add-question').click(function() {
-                // Hide sections after question section
-                $('#container').slideUp('slow');
-
-                $('#selected-question-element').slideUp('slow');
-                // $('#selected-causeandeffect-element').slideUp('slow');
-                // $('#selected-investigation-element').slideUp('slow');
-
-                $('#create-question-section').slideUp('slow');
-                $('#create-causeandeffect-section').slideUp('slow');
-                $('#create-investigation-section').slideUp('slow');
-
-                // Open section
-                $('#create-question-section').slideDown('slow');
-            });
-
-            $('#selected-causeandeffect-add-investigation').click(function() {
-                // Hide sections after question section
-                $('#container').slideUp('slow');
-
-                // $('#selected-question-element').slideUp('slow');
-                // $('#selected-causeandeffect-element').slideUp('slow');
-                $('#selected-investigation-element').slideUp('slow');
-
-                $('#create-question-section').slideUp('slow');
-                $('#create-causeandeffect-section').slideUp('slow');
-                $('#create-investigation-section').slideUp('slow');
-
-                // Open section
-                $('#create-investigation-section').slideDown('slow');
-            });
-
-
-
-
-
-
-            /**
-             * Set up button to change size of items for vertical list
-             */
-
-            // Change size of clicked element
-            // $container.delegate( '.element', 'click', function(){
-            //     $(this).toggleClass('large');
-            //     $container.isotope('reLayout');
-            // });
-
-            // Toggle variable sizes of all elements
-            $('#toggle-sizes').find('a').click(function() {
-                // Change layout mode
-                var options = { layoutMode: 'straightDown' };
-                $container.isotope( options );
-
-                // Toggle sizes
-                $container
-                    .toggleClass('expanded-element')
-                    .isotope('reLayout');
-                return false;
-            });
-
-
-
-
-            iscroll_init();
-
-        });
-        </script>
-
-
-
-
-        <div data-role="footer" style="position: fixed; z-index: 2147483646;">
-            <h4>2011&ndash;2012.  Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.</h4>
+        <div data-role="footer" data-position="fixed" id="footer">
+            <p><button id="footer-done-button" type="button">Done</button></p>
         </div><!-- /footer -->
 
     </div><!-- /page -->
