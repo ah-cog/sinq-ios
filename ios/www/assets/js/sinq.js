@@ -28,6 +28,8 @@ var serverUrl = 'http://10.10.0.141';
  }
  */
 
+ var create_investigation_step_counter = 1;
+
  $(function() {
 
     var $container = $('#container');
@@ -91,17 +93,8 @@ var serverUrl = 'http://10.10.0.141';
      * Initialize JavaScript callbacks
      */
 
-    $('#dashboard_header_logo').click(function() {
-        hideSections();
-
-        // Remove all element type filters
-        var options = {
-            filter: '*'
-        };
-        $('#container').isotope(options);
-
-        // Update the UI
-        $('#container').slideDown('slow');
+    $('#dashboard_header_discover').click(function() {
+        showDashboard();
     });
 
     /**
@@ -123,6 +116,7 @@ var serverUrl = 'http://10.10.0.141';
         // Set click callback function for "Done" button in footer
         $('#footer-done-button').unbind('click').click(function() {
             $('#create-question-form').submit();
+            showDashboard();
         });
     });
 
@@ -137,7 +131,7 @@ var serverUrl = 'http://10.10.0.141';
 
         // Bind handler to form
         $('#create-causeandeffect-form').unbind('submit').submit(function() {
-            storeHypothesis();
+            storeCauseAndEffect();
             $('#footer').slideUp('slow');
             return false; // Return false to prevent form from submitting
         });
@@ -145,16 +139,20 @@ var serverUrl = 'http://10.10.0.141';
         // Set click callback function for "Done" button in footer
         $('#footer-done-button').unbind('click').click(function() {
             $('#create-causeandeffect-form').submit();
+            // showDashboard();
         });
     });
 
+    /**
+     * Handler for entry point by investigation
+     */
     $('#dashboard_header_investigation').click(function() {
         hideSections();
         $('#create-investigation-section').slideDown('slow', function() {
             $('#footer').slideDown('slow');
         });
 
-        // Bind handler to form
+        // Bind handler to form submit
         $('#create-investigation-form').unbind('submit').submit(function() {
             storeInvestigation();
             $('#footer').slideUp('slow');
@@ -164,10 +162,36 @@ var serverUrl = 'http://10.10.0.141';
         // Set click callback function for "Done" button in footer
         $('#footer-done-button').unbind('click').click(function() {
             $('#create-investigation-form').submit();
+            showDashboard();
         });
+
+        // Reset investigation step counter
+        create_investigation_step_counter = 1;
+
+        // Remove all steps
+        $("#create-investigation-steps").html('');
     });
 
+    /**
+     * Initialize create investigation form
+     */
 
+    create_investigation_step_counter = 1;
+
+    // Set click callback function for "add step to investigation" button in create investigation form
+    $('#create-investigation-step-button').unbind('click').click(function() {
+        var step_div = 
+            '<div id="create-investigation-step-' + create_investigation_step_counter + '" class="create-investigation-step" data-investigation-step-number="' + create_investigation_step_counter + '">'
+                + '<div data-role="fieldcontain" class="ui-hide-label">'
+                    + '<h2>Step ' + create_investigation_step_counter + '</h2>'
+                    + '<label for="investigation-step-' + create_investigation_step_counter + '-text">Type step ' + create_investigation_step_counter + ' below:</label>'
+                    + '<input id="investigation-step-' + create_investigation_step_counter + '-text" name="investigation-step-' + create_investigation_step_counter + '-text" type="text" placeholder="Touch this box to type step ' + create_investigation_step_counter + '." style="font-size: 18pt;" />'
+                + '</div>'
+            + '</div>'
+            + '<div class="spacer">&nbsp;</div>';
+        create_investigation_step_counter++;
+        $('#create-investigation-steps').append(step_div).trigger('create'); // Trigger "create" event to make jQuery Mobile initialize the new markup
+    });
 
 
     /**
@@ -183,7 +207,7 @@ var serverUrl = 'http://10.10.0.141';
      */
     $('#selected-question-add-causeandeffect').click(function() {
         // Hide sections after question section
-        $('#container').slideUp('slow');
+        // $('#container').slideUp('slow');
 
         // $('#selected-question-element').slideUp('slow');
         $('#selected-causeandeffect-element').slideUp('slow');
@@ -194,15 +218,26 @@ var serverUrl = 'http://10.10.0.141';
         $('#create-investigation-section').slideUp('slow');
 
         // Open section
-        $('#create-causeandeffect-section').slideDown('slow');
+        $('#create-causeandeffect-section').slideDown('slow', function() {
+            $('#footer').slideDown('slow');
+        });
 
-        // Open footer with "Submit" button
-        $('#footer').slideDown('slow');
+        // Bind handler to form
+        $('#create-causeandeffect-form').unbind('submit').submit(function() {
+            storeCauseAndEffect();
+            $('#footer').slideUp('slow');
+            return false; // Return false to prevent form from submitting
+        });
+
+        // Set click callback function for "Done" button in footer
+        $('#footer-done-button').unbind('click').click(function() {
+            $('#create-causeandeffect-form').submit();
+        });
     });
 
     $('#selected-question-add-investigation').click(function() {
         // Hide sections after question section
-        $('#container').slideUp('slow');
+        // $('#container').slideUp('slow');
 
         // $('#selected-question-element').slideUp('slow');
         // $('#selected-causeandeffect-element').slideUp('slow');
@@ -213,7 +248,22 @@ var serverUrl = 'http://10.10.0.141';
         $('#create-investigation-section').slideUp('slow');
 
         // Open section
-        $('#create-investigation-section').slideDown('slow');
+        $('#create-investigation-section').slideDown('slow', function() {
+            $('#footer').slideDown('slow');
+        });
+
+        // Bind handler to form
+        $('#create-investigation-form').unbind('submit').submit(function() {
+            storeInvestigation();
+            $('#footer').slideUp('slow');
+            return false; // Return false to prevent form from submitting
+        });
+
+        // Set click callback function for "Done" button in footer
+        $('#footer-done-button').unbind('click').click(function() {
+            $('#create-investigation-form').submit();
+            showDashboard();
+        });
     });
 
 
@@ -223,7 +273,7 @@ var serverUrl = 'http://10.10.0.141';
      */
     $('#selected-causeandeffect-add-question').click(function() {
         // Hide sections after question section
-        $('#container').slideUp('slow');
+        // $('#container').slideUp('slow');
 
         $('#selected-question-element').slideUp('slow');
         // $('#selected-causeandeffect-element').slideUp('slow');
@@ -234,12 +284,27 @@ var serverUrl = 'http://10.10.0.141';
         $('#create-investigation-section').slideUp('slow');
 
         // Open section
-        $('#create-question-section').slideDown('slow');
+        $('#create-question-section').slideDown('slow', function() {
+            $('#footer').slideDown('slow');
+        });
+
+        // Bind handler to form
+        $('#create-question-form').unbind('submit').submit(function() {
+            storeQuestion();
+            $('#footer').slideUp('slow');
+            return false; // Return false to prevent form from submitting
+        });
+
+        // Set click callback function for "Done" button in footer
+        $('#footer-done-button').unbind('click').click(function() {
+            $('#create-question-form').submit();
+            showDashboard();
+        });
     });
 
     $('#selected-causeandeffect-add-investigation').click(function() {
         // Hide sections after question section
-        $('#container').slideUp('slow');
+        // $('#container').slideUp('slow');
 
         // $('#selected-question-element').slideUp('slow');
         // $('#selected-causeandeffect-element').slideUp('slow');
@@ -250,7 +315,22 @@ var serverUrl = 'http://10.10.0.141';
         $('#create-investigation-section').slideUp('slow');
 
         // Open section
-        $('#create-investigation-section').slideDown('slow');
+        $('#create-investigation-section').slideDown('slow', function() {
+            $('#footer').slideDown('slow');
+        });
+
+        // Bind handler to form
+        $('#create-investigation-form').unbind('submit').submit(function() {
+            storeInvestigation();
+            $('#footer').slideUp('slow');
+            return false; // Return false to prevent form from submitting
+        });
+
+        // Set click callback function for "Done" button in footer
+        $('#footer-done-button').unbind('click').click(function() {
+            $('#create-investigation-form').submit();
+            showDashboard();
+        });
     });
 
     /**
@@ -303,12 +383,6 @@ function init_iScroll() {
     // };
 }
 
-function slideUpFooter() {
-    $('#footer').slideUp('slow');
-
-    $('#footer-done-button').unbind('click');
-}
-
  //  _____  _                       _____             
  // |  __ \| |                     / ____|            
  // | |__) | |__   ___  _ __   ___| |  __  __ _ _ __  
@@ -321,7 +395,7 @@ function slideUpFooter() {
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
 
-var lastImageURI = null;
+var pictureUriCache = new Array();
 
 // Wait for Cordova to connect with the device
 //
@@ -342,12 +416,12 @@ function onDeviceReady() {
 }
 
 function onDeviceOnline() {
-    alert("Device now online!");
+    // alert("Device now online!");
     // TODO: Set storage destination to remote server
 }
 
 function onDeviceOffline() {
-    alert("Device now offline!");
+    // alert("Device now offline!");
     // TODO: Set storage destination to local storage
 }
 
@@ -396,25 +470,71 @@ function onPhotoDataSuccess(imageData) {
 
 // Called when a photo is successfully retrieved
 //
-function onPhotoURISuccess(imageURI) {
+function onCauseAndEffectPhotoURISuccess(imageURI) {
     // Uncomment to view the image file URI
     // console.log(imageURI);
 
     // Cache image URI globally for later upload (upon form submit)
-    lastImageURI = imageURI;
+    pictureUriCache['causeandeffect'] = imageURI;
     
     // Get image handle
     //
-    var photo_preview = document.getElementById('photo_preview');
+    var cause_and_effect_photo = document.getElementById('cause-and-effect-photo');
     
     // Unhide image elements
     //
-    photo_preview.style.display = 'block';
+    cause_and_effect_photo.style.display = 'block';
     
     // Show the captured photo
     // The inline CSS rules are used to resize the image
     //
-    photo_preview.src = lastImageURI;
+    cause_and_effect_photo.src = pictureUriCache['causeandeffect'];
+}
+
+// Called when a photo is successfully retrieved
+//
+function onQuestionPhotoURISuccess(imageURI) {
+    // Uncomment to view the image file URI
+    // console.log(imageURI);
+
+    // Cache image URI globally for later upload (upon form submit)
+    pictureUriCache['question'] = imageURI;
+    
+    // Get image handle
+    //
+    var question_photo = document.getElementById('question-photo');
+    
+    // Unhide image elements
+    //
+    question_photo.style.display = 'block';
+    
+    // Show the captured photo
+    // The inline CSS rules are used to resize the image
+    //
+    question_photo.src = pictureUriCache['question'];
+}
+
+// Called when a photo is successfully retrieved
+//
+function onInvestigationPhotoURISuccess(imageURI) {
+    // Uncomment to view the image file URI
+    // console.log(imageURI);
+
+    // Cache image URI globally for later upload (upon form submit)
+    pictureUriCache['investigation'] = imageURI;
+    
+    // Get image handle
+    //
+    var investigation_photo = document.getElementById('investigation-photo');
+    
+    // Unhide image elements
+    //
+    investigation_photo.style.display = 'block';
+    
+    // Show the captured photo
+    // The inline CSS rules are used to resize the image
+    //
+    investigation_photo.src = pictureUriCache['investigation'];
 }
 
 // Called if something bad happens.
@@ -442,6 +562,48 @@ function capturePhotoToURI() {
     // Take picture using device camera and retrieve image as base64-encoded string
     navigator.camera.getPicture(
         onPhotoURISuccess, 
+        onFail, 
+        {
+            quality: 50, 
+            allowEdit: true,
+            destinationType: navigator.camera.DestinationType.FILE_URI 
+        });
+}
+
+// A button will call this function
+//
+function captureQuestionPhotoToURI() {
+    // Take picture using device camera and retrieve image as base64-encoded string
+    navigator.camera.getPicture(
+        onQuestionPhotoURISuccess, 
+        onFail, 
+        {
+            quality: 50, 
+            allowEdit: true,
+            destinationType: navigator.camera.DestinationType.FILE_URI 
+        });
+}
+
+// A button will call this function
+//
+function captureCauseAndEffectPhotoToURI() {
+    // Take picture using device camera and retrieve image as base64-encoded string
+    navigator.camera.getPicture(
+        onCauseAndEffectPhotoURISuccess, 
+        onFail, 
+        {
+            quality: 50, 
+            allowEdit: true,
+            destinationType: navigator.camera.DestinationType.FILE_URI 
+        });
+}
+
+// A button will call this function
+//
+function captureInvestigationPhotoToURI() {
+    // Take picture using device camera and retrieve image as base64-encoded string
+    navigator.camera.getPicture(
+        onInvestigationPhotoURISuccess, 
         onFail, 
         {
             quality: 50, 
@@ -495,11 +657,13 @@ function onCauseAndEffectClick(pk) {
     // local_questions[datum.pk].pk;
     // local_questions[datum.pk].fields.text;
 
+    // Populate element
+    $('#selected-causeandeffect-pk').val(local_causeandeffects[pk].pk);
     $('#selected-causeandeffect-cause').html(local_causeandeffects[pk].fields.cause);
     $('#selected-causeandeffect-effect').html(local_causeandeffects[pk].fields.effect);
 
     // Hide sections after question section
-    $('#container').slideUp('slow');
+    // $('#container').slideUp('slow');
 
     // $('#selected-question-element').slideUp('slow');
     $('#selected-causeandeffect-element').slideUp('slow');
@@ -508,6 +672,25 @@ function onCauseAndEffectClick(pk) {
     // $('#create-question-section').slideUp('slow');
     $('#create-causeandeffect-section').slideUp('slow');
     $('#create-investigation-section').slideUp('slow');
+
+
+    $("#container").isotope('remove', $('#container').find('.element'));
+
+    // Set options for selected elements
+    var options = {};
+
+    options['causeandeffect_id'] = pk;
+    
+    if( $('#selected-question-element').is(':visible') ) {
+        options['question_id'] = $('#selected-question-pk').val();
+    }
+
+    if( $('#selected-investigation-element').is(':visible') ) {
+        options['investigation_id'] = $('#selected-investigation-pk').val();
+    }
+
+    loadQuestions(options);
+    loadInvestigations(options);
 
     // Get number of questions
     // Get number of investigations
@@ -519,10 +702,10 @@ function onCauseAndEffectClick(pk) {
             myScroll = new iScroll('causeandeffect-horizontalWrapper');
 
             // Hide all question elements
-            var options = {
-                filter: ':not(.question):not(.causeandeffect)'
-            };
-            $('#container').isotope(options);
+            // var options = {
+            //     filter: ':not(.question):not(.causeandeffect)'
+            // };
+            // $('#container').isotope(options);
 
             // Open the container again, showing only cause-and-effects and investigations for the selected question
             $('#container').slideDown('slow');
@@ -537,10 +720,22 @@ function onCauseAndEffectClick(pk) {
     // TODO: Query database to get some number of random INVs
 }
 
-function loadCauseAndEffects() {
+function loadCauseAndEffects(options) {
+    options = (typeof options === "undefined") ? {} : options;
+
+    // Construt URI
+    var requestUri = serverUrl + "/sinq/api/causeandeffects/?format=json";
+    if (options['question_id'] !== undefined) {
+        requestUri = requestUri + "&question_id=" + options['question_id'];
+    }
+    if (options['investigation_id'] !== undefined) {
+        requestUri = requestUri + "&investigation_id=" + options['investigation_id'];
+    }
+
+
     $.ajax({
         type: "GET",
-        url: serverUrl + "/sinq/hypotheses/?format=json",
+        url: requestUri,
         // data: ({name: theName}),
         cache: false,
         success: function(data) {
@@ -559,10 +754,9 @@ function loadCauseAndEffects() {
 
                 local_causeandeffects[datum.pk] = datum;
 
-                var item = '<div id="hypothesis_' + datum.pk + '" class="causeandeffect hypothesis-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".hypothesis-' + datum.pk + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
-                            // + '<a href="./hypothesis_view.html?pk=' + datum.pk + '">'
+                var item = '<div id="causeandeffect_' + datum.pk + '" class="causeandeffect causeandeffect-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".causeandeffect-' + datum.pk + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #28c565; background-image:url(\'\');">'
                             + '<a href="javascript:onCauseAndEffectClick(' + datum.pk + ');" data-option-value=".causeandeffect-' + datum.pk + '">'
-                            + '<div style="width: 220px; height: 220px; border: 1px solid #30a382; padding: 2px; margin: 2px;">'
+                            + '<div id="causeandeffect-' + datum.pk + '-image" style="width: 230px; height: 230px; border: 1px solid #30a382; padding: 0px; margin: 0px;">'
                                 + '<h2 class="cause">' + datum.fields.cause + '</h2>'
                                 + '<h2 class="effect">' + datum.fields.effect + '</h2>'
                             + '</div>'
@@ -598,19 +792,19 @@ function loadCauseAndEffects() {
 
             // Request images
             for(var i = 0   , len = item_ids.length; i < len; i++) {
-                loadCauseAndEffectsImages(item_ids[i]);
+                loadCauseAndEffectImages(item_ids[i]);
             }
         }
     });
 }
 
 /**
- * Retreive images for the hypothesis with the specified primary key.
+ * Retreive images for the cause-and-effect with the specified primary key.
  */
-function loadCauseAndEffectsImages(pk) {
+function loadCauseAndEffectImages(pk) {
     $.ajax({
        type: "GET",
-       url: serverUrl + "/sinq/hypotheses/" + pk + "/images/?format=json",
+       url: serverUrl + "/sinq/api/causeandeffects/" + pk + "/images/?format=json",
        // data: ({name: theName}),
        cache: false,
        success: function(responseData) {
@@ -618,14 +812,14 @@ function loadCauseAndEffectsImages(pk) {
                var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
                // alert(imageUrl);
                //$('#question_' + pk + '_image').attr('src', imageUrl); // Reset all contents
-               $('#hypothesis_' + pk).css('background-image', 'url(' + imageUrl + ')'); // Reset all contents
+               $('#causeandeffect-' + pk + '-image').css('background-image', 'url(' + imageUrl + ')'); // Reset all contents
                //$('#question_images').append('<img src="' + imageUrl + '" width="320" height="240" />');
            }
        }
     });
 }
 
-function storeHypothesis() {
+function storeCauseAndEffect() {
 
     // Get form data
     //var question_id = $('#question_id').val();
@@ -633,92 +827,79 @@ function storeHypothesis() {
     var effect_text = $('#effect_text').val();
 
     // Validate form
-    if($("#photo_preview").attr('src') == '' || cause_text == '' || effect_text == '') {
+    if(cause_text == '' || effect_text == '') {
         alert("You have to snap a photo and type a cause and effect.");
+        return;
     }
 
     // Serialize data in JSON format
-    var hypothesis = new Object();
-    // if (question_id != '') {
-    //     hypothesis.question_id = question_id;
-    //     alert('has question id');
-    // }
-    hypothesis.cause_text = cause_text;
-    hypothesis.effect_text = effect_text;
+    var causeandeffect = new Object();
 
-    var data = new Object(); // "Wrapper object" for hypothesis to be sent to server.
-    data.hypothesis = hypothesis;
+    // Get question pk if a question is selected and visible
+    if( $('#selected-question-element').is(':visible') ) {
+        causeandeffect.question_id = $('#selected-question-pk').val();
+    }
 
-    var hypothesis_json = JSON.stringify(data);
+    // Get question pk if a question is selected and visible
+    if( $('#selected-investigation-element').is(':visible') ) {
+        causeandeffect.investigation_id = $('#selected-investigation-pk').val();
+    }
 
-    //alert(hypothesis_json);
+    causeandeffect.cause_text = cause_text;
+    causeandeffect.effect_text = effect_text;
+
+    var data = new Object(); // "Wrapper object" for cause-and-effect to be sent to server.
+    data.causeandeffect = causeandeffect;
+
+    var causeandeffect_json = JSON.stringify(data);
+
+    //alert(causeandeffect_json);
 
     // Send serialized data to server
     $.ajax({
         type: 'POST',
-        url: serverUrl + "/sinq/api/hypotheses/create/",
-        data: hypothesis_json,
+        url: serverUrl + "/sinq/api/causeandeffects/create/",
+        data: causeandeffect_json,
         success: function(responseData) {
-            // alert('pk: ' + responseData[0].pk);
-            var hypothesis_image_pk = parseInt(responseData[0].pk)
-            addHypothesisImage(hypothesis_image_pk);
-        }
+
+            // Attach cause-and-effect photo
+            if ($("#cause-and-effect-photo").attr('src') !== '') {
+                alert('Attaching photo to cause-and-effect ' + responseData[0].pk + '.');
+                var causeandeffect_pk = parseInt(responseData[0].pk);
+                storeCauseAndEffectImage(causeandeffect_pk);
+            }
+        },
+        // error: function() {
+        //     alert("error");
+        // },
+        crossDomain: true,
         // dataType: 'json'
     });
 }
 
-function addHypothesisImage(hypothesis_pk) {
+function storeCauseAndEffectImage(causeandeffect_pk) {
 
     // Upload the image to server
     function success(response) {
-        // var response_json = JSON.stringify(response);
-        // alert("upload successful" + response_json);
-        // $.mobile.changePage( "./index.html" );
-        $.mobile.changePage( "./hypothesis_view.html?pk=" + hypothesis_pk);
+        // showDashboard();
     }
     
     function fail(error) {
-        alert("upload failed: " + error.code);
+        alert("There was a problem adding the photo (Error code " + error.code + ").");
     }
     
     var options = new FileUploadOptions();
-    options.fileKey = "hypothesis_image"; // parameter name of file -- in POST data?
-    options.fileName = lastImageURI.substr(lastImageURI.lastIndexOf('/') + 1); // name of file
+    options.fileKey = "causeandeffect_image"; // parameter name of file -- in POST data?
+    options.fileName = pictureUriCache['causeandeffect'].substr(pictureUriCache['causeandeffect'].lastIndexOf('/') + 1); // name of file
     options.mimeType = "image/jpeg";
     
+    var requestUri = serverUrl + '/sinq/api/causeandeffects/' + causeandeffect_pk + '/images/create/';
     var ft = new FileTransfer();
-    ft.upload(lastImageURI, serverUrl + '/sinq/api/hypotheses/' + hypothesis_pk + '/images/create/', success, fail, options);
+    alert(pictureUriCache['causeandeffect']);
+    ft.upload(pictureUriCache['causeandeffect'], requestUri, success, fail, options);
 
     // Reset image URI
-    lastImageURI = null;
-}
-
-function openHypothesis(pk) {
-    $.ajax({
-        type: "GET",
-        url: serverUrl + "/sinq/api/hypotheses/" + pk + "/?format=json",
-        //            data: ({name: theName}),
-        //            cache: false,
-        success: function(responseData) {
-            $('#hypothesis_cause').html(responseData[0].fields.cause);
-            $('#hypothesis_effect').html(responseData[0].fields.effect);
-        }
-    });
-    
-    $.ajax({
-       type: "GET",
-       url: serverUrl + "/sinq/hypotheses/" + pk + "/images/?format=json",
-       //            data: ({name: theName}),
-       //            cache: false,
-       success: function(responseData) {
-           $('#hypothesis_images').html(''); // Reset all contents
-           for(i in responseData) {
-               var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
-               // alert(imageUrl);
-               $('#hypothesis_images').append('<img src="' + imageUrl + '" width="320" height="240" />');
-           }
-       }
-    });
+    // pictureUriCache['causeandeffect'] = '';
 }
 
 //  _____                     _   _             _   _             
@@ -731,7 +912,66 @@ function openHypothesis(pk) {
 //                                  |___/                         
 
 function storeInvestigation() {
-    alert("TODO: Implement this!");
+    // Get form data
+    //var question_id = $('#question_id').val();
+    var investigation_steps = new Array();
+
+    var investigation_step_elements = $('#create-investigation-steps').children('.create-investigation-step');
+
+    investigation_step_elements.each(function(index) {
+        // alert( $(this).html() );
+        var investigation_step = new Object();
+
+        investigation_step.number = $(this).data('investigation-step-number');
+        investigation_step.text = $('#investigation-step-' + investigation_step.number + '-text').val();
+
+        // Push step onto array
+        investigation_steps.push(investigation_step);
+    });
+
+    // Validate form
+    // if($("#photo_preview").attr('src') == '' || cause_text == '' || effect_text == '') {
+    //     alert("You have to snap a photo and type a cause and effect.");
+    // }
+
+    // Serialize data in JSON format
+    var investigation = new Object();
+    // if (question_id != '') {
+    //     hypothesis.question_id = question_id;
+    //     alert('has question id');
+    // }
+    investigation.steps = investigation_steps;
+
+    // Get question pk if a question is selected and visible
+    if( $('#selected-question-element').is(':visible') ) {
+        investigation.question_id = $('#selected-question-pk').val();
+    }
+
+    // Get cause-and-effect pk if a cause-and-effect is selected and visible
+    if( $('#selected-causeandeffect-element').is(':visible') ) {
+        investigation.causeandeffect_id = $('#selected-causeandeffect-pk').val();
+    }
+
+    var data = new Object(); // "Wrapper object" for investigation to be sent to server.
+    data.investigation = investigation;
+
+    var investigation_json = JSON.stringify(data);
+
+    //alert(hypothesis_json);
+
+    // Send serialized data to server
+    $.ajax({
+        type: 'POST',
+        url: serverUrl + "/sinq/api/investigations/create/",
+        data: investigation_json,
+        success: function(responseData) {
+            // alert('pk: ' + responseData[0].pk);
+            // var investigation_pk = parseInt(responseData[0].pk);
+            // alert(investigation_pk);
+            // addInvestigationImage(investigation_pk);
+        }
+        // dataType: 'json'
+    });
 }
 
 //   ____                  _   _                 
@@ -751,13 +991,23 @@ function storeQuestion() {
     var question_text = $('#question_text').val();
 
     // // Validate form
-    if($("#photo_preview").attr('src') == '' || question_text == '') {
+    if(question_text == '') {
         showMessage("You have to snap a photo and type a question.");
     }
 
     // Serialize data in JSON format
     var question = new Object();
     question.text = question_text;
+
+    // Get cause-and-effect pk if a cause-and-effect is selected and visible
+    if( $('#selected-causeandeffect-element').is(':visible') ) {
+        question.causeandeffect_id = $('#selected-causeandeffect-pk').val();
+    }
+
+    // Get question pk if a question is selected and visible
+    if( $('#selected-investigation-element').is(':visible') ) {
+        question.investigation_id = $('#selected-investigation-pk').val();
+    }
 
     var data = new Object();
     data.question = question;
@@ -772,47 +1022,75 @@ function storeQuestion() {
         url: serverUrl + "/sinq/api/questions/create/",
         data: question_json,
         success: function(responseData) {
-            // alert('pk: ' + responseData[0].pk);
-            var question_image_pk = parseInt(responseData[0].pk);
-            // addQuestionImage(question_image_pk);
 
-            $.mobile.changePage( "./question_view.html?pk=" + question_pk);
+            // Attach photo to question
+            if ($("#question-photo").attr('src') !== '') {
+                alert('Attaching photo to question ' + responseData[0].pk + '.');
+                var question_pk = parseInt(responseData[0].pk);
+                storeQuestionImage(question_pk);
+            }
+
         }
         // dataType: 'json'
     });
 }
 
-function addQuestionImage(question_pk) {
-
-    alert("addQuestionImage: " + question_pk);
+function storeQuestionImage(question_pk) {
 
     // Upload the image to server
     function success(response) {
         // alert("upload successful");
         // $.mobile.changePage( "./index.html" );
-        $.mobile.changePage( "./question_view.html?pk=" + question_pk);
+        // $.mobile.changePage( "./question_view.html?pk=" + question_pk);
+
+        // response.responseCode
+        // response.response
+        // response.bytesSent
+
+        // alert(response.responseCode + ': ' + response.response + ' (sent: ' + response.bytesSent + ')');
+        // console.log('storeQuestionImage callback success: { responseCode: ' + response.responseCode + ', response: ' + response.response + ', bytesSent: ' + response.bytesSent + ', ' + '}');
+
+        showDashboard();
     }
     
     function fail(error) {
         alert("Your photo could not be uploaded.  (Error " + error.code + ")");
     }
+
+
     
     var options = new FileUploadOptions();
     options.fileKey = "question_image"; // parameter name of file -- in POST data?
-    options.fileName = lastImageURI.substr(lastImageURI.lastIndexOf('/') + 1); // name of file
+    options.fileName = pictureUriCache['question'].substr(pictureUriCache['question'].lastIndexOf('/') + 1); // name of file
     options.mimeType = "image/jpeg";
+
+    // alert(pictureUriCache['question']);
     
+    var requestUri = serverUrl + '/sinq/api/questions/' + question_pk + '/images/create/';
+    // alert(requestUri);
+
     var ft = new FileTransfer();
-    ft.upload(lastImageURI, serverUrl + '/sinq/api/questions/' + question_pk + '/images/create/', success, fail, options);
+    ft.upload(pictureUriCache['question'], requestUri, success, fail, options);
 
     // Reset image URI
-    lastImageURI = null;
+    pictureUriCache['question'] = '';
 }
 
-function loadQuestions() {
+function loadQuestions(options) {
+    options = (typeof options === "undefined") ? {} : options;
+
+    // Construt URI
+    var requestUri = serverUrl + "/sinq/api/questions/?format=json";
+    if (options['causeandeffect_id'] !== undefined) {
+        requestUri = requestUri + "&causeandeffect_id=" + options['causeandeffect_id'];
+    }
+    if (options['investigation_id'] !== undefined) {
+        requestUri = requestUri + "&investigation_id=" + options['investigation_id'];
+    }
+
     $.ajax({
         type: "GET",
-        url: serverUrl + "/sinq/questions/?format=json",
+        url: requestUri, //serverUrl + "/sinq/api/questions/?format=json",
         //            data: ({name: theName}),
         //            cache: false,
         success: function(data) {
@@ -836,10 +1114,9 @@ function loadQuestions() {
                 }
 
                 // Create HTML element to show in Isotope container
-                var item = '<div id="question_' + datum.pk + '" class="question question-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #fff84d; background-image:url(\'\');">'
-                            // + '<a href="#question-' + datum.pk + '" data-option-value=".question-' + datum.pk + '">'
+                var item = '<div id="question_' + datum.pk + '" class="question question-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #0653f4; background-image:url(\'\');">'
                             + '<a href="javascript:onQuestionClick(' + datum.pk + ');" data-option-value=".question-' + datum.pk + '">'
-                            + '<div style="width: 220px; height: 220px; border: 1px solid #54bef9; padding: 2px; margin: 2px;">'
+                            + '<div id="question-' + datum.pk + '-image" style="width: 230px; height: 230px; border: 0px solid #54bef9; padding: 0px; margin: 0px;">'
                                 + '<h2 class="text">' + datum.fields.text + '</h2>'
                             + '</div>'
                             + '</a>'
@@ -872,135 +1149,12 @@ function loadQuestions() {
                 $container.isotope( 'insert', $items );
             });
 
-
-
-
-
-            /**
-             * Set up per-question-element filtering to occur when clicked
-             */
-
-            // var $questionSets = $('#container .question'),
-            //     $questionLinks = $questionSets.find('a');
-
-            // $questionLinks.click(function() {
-
-            //     $('#selected-question-text').html("BLAH");
-
-            //     var $this = $(this);
-            //     // don't proceed if already selected
-            //     if ( $this.hasClass('selected') ) {
-            //         return false;
-            //     }
-
-            //     // Remove ".selected" class from all currently-selected elements with class ".questions"
-            //     var $questionSet = $this.parents('.question');
-            //     $questionSet.find('.selected').removeClass('selected');
-            //     $this.addClass('selected'); // Add ".selected" class to the current element
-
-            //     // make option object dynamically, i.e. { filter: '.my-filter-class' }
-            //     var options = {},
-            //         key     = $questionSet.attr('data-option-key'),
-            //         value   = $this.attr('data-option-value');
-            //     // parse 'false' as false boolean
-            //     value = value === 'false' ? false : value;
-            //     options[ key ] = value;
-            //     if ( key === 'layoutMode' && typeof changeLayoutMode === 'function' ) {
-            //         // changes in layout modes need extra logic
-            //         changeLayoutMode( $this, options );
-            //     } else {
-            //         // otherwise, apply new options
-            //         $container.isotope( options );
-            //     }
-
-            //     return false;
-            // });
-
-
-
-
-
             // Request images
             for(var i = 0   , len = item_ids.length; i < len; i++) {
                 loadQuestionImages(item_ids[i]);
             }
         }
     });
-}
-
-function hideSections() {
-    $('#container').slideUp('fast');
-
-    $('#selected-question-element').slideUp('fast');
-    $('#selected-causeandeffect-element').slideUp('fast');
-    $('#selected-investigation-element').slideUp('fast');
-
-    $('#create-question-section').slideUp('fast');
-    $('#create-causeandeffect-section').slideUp('fast');
-    $('#create-investigation-section').slideUp('fast');
-}
-
-function onQuestionClick(pk) {
-
-    // Add question to top (expand it)
-    // Remove all questions from container
-    // Filter out everything that isn't associated with the current question
-
-    // local_questions[datum.pk].pk;
-    // local_questions[datum.pk].fields.text;
-
-    $('#selected-question-text').html(local_questions[pk].fields.text);
-
-    // Hide sections after question section
-    $('#container').slideUp('slow');
-
-    $('#selected-causeandeffect-element').slideUp('slow');
-    $('#selected-investigation-element').slideUp('slow');
-
-    $('#create-question-section').slideUp('slow');
-    $('#create-causeandeffect-section').slideUp('slow');
-    $('#create-investigation-section').slideUp('slow');
-
-    // Get number of cause and effect
-    // Get number of investigations
-
-    $('#container').slideUp('fast', function() {
-
-        $('#selected-question-element').slideDown('slow', function() {
-
-            // Add photos to scroller=
-            var questionImages = local_questions[pk]['images'];
-            for (question_image_pk in questionImages) {
-                var imageUrl = serverUrl + '/media/' + questionImages[question_image_pk].fields.image;
-                var imageItem = '<li><div style="width: 200px; height: 200px; border: 0px solid #54bef9; padding: 0px; margin: 0px; background-image: url(\'' + imageUrl + '\');"></div></li>';
-                $('#selected-question-images').append(imageItem);
-            }
-
-            // Initialize iScroll element
-            myScroll = new iScroll('question-horizontalWrapper');
-
-            // Hide all question elements
-            var options = {
-                filter: ':not(.question)'
-            };
-            $('#container').isotope(options);
-
-            // Open the container again, showing only cause-and-effects and investigations for the selected question
-            $('#container').slideDown('slow');
-        });
-
-    });
-
-    
-
-
-    
-
-    // Show cause and effect elements for selected question
-    // TODO: Query database and some number of random CEs
-
-    // Show investigation elements for selected question
-    // TODO: Query database to get some number of random INVs
 }
 
 function loadQuestionImages(pk) {
@@ -1014,7 +1168,7 @@ function loadQuestionImages(pk) {
                var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
                // alert(imageUrl);
                //$('#question_' + pk + '_image').attr('src', imageUrl); // Reset all contents
-               $('#question_' + pk).css('background-image', 'url(' + imageUrl + ')'); // Reset all contents
+               $('#question-' + pk + '-image').css('background-image', 'url(' + imageUrl + ')'); // Reset all contents
                //$('#question_images').append('<img src="' + imageUrl + '" width="320" height="240" />');
 
                 // Create or update locally cached copy
@@ -1024,30 +1178,354 @@ function loadQuestionImages(pk) {
     });
 }
 
-function openQuestion(pk) {
+function loadInvestigations(options) {
+    options = (typeof options === "undefined") ? {} : options;
+
+    // Construt URI
+    var requestUri = serverUrl + "/sinq/api/investigations/?format=json";
+    if (options['question_id'] !== undefined) {
+        requestUri = requestUri + "&question_id=" + options['question_id'];
+    }
+    if (options['causeandeffect_id'] !== undefined) {
+        requestUri = requestUri + "&causeandeffect_id=" + options['causeandeffect_id'];
+    }
+
     $.ajax({
         type: "GET",
-        url: serverUrl + "/sinq/questions/" + pk + "/?format=json",
+        url: requestUri,
         //            data: ({name: theName}),
         //            cache: false,
-        success: function(responseData) {
-            // alert(responseData[0].fields.text);
-            $('#question_text').html(responseData[0].fields.text);
+        success: function(data) {
+
+            // proceed only if we have data
+            if ( !data || !data.length ) {
+                ajaxError();
+                return;
+            }
+            var items = [], item, datum;
+            var item_ids = [];
+
+            // Create HTML markup for retreived questions and add to a list
+            for ( var i=0, len = data.length; i < len; i++ ) {
+                datum = data[i];
+
+                // Create or update locally cached copy
+                // TODO: Move this.  Create function to give complete, empty datastructure (local and remote versions).
+                local_investigations[datum.pk] = datum;
+                if(!local_investigations[datum.pk].hasOwnProperty('steps')) {
+                    local_investigations[datum.pk]['steps'] = new Array();
+                }
+
+                // Create HTML element to show in Isotope container
+                var item = '<div id="investigation_' + datum.pk + '" class="investigation investigation-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #c2314e; background-image:url(\'\');">'
+                            + '<a href="javascript:onInvestigationClick(' + datum.pk + ');" data-option-value=".investigation-' + datum.pk + '">'
+                            + '<div id="investigation-' + datum.pk + '-image" style="width: 230px; height: 230px; border: 0px solid #54bef9; padding: 0px; margin: 0px;">'
+                                + '<h2 class="text">' + datum.fields.text + '</h2>'
+                                + '<h2>&nbsp;</h2>'
+                            + '</div>'
+                            + '</a>'
+                        + '</div>';
+
+                items.push( item );
+                item_ids.push( datum.pk );
+            }
+
+            // Add class to queestion markup
+            var $items = $( items.join('') ).addClass('investigation');
+
+            // set random number for each item
+            $items.each(function() {
+                $(this).attr('data-number', ~~( Math.random() * 100 + 15 ));
+            });
+
+            // Invoke the imagesLoaded plugin (included with Isotope) to properly lay out images in the Isotope container.
+            var $container = $('#container');
+            $items.imagesLoaded(function() {
+                // $sitesTitle.removeClass('loading').text('Sites using Isotope');
+                $container.append( $items );
+                $items.each(function() {
+                    var $this = $(this),
+                    itemHeight = Math.ceil( $this.height() / 120 ) * 120 - 10;
+                    $this.height( itemHeight );
+                });
+
+                // Actually insert the questions into the Isotope container.
+                $container.isotope( 'insert', $items );
+            });
+
+            // Request images
+            // for(var i = 0   , len = item_ids.length; i < len; i++) {
+            //     loadQuestionImages(item_ids[i]);
+            // }
         }
     });
-    
+}
+
+function loadInvestigationSteps(investigation_pk) {
     $.ajax({
-       type: "GET",
-       url: serverUrl + "/sinq/questions/" + pk + "/images/?format=json",
-       //            data: ({name: theName}),
-       //            cache: false,
-       success: function(responseData) {
-           $('#question_images').html(''); // Reset all contents
-           for(i in responseData) {
-               var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
-               // alert(imageUrl);
-               $('#question_images').append('<img src="' + imageUrl + '" width="320" height="240" />');
-           }
-       }
+        type: "GET",
+        url: serverUrl + "/sinq/api/investigations/" + investigation_pk + "/steps/?format=json",
+        //            data: ({name: theName}),
+        //            cache: false,
+        success: function(data) {
+
+            // proceed only if we have data
+            if ( !data || !data.length ) {
+                ajaxError();
+                return;
+            }
+            var items = [], item, datum;
+            var item_ids = [];
+
+           // var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
+           // $('#question-' + pk + '-image').css('background-image', 'url(' + imageUrl + ')'); // Reset all contents
+           // local_questions[pk]['images'][responseData[i].pk] = responseData[i];
+
+            // Create HTML markup for retreived questions and add to a list
+            for ( var i=0, len = data.length; i < len; i++ ) {
+                datum = data[i];
+
+                var item
+                    = '<h1>' + datum.fields.number + '. ' + datum.fields.text + '</h1>';
+                if (i < (len - 1)) {
+                    item = item + '<div class="spacer">&nbsp;</div>';
+                }
+
+                // Create or update locally cached copy
+                local_investigations[investigation_pk]['steps'][data[i].pk] = data[i];
+
+                // Create HTML element to show in Isotope container
+                // $('#question-' + pk + '-image').css('background-image', 'url(' + imageUrl + ')'); // Reset all contents
+                $('#selected-investigation-steps').append(item);
+            }
+
+            // Add class to queestion markup
+            // var $items = $( items.join('') ).addClass('investigation');
+
+            // set random number for each item
+            // $items.each(function() {
+            //     $(this).attr('data-number', ~~( Math.random() * 100 + 15 ));
+            // });
+
+            // Load images for investigation's steps
+            // for(var i = 0   , len = item_ids.length; i < len; i++) {
+            //     loadQuestionImages(item_ids[i]);
+            // }
+        }
     });
+}
+
+function showDashboard() {
+    hideSections();
+
+    $("#container").isotope('remove', $('#container').find('.element'));
+
+    loadQuestions();
+    loadCauseAndEffects();
+    loadInvestigations();
+
+   // Hide all question elements
+    // var options = {
+    //     filter: '*'
+    // };
+    // $('#container').isotope({ 'filter': '*' });
+
+    // Open the container again, showing only cause-and-effects and investigations for the selected question
+    $('#container').slideDown('slow');
+
+    // Hide the footer
+    // slideUpFooter();
+}
+
+function slideUpFooter() {
+    $('#footer').slideUp('slow');
+
+    $('#footer-done-button').unbind('click');
+}
+
+function hideSections() {
+    // $('#container').slideUp('fast');
+
+    $('#selected-question-element').slideUp('fast');
+    $('#selected-causeandeffect-element').slideUp('fast');
+    $('#selected-investigation-element').slideUp('fast');
+
+    $('#create-question-section').slideUp('fast');
+    $('#create-causeandeffect-section').slideUp('fast');
+    $('#create-investigation-section').slideUp('fast');
+}
+
+function resetCreateQuestionForm() {
+    // $('input[id=question_text]').val('foobar');
+}
+
+function onQuestionClick(pk) {
+
+    // Add question to top (expand it)
+    // Remove all questions from container
+    // Filter out everything that isn't associated with the current question
+
+    // local_questions[datum.pk].pk;
+    // local_questions[datum.pk].fields.text;
+
+    // Populate element
+    $('#selected-question-pk').val(local_questions[pk].pk);
+    $('#selected-question-text').html(local_questions[pk].fields.text);
+
+    // Hide sections after question section
+    // $('#container').slideUp('slow');
+
+    $('#selected-causeandeffect-element').slideUp('slow');
+    $('#selected-investigation-element').slideUp('slow');
+
+    $('#create-question-section').slideUp('slow');
+    $('#create-causeandeffect-section').slideUp('slow');
+    $('#create-investigation-section').slideUp('slow');
+
+    // Reset form element
+    resetCreateQuestionForm();
+
+    // Get number of cause and effect
+    // Get number of investigations
+
+    $("#container").isotope('remove', $('#container').find('.element'));
+
+    // Set options for selected elements
+    var options = {};
+
+    options['question_id'] = pk;
+
+    if( $('#selected-causeandeffect-element').is(':visible') ) {
+        options['causeandeffect_id'] = $('#selected-causeandeffect-pk').val();
+    }
+    
+    if( $('#selected-investigation-element').is(':visible') ) {
+        options['investigation_id'] = $('#selected-investigation-pk').val();
+    }
+
+    loadCauseAndEffects(options);
+    loadInvestigations(options);
+
+    $('#container').slideUp('fast', function() {
+
+        $('#selected-question-element').slideDown('slow', function() {
+
+            // Add photos to scroller
+            var questionImages = local_questions[pk]['images'];
+            for (question_image_pk in questionImages) {
+                var imageUrl = serverUrl + '/media/' + questionImages[question_image_pk].fields.image;
+                var imageItem = '<li><div style="width: 200px; height: 200px; border: 0px solid #54bef9; padding: 0px; margin: 0px; background-image: url(\'' + imageUrl + '\');"></div></li>';
+                $('#selected-question-images').append(imageItem);
+            }
+
+            // Initialize iScroll element
+            myScroll = new iScroll('question-horizontalWrapper');
+
+            // Remove elements from container
+            // $("#container").isotope('remove', $('#container').find('.element'));
+            // // $("#container").isotope('remove', $('#container').find('.element'));
+            // loadCauseAndEffects({ 'question_id': pk });
+
+            // // Hide all question elements
+            // var options = {
+            //     filter: ':not(.question)'
+            // };
+            // $('#container').isotope(options);
+
+            // // Open the container again, showing only cause-and-effects and investigations for the selected question
+            $('#container').slideDown('slow');
+        });
+
+    });
+
+    // Show cause and effect elements for selected question
+    // TODO: Query database and some number of random CEs
+
+    // Show investigation elements for selected question
+    // TODO: Query database to get some number of random INVs
+}
+
+function onInvestigationClick(pk) {
+
+    // Add question to top (expand it)
+    // Remove all questions from container
+    // Filter out everything that isn't associated with the current question
+
+    // local_questions[datum.pk].pk;
+    // local_questions[datum.pk].fields.text;
+
+    //$('#selected-question-text').html(local_investigations[pk].fields.text);
+
+    // Populate element
+    $('#selected-investigation-pk').val(local_investigations[pk].pk);
+
+    // Hide sections after investigation section
+    // $('#container').slideUp('slow');
+
+    // $('#selected-question-element').slideUp('slow');
+    // $('#selected-causeandeffect-element').slideUp('slow');
+
+    $('#create-question-section').slideUp('slow');
+    $('#create-causeandeffect-section').slideUp('slow');
+    $('#create-investigation-section').slideUp('slow');
+
+    // Reset form element
+    //resetCreateQuestionForm();
+
+    // Get number of cause and effect
+    // Get number of investigations
+
+    $("#container").isotope('remove', $('#container').find('.element'));
+
+    // Set options for selected elements
+    var options = {};
+
+    options['investigation_id'] = pk;
+    
+    if( $('#selected-question-element').is(':visible') ) {
+        options['question_id'] = $('#selected-question-pk').val();
+    }
+
+    if( $('#selected-causeandeffect-element').is(':visible') ) {
+        options['causeandeffect_id'] = $('#selected-causeandeffect-pk').val();
+    }
+
+    loadQuestions(options);
+    loadCauseAndEffects(options);
+
+    $('#container').slideUp('fast', function() {
+
+        $('#selected-investigation-element').slideDown('slow', function() {
+
+            // Add steps to UI
+            loadInvestigationSteps(pk);
+
+            // Add photos to scroller
+            // var investigationImages = local_investigations[pk]['images'];
+            // for (investigation_image_pk in investigationImages) {
+            //     var imageUrl = serverUrl + '/media/' + investigationImages[investigation_image_pk].fields.image;
+            //     var imageItem = '<li><div style="width: 200px; height: 200px; border: 0px solid #54bef9; padding: 0px; margin: 0px; background-image: url(\'' + imageUrl + '\');"></div></li>';
+            //     $('#selected-investigation-images').append(imageItem);
+            // }
+
+            // Initialize iScroll element
+            // myScroll = new iScroll('investigation-horizontalWrapper');
+
+            // Hide all investigation elements
+            // var options = {
+            //     filter: ':not(.question):not(.causeandeffect):not(.investigation)'
+            // };
+            // $('#container').isotope(options);
+
+            // Open the container again, showing only cause-and-effects and investigations for the selected investigation
+            $('#container').slideDown('slow');
+        });
+
+    });
+
+    // Show cause and effect elements for selected question
+    // TODO: Query database and some number of random CEs
+
+    // Show investigation elements for selected question
+    // TODO: Query database to get some number of random INVs
 }

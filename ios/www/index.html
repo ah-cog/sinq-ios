@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./assets/css/jquery.isotope.min.css" />
 
     <script src="./assets/js/jquery-1.8.2.min.js"></script>
+    <script src="./assets/js/jquery-lint.js"></script>
     <script src="./assets/js/json2.js"></script>
 
     <link rel="stylesheet" href="./assets/css/jquery.mobile-1.2.0.min.css" />
@@ -20,13 +21,14 @@
 
     <link rel="stylesheet" href="./assets/css/sinq.css" />
 
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'>
+    <!-- <link href='http://fonts.googleapis.com/css?family=Raleway:400,100' rel='stylesheet' type='text/css'> -->
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100|Abel|Londrina+Solid|Pompiere|Londrina+Sketch|Wire+One|Londrina+Outline|Fredoka+One|Antic|Monoton|Amatic+SC|Chelsea+Market|Bubbler+One|Londrina+Shadow' rel='stylesheet' type='text/css'>
 
     <!-- scripts at bottom of page -->
 
     <style>
         .ui-page { background: #fbfbfb;}
-        body { background-color: #fbfbfb; }
+        body { background-color: #fbfbfb; background-image: url('./assets/img/graph_paper_background.gif'); }
     </style>
 </head>
 <body class="homepage">
@@ -42,7 +44,7 @@
                 // Load questions and cause-and-effects from server
                 loadQuestions();
                 loadCauseAndEffects();
-                // loadInvestigations();
+                loadInvestigations();
             });
             
         </script>
@@ -50,20 +52,51 @@
 
 
 
-        <div data-role="header" data-position="fixed">
-            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 5px; padding-bottom: 0px;">
-                <img id="dashboard_header_logo" src="./assets/img/sinq_logo.png" />
+        <div data-role="header" data-position="fixed" style="background-color: #ffffff;">
+            <!-- <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 5px; padding-bottom: 0px;">
+                <img id="dashboard_header_logo" src="./assets/img/sinq_logo.png" height="50" />
+            </div> -->
+
+            <div id="navigation-button-list">
+                <!-- 
+                <div style="float:left; ">
+                    <img id="dashboard_header_logo" src="./assets/img/sinq_logo.png" height="50" />
+                </div> 
+                -->
+
+
+                <a id="dashboard_header_discover" href="javascript:void(0);">
+                    <div id="navigation-button-discover" class="navigation-button">
+                        Discover
+                    </div>
+                </a>
+
+                <a id="dashboard_header_question" href="javascript:void(0);">
+                    <div id="navigation-button-question" class="navigation-button">
+                        Question
+                    </div>
+                </a>
+
+                <a id="dashboard_header_causeandeffect" href="javascript:void(0);">
+                    <div id="navigation-button-causeandeffect" class="navigation-button">
+                        Cause & Effect
+                    </div>
+                </a>
+
+                <a id="dashboard_header_investigation" href="javascript:void(0);">
+                    <div id="navigation-button-investigation" class="navigation-button">
+                        Investigation
+                    </div>
+                </a>
             </div>
 
-            <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 0px; border-bottom: 1px solid #2f5b7f;">
-                <center>
-                    <ul id="navigation">
-                        <li><a id="dashboard_header_question" href="javascript:void(0);">Question</a></li>
-                        <li><a id="dashboard_header_causeandeffect" href="javascript:void(0);">Cause and Effect</a></li>
-                        <li><a id="dashboard_header_investigation" href="javascript:void(0);">Investigation</a></li>
-                    </ul>
-                </center>
-            </div>
+            <!-- <div id="banner" style="width: 100%; background-color: #ffffff; padding-top: 0px; padding-bottom: 0px; border-bottom: 1px solid #2f5b7f;">
+                <ul id="navigation">
+                    <li><a id="dashboard_header_question" href="javascript:void(0);">Question</a></li>
+                    <li><a id="dashboard_header_causeandeffect" href="javascript:void(0);">Cause and Effect</a></li>
+                    <li><a id="dashboard_header_investigation" href="javascript:void(0);">Investigation</a></li>
+                </ul>
+            </div> -->
 
         </div><!-- /header -->
 
@@ -71,7 +104,7 @@
 
 
         <div data-role="content">
-            <div id="options" class="clearfix">
+            <div id="options" class="clearfix" style="display: none;">
                 <div class="option-combo">
                 <h2>Show:</h2>
                 <ul id="filter" class="option-set clearfix" data-option-key="filter">
@@ -85,6 +118,7 @@
                     -->
                 </ul>
                 </div>
+
                 <div class="option-combo">
                     <h2>Order:</h2>
                     <ul id="sort" class="option-set clearfix" data-option-key="sortBy">
@@ -97,38 +131,65 @@
                         -->
                     </ul>
                 </div>
+
                 <div class="option-combo">
                     <h2>Layout: </h2>
                     <ul id="layouts" class="option-set clearfix" data-option-key="layoutMode">
                         <li><a href="#masonry" data-option-value="masonry" class="selected">Many</a></li>
+                        <!--
                         <li><a href="#fitRows" data-option-value="fitRows">Fit Rows</a></li>
                         <li><a href="#straightDown" data-option-value="straightDown">List</a></li>
                         <li><a href="#straightAcross" data-option-value="straightAcross">List</a></li>
+                        -->
                     </ul>
                 </div>
             </div>
 
-            <div id="selected-question-element" data-role="none" class="selected-element">
-                <h1>Question</h1>
-                <p id="selected-question-text"></p>
 
-                <div class="scroller">
-                    <div id="question-horizontalWrapper">
-                        <div id="question-horizontalScroller">
-                            <ul id="selected-question-images">
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                            </ul>
+
+            
+            <div id="selected-question-element" data-role="none" class="selected-element">
+
+                <div id="selected-question-content" class="selected-element-content">
+                    <input id="selected-question-pk" name="selected-question-pk" type="hidden" value="" />
+
+                    <h1>Question</h1>
+                    <p id="selected-question-text"></p>
+
+                    <div class="scroller">
+                        <div id="question-horizontalWrapper">
+                            <div id="question-horizontalScroller">
+                                <ul id="selected-question-images">
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
 
+                <div id="selected-question-options" class="selected-element-options">
+                    <!-- <img id="selected-question-add-photo" src="./assets/img/noun_project_781.svg" height="30" />  -->
+                    <!-- <a id="selected-question-add-causeandeffect"><img src="./assets/img/noun_project_712.svg" height="30" /></a>
+                    <a id="selected-question-add-investigation"><img id="selected-question-add-investigation" src="./assets/img/noun_project_95.svg" height="30" /></a> -->
 
-                <div id="selected-question-options">
-                    <img id="selected-question-add-photo" src="./assets/img/noun_project_781.svg" height="30" /> 
-                    <a id="selected-question-add-causeandeffect"><img src="./assets/img/noun_project_712.svg" height="30" /></a>
-                    <a id="selected-question-add-investigation"><img id="selected-question-add-investigation" src="./assets/img/noun_project_95.svg" height="30" /></a>
+                    <div>
+                        <a id="selected-question-add-causeandeffect">
+                            <div class="navigation-button element-attach-causeandeffect-button">
+                                Cause & Effect
+                            </div>
+                        </a>
+
+                        <a id="selected-question-add-investigation">
+                            <div class="navigation-button element-attach-investigation-button">
+                                Investigation
+                            </div>
+                        </a>
+
+                        <div style="float: none; clear: both;"></div>
+                    </div>
+<!-- 
                      | 
-                    <a id="selected-question-add-investigation"><img id="selected-question-add-investigation" src="./assets/img/noun_project_1521.svg" height="30" /></a>
+                    <a id="selected-question-add-investigation"><img id="selected-question-add-investigation" src="./assets/img/noun_project_1521.svg" height="30" /></a> -->
                 </div>
             </div>
 
@@ -139,17 +200,29 @@
                     <div data-role="fieldcontain" class="ui-hide-label">
                         <h2>What do you wonder about?</h2>
                         <label for="question_text">Type your question below:</label>
-                        <input id="question_text" name="question_text" type="text" placeholder="Touch this box to type your question." />
+                        <input id="question_text" name="question_text" type="text" placeholder="Touch this box to type your question." style="font-size: 18pt;" />
                     </div>
 
                     <div data-role="fieldcontain">
                         <h2>Snap a photo.</h2>
-                        <p><a href="javascript:void(0);" data-theme="a" id="question_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
-                        <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+                        <p><a href="javascript:void(0);" data-theme="a" id="question_snap_photo" onclick="captureQuestionPhotoToURI();" data-role="button">Snap a photo!</a></p>
+                        <img style="display: none; width: 200px; height: 200px;" id="question-photo" src="" />
                     </div>
 
                 </form>
             </div>
+
+
+
+
+
+            <!-- TODO: Place options between elements to give feedback about their relationship to each other.
+            <div id="selected-causeandeffect-relation" class="selected-element-relation">
+                <div id="selected-causeandeffect-relation-content" class="selected-element-relation-content">
+                    <h1>Do these go together?</h1>
+                </div>
+            </div>
+            -->
 
 
 
@@ -163,70 +236,105 @@
                     <div data-role="fieldcontain" class="ui-hide-label">
                         <h2>What is the cause?</h2>
                         <label for="question_text">Type your question below:</label>
-                        <input id="cause_text" name="cause_text" type="text" placeholder="Touch this box to type the cause." />
+                        <input id="cause_text" name="cause_text" type="text" placeholder="Touch this box to type the cause." style="font-size: 18pt;" />
+                    </div>
+
+                    <div class="spacer">
+                        &nbsp;
                     </div>
 
                     <div data-role="fieldcontain" class="ui-hide-label">
                         <h2>What is the effect?</h2>
                         <label for="question_text">Type your question below:</label>
-                        <input id="effect_text" name="effect_text" type="text" placeholder="Touch this box to type the effect." />
+                        <input id="effect_text" name="effect_text" type="text" placeholder="Touch this box to type the effect." style="font-size: 18pt;" />
                     </div>
 
+                    <!--
                     <div data-role="fieldcontain">
                         <h2>Snap a photo.</h2>
-                        <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
-                        <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+                        <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="captureCauseAndEffectPhotoToURI();" data-role="button">Snap a photo!</a></p>
+                        <img style="display: none; width: 200px; height: 200px;" id="cause-and-effect-photo" src="" />
                     </div>
+                    -->
 
                 </form>
             </div>
 
             <div id="selected-causeandeffect-element" class="selected-element">
-                <h1>Cause and Effect</h1>
-                <h2 id="selected-causeandeffect-cause"></h2>
-                <h2 id="selected-causeandeffect-effect"></h2>
+                <div id="selected-causeandeffect-content" class="selected-element-content">
+                    <input id="selected-causeandeffect-pk" name="selected-causeandeffect-pk" type="hidden" value="" />
 
-                <div class="scroller">
-                    <div id="causeandeffect-horizontalWrapper">
-                        <div id="causeandeffect-horizontalScroller">
-                            <ul>
-                                <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                            </ul>
+                    <h1>Cause</h1>
+                    <h2 id="selected-causeandeffect-cause"></h2>
+
+                    <div class="spacer">
+                        &nbsp;
+                    </div>
+
+                    <h1>Effect</h1>
+
+                    <h2 id="selected-causeandeffect-effect"></h2>
+
+                    <!--
+                    <div class="scroller">
+                        <div id="causeandeffect-horizontalWrapper">
+                            <div id="causeandeffect-horizontalScroller">
+                                <ul>
+                                    <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    -->
                 </div>
 
-                <div id="selected-causeandeffect-options">
-                    <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_781.svg" height="30" /> 
+                <div id="selected-causeandeffect-options" class="selected-element-options">
+                    <!-- <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_781.svg" height="30" /> 
                     <a id="selected-causeandeffect-add-question"><img src="./assets/img/noun_project_2036.svg" height="30" /></a>
                     <a id="selected-causeandeffect-add-investigation"><img id="selected-causeandeffect-add-investigation" src="./assets/img/noun_project_95.svg" height="30" /></a>
                      | 
-                    <a id="selected-causeandeffect-add-investigation"><img id="selected-causeandeffect-add-investigation" src="./assets/img/noun_project_1521.svg" height="30" /></a>
+                    <a id="selected-causeandeffect-add-investigation"><img id="selected-causeandeffect-add-investigation" src="./assets/img/noun_project_1521.svg" height="30" /></a> -->
+
+                    <div>
+                        <a id="selected-causeandeffect-add-question">
+                            <div class="navigation-button element-attach-question-button">
+                                Question
+                            </div>
+                        </a>
+
+                        <a id="selected-causeandeffect-add-investigation">
+                            <div class="navigation-button element-attach-investigation-button">
+                                Investigation
+                            </div>
+                        </a>
+
+                        <div style="float: none; clear: both;"></div>
+                    </div>
                 </div>
             </div>
 
@@ -235,22 +343,96 @@
             <div id="create-investigation-section" data-role="none" class="create-element-section">
                 <form id="create-investigation-form">
 
-                    <div data-role="fieldcontain" class="ui-hide-label">
-                        <h2>What is the first step?</h2>
-                        <label for="question_text">Type your question below:</label>
-                        <input id="cause_text" name="cause_text" type="text" placeholder="Touch this box to type the cause." />
-                    </div>
-
+                    <!--
                     <div data-role="fieldcontain">
                         <h2>Snap a photo.</h2>
-                        <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="capturePhotoToURI();" data-role="button">Snap a photo!</a></p>
-                        <img style="display: none; width: 200px; height: 200px;" id="photo_preview" src="" />
+                        <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="captureInvestigationPhotoToURI();" data-role="button">Snap a photo!</a></p>
+                        <img style="display: none; width: 200px; height: 200px;" id="investigation-photo" src="" />
                     </div>
+                    -->
+
+                    <div data-role="fieldcontain" class="ui-hide-label">
+                        <h2>What are the steps?</h2>
+                    </div>
+
+                    <div id="create-investigation-steps">
+                    </div>
+
+                    <p><button id="create-investigation-step-button" type="button">Add Step</button></p>
+
                 </form>
             </div>
 
             <div id="selected-investigation-element" class="selected-element">
-                <h1>Investigation</h1>
+                <div id="selected-investigation-content" class="selected-element-content">
+                    <input id="selected-investigation-pk" name="selected-investigation-pk" type="hidden" value="" />
+
+                    <h1>Investigation</h1>
+
+                    <div id="selected-investigation-steps">
+                    </div>
+
+                    <!--
+                    <div class="scroller">
+                        <div id="investigation-horizontalWrapper">
+                            <div id="investigation-horizontalScroller">
+                                <ul>
+                                    <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    -->
+                </div>
+
+                <div id="selected-investigation-options" class="selected-element-options">
+                    <!-- <img id="selected-investigation-add-photo" src="./assets/img/noun_project_781.svg" height="30" />
+                    <a id="selected-investigation-add-question"><img src="./assets/img/noun_project_2036.svg" height="30" /></a>
+                    <a id="selected-investigation-add-investigation"><img id="selected-investigation-add-investigation" src="./assets/img/noun_project_95.svg" height="30" /></a>
+                     | 
+                    <a id="selected-investigation-add-investigation"><img id="selected-investigation-add-investigation" src="./assets/img/noun_project_1521.svg" height="30" /></a> -->
+
+                    <div>
+                        <a id="selected-investigation-add-question">
+                            <div class="navigation-button element-attach-question-button">
+                                Question
+                            </div>
+                        </a>
+
+                        <a id="selected-investigation-add-causeandeffect">
+                            <div class="navigation-button element-attach-causeandeffect-button">
+                                Investigation
+                            </div>
+                        </a>
+
+                        <div style="float: none; clear: both;"></div>
+                    </div>
+                </div>
             </div>
 
 
@@ -271,11 +453,23 @@
                 <div class="link away" data-number="35"><a href="http://github.com/desandro/isotope">Isotope on GitHub</a></div>
                 -->
             </div>
-        </div><!-- /content -->
 
-        <div>
-            <p>2011&ndash;2012.  Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.</p>
-        </div>
+            <div class="ui-grid-a">
+                <div class="ui-block-a">
+                    Information for Parents<br />
+                    What is SINQ?
+                </div>
+                <div class="ui-block-b">
+                    Give Us Feedback<br />
+                    <a href="https://github.com/mokogobo/sinq-mobile">GitHub (Mobile)</a><br />
+                    <a href="https://github.com/mokogobo/sinq-server">GitHub (Server)</a>
+                </div>
+            </div>
+
+            <div class="ui-grid-solo">
+                Human-Computer Interaction Lab (HCIL). University of Maryand, College Park.  2011&ndash;2012.
+            </div>
+        </div><!-- /content -->
 
 
 

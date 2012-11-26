@@ -477,7 +477,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = SINQ;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "47952339-AA77-4A1E-B569-F949A7485BE6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73C0DD42-330A-482B-9DBB-71F41D60DEB4";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -498,7 +498,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 4.2;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = SINQ;
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "47952339-AA77-4A1E-B569-F949A7485BE6";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "73C0DD42-330A-482B-9DBB-71F41D60DEB4";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -550,7 +550,7 @@
 					armv6,
 					armv7,
 				);
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: June Ahn";
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_THUMB_SUPPORT = NO;
 				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
@@ -575,6 +575,7 @@
 					"-all_load",
 					"-Obj-C",
 				);
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "81EBE5BC-BD97-4147-B977-AE379C8B9E5C";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = NO;
 				USER_HEADER_SEARCH_PATHS = "";
