@@ -42,6 +42,8 @@
 		30A0434914DC770100060A13 /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 30A0434614DC770100060A13 /* Localizable.strings */; };
 		30E1352710E2C1420031B30D /* Cordova.plist in Resources */ = {isa = PBXBuildFile; fileRef = 30E1352610E2C1420031B30D /* Cordova.plist */; };
 		30E5649213A7FCAF007403D8 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 30E5649113A7FCAF007403D8 /* CoreMedia.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		65BDA380166444E900142D6D /* Default-Portrait~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 65BDA37F166444E900142D6D /* Default-Portrait~ipad.png */; };
+		65BDA3821664456400142D6D /* Default-Landscape~ipad.png in Resources */ = {isa = PBXBuildFile; fileRef = 65BDA3811664456400142D6D /* Default-Landscape~ipad.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -103,6 +105,8 @@
 		30E5649113A7FCAF007403D8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* SINQ-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SINQ-Prefix.pch"; sourceTree = "<group>"; };
 		65139B8516435F3900C4F295 /* SINQ.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = SINQ.entitlements; path = SINQ/SINQ.entitlements; sourceTree = "<group>"; };
+		65BDA37F166444E900142D6D /* Default-Portrait~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Portrait~ipad.png"; sourceTree = "<group>"; };
+		65BDA3811664456400142D6D /* Default-Landscape~ipad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-Landscape~ipad.png"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* SINQ-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "SINQ-Info.plist"; path = "../SINQ-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -172,6 +176,8 @@
 		29B97314FDCFA39411CA2CEA /* CustomTemplate */ = {
 			isa = PBXGroup;
 			children = (
+				65BDA3811664456400142D6D /* Default-Landscape~ipad.png */,
+				65BDA37F166444E900142D6D /* Default-Portrait~ipad.png */,
 				65139B8516435F3900C4F295 /* SINQ.entitlements */,
 				301BF56E109A69640062928A /* www */,
 				301BF52D109A57CC0062928A /* CordovaLib.xcodeproj */,
@@ -380,6 +386,8 @@
 				3088BBC0154F3926009F9C59 /* Default-Portrait~ipad.png in Resources */,
 				3088BBC1154F3926009F9C59 /* Default@2x~iphone.png in Resources */,
 				3088BBC2154F3926009F9C59 /* Default~iphone.png in Resources */,
+				65BDA380166444E900142D6D /* Default-Portrait~ipad.png in Resources */,
+				65BDA3821664456400142D6D /* Default-Landscape~ipad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

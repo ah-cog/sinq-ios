@@ -65,26 +65,34 @@
                 -->
 
 
-                <a id="dashboard_header_discover" href="javascript:void(0);">
+                <!-- <a id="dashboard_header_discover" href="javascript:void(0);">
                     <div id="navigation-button-discover" class="navigation-button">
-                        Discover
+                        <img id="dashboard_header_logo" src="./assets/img/sinq_logo.png" height="30" />
+                    </div>
+                </a> -->
+                <a id="dashboard_header_discover" href="javascript:void(0);">
+                    <div id="navigation-button-question" class="navigation-button">
+                        <img id="dashboard_header_logo" src="./assets/img/sinq_logo.png" style="height: 40px; margin: -9px 0px 0px 0px;" />
+                        <!-- <img id="dashboard_header_logo" src="./assets/img/noun_project_7478.svg" style="width: 40px; height: 40px; margin-top: -10px; margin-bottom: -8px; margin-left: 10px;" />  -->
                     </div>
                 </a>
 
                 <a id="dashboard_header_question" href="javascript:void(0);">
                     <div id="navigation-button-question" class="navigation-button">
-                        Question
+                        <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_7455.svg" style="width: 40px; height: 40px; margin-top: -10px; margin-bottom: -8px; margin-left: 0px;" /> 
+                        <span style="margin-top: 0px;">Question</span>
                     </div>
                 </a>
 
                 <a id="dashboard_header_causeandeffect" href="javascript:void(0);">
                     <div id="navigation-button-causeandeffect" class="navigation-button">
-                        Cause & Effect
+                        <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_6344.svg" height="40" style="margin-top: -10px; margin-bottom: -8px; margin-left: 0px;" /> Cause/Effect
                     </div>
                 </a>
 
                 <a id="dashboard_header_investigation" href="javascript:void(0);">
                     <div id="navigation-button-investigation" class="navigation-button">
+                        <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_95.svg" height="40" style="margin-top: -10px; margin-bottom: -8px; margin-left: 0px;" /> 
                         Investigation
                     </div>
                 </a>
@@ -153,14 +161,13 @@
                 <div id="selected-question-content" class="selected-element-content">
                     <input id="selected-question-pk" name="selected-question-pk" type="hidden" value="" />
 
-                    <h1>Question</h1>
-                    <p id="selected-question-text"></p>
+                    <h1 id="selected-question-text" style="font-size: 36px; margin: 25px 5px 35px 5px;"></h1>
 
                     <div class="scroller">
                         <div id="question-horizontalWrapper">
                             <div id="question-horizontalScroller">
                                 <ul id="selected-question-images">
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                    <!-- <li><img src="http://placehold.it/200x200" alt="Question Image" /></li> -->
                                 </ul>
                             </div>
                         </div>
@@ -177,6 +184,9 @@
                             <div class="navigation-button element-attach-causeandeffect-button">
                                 Cause & Effect
                             </div>
+                           <!--  <div id="navigation-button-causeandeffect" class="navigation-button">
+                                <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_6344.svg" height="40" style="margin-top: -10px; margin-bottom: -8px; margin-left: 5px;" /> Cause & Effect
+                            </div> -->
                         </a>
 
                         <a id="selected-question-add-investigation">
@@ -197,10 +207,14 @@
 
                 <form id="create-question-form">
 
-                    <div data-role="fieldcontain" class="ui-hide-label">
+                    <div id="question_text_fieldcontain" data-role="fieldcontain" class="ui-hide-label">
                         <h2>What do you wonder about?</h2>
                         <label for="question_text">Type your question below:</label>
                         <input id="question_text" name="question_text" type="text" placeholder="Touch this box to type your question." style="font-size: 18pt;" />
+                    </div>
+
+                    <div class="spacer">
+                        &nbsp;
                     </div>
 
                     <div data-role="fieldcontain">
@@ -229,13 +243,22 @@
             <div id="create-causeandeffect-section" data-role="none" class="create-element-section">
 
                 <form id="create-causeandeffect-form">
-                <!-- <form action="/sinq/questions/create/" method="post"> -->
 
                     <input id="question_id" name="question_id" type="hidden" value="" />
 
-                    <div data-role="fieldcontain" class="ui-hide-label">
-                        <h2>What is the cause?</h2>
-                        <label for="question_text">Type your question below:</label>
+                    <div id="effect_text_fieldcontain" data-role="fieldcontain" class="ui-hide-label">
+                        <h2>What do you notice?</h2>
+                        <label for="effect_text">Type your question below:</label>
+                        <input id="effect_text" name="effect_text" type="text" placeholder="Touch this box to type the effect." style="font-size: 18pt;" />
+                    </div>
+
+                    <div class="spacer">
+                        <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_6344.svg" height="50" style="margin-top: -10px; margin-bottom: -15px; margin-left: 10px;" /> 
+                    </div>
+
+                    <div id="cause_text_fieldcontain" data-role="fieldcontain" class="ui-hide-label">
+                        <h2>Why do you think it happened?</h2>
+                        <label for="cause_text">Type your question below:</label>
                         <input id="cause_text" name="cause_text" type="text" placeholder="Touch this box to type the cause." style="font-size: 18pt;" />
                     </div>
 
@@ -243,19 +266,11 @@
                         &nbsp;
                     </div>
 
-                    <div data-role="fieldcontain" class="ui-hide-label">
-                        <h2>What is the effect?</h2>
-                        <label for="question_text">Type your question below:</label>
-                        <input id="effect_text" name="effect_text" type="text" placeholder="Touch this box to type the effect." style="font-size: 18pt;" />
-                    </div>
-
-                    <!--
                     <div data-role="fieldcontain">
                         <h2>Snap a photo.</h2>
                         <p><a href="javascript:void(0);" data-theme="a" id="effect_snap_photo" onclick="captureCauseAndEffectPhotoToURI();" data-role="button">Snap a photo!</a></p>
                         <img style="display: none; width: 200px; height: 200px;" id="cause-and-effect-photo" src="" />
                     </div>
-                    -->
 
                 </form>
             </div>
@@ -268,49 +283,21 @@
                     <h2 id="selected-causeandeffect-cause"></h2>
 
                     <div class="spacer">
-                        &nbsp;
+                        <img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_6344.svg" height="50" style="margin-top: -10px; margin-bottom: -15px; margin-left: 10px;" /> 
                     </div>
 
                     <h1>Effect</h1>
 
                     <h2 id="selected-causeandeffect-effect"></h2>
 
-                    <!--
                     <div class="scroller">
                         <div id="causeandeffect-horizontalWrapper">
                             <div id="causeandeffect-horizontalScroller">
-                                <ul>
-                                    <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Cause and Effect Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
-                                    <li><img src="http://placehold.it/200x200" alt="Question Image" /></li>
+                                <ul id="selected-causeandeffect-images">
                                 </ul>
                             </div>
                         </div>
                     </div>
-                    -->
                 </div>
 
                 <div id="selected-causeandeffect-options" class="selected-element-options">
@@ -341,6 +328,7 @@
 
 
             <div id="create-investigation-section" data-role="none" class="create-element-section">
+
                 <form id="create-investigation-form">
 
                     <!--
@@ -352,7 +340,7 @@
                     -->
 
                     <div data-role="fieldcontain" class="ui-hide-label">
-                        <h2>What are the steps?</h2>
+                        <h2>How do you do find out?</h2>
                     </div>
 
                     <div id="create-investigation-steps">

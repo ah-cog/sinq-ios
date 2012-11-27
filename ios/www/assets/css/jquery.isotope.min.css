@@ -168,7 +168,7 @@ body {
 .element {
   width: 110px;
   height: 110px;
-  margin: 5px;
+  margin: 15px;
   float: left;
   overflow: hidden;
   position: relative;

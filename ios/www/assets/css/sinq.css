@@ -8,98 +8,74 @@
 }
 
 .homepage {
+  background-color: #ff0000;
   background-image: url('./assets/img/graph_paper_background.gif');
 }
 
-
-
-
-#to_cool {
-  font-size: 180px;
-  font-family: 'Monoton', sans-serif;
-  line-height: 220px;
-  font-weight: bold;
-  height: 300px;
-  color: rgb(255,141,255);
-  width: 1160px;
-  position: absolute;
-  left: 100px;
-  transition: text-indent .3s ease-in;
-    -o-transition: text-indent .3s ease-in;
-    -moz-transition: text-indent .3s ease-in;
-    -webkit-transition: text-indent .3s linear;
-}
-
-#to_cool canvas {
-  position: absolute;
-  top: 5px;
-  left: 0;
-}
-
-#to_cool.active {
-  text-indent: -15px;
-}
-
-
-
-
+/**
+ * Navigation buttons
+ */
 
 #navigation-button-list {
   padding: 8px;
-  margin-bottom: -1px;
+  margin-top: -1px;
+  margin-bottom: 0px;
   background-color: #ffffff;
-  height: 105px;
+  height: 85px;
 }
 
 .navigation-button {
   float: left;
-  margin-right: 13px;
-  padding: 22px 10px 0px 10px;  
+  margin-top: 8px;
+  margin-right: 10px;
+  padding: 22px 0px 0px 0px;  
 
-  width: 210px;
+  /*width: 210px;*/
   height: 50px;
 
   color: #333;
-  font-size: 36px;
+  font-size: 28px;
   font-family: 'Raleway', sans-serif;
   font-style: none;
   text-shadow: none;
-  font-weight: 100;
+  font-weight: 400;
 }
 
 #navigation-button-discover {
-  background-color: #333;
+  background-color: #fff;
   height: 90px;
+  margin-top: -20px;
+  margin-right: 10px;
 
   color: #ddd;
 
-  -moz-box-shadow: -2px 2px yellow, -4px 4px green, -6px 6px red;
+  /*-moz-box-shadow: -2px 2px yellow, -4px 4px green, -6px 6px red;
   -webkit-box-shadow: -2px 2px yellow, -4px 4px green, -6px 6px red;
-  box-shadow: -2px 2px yellow, -4px 4px green, -6px 6px red;
+  box-shadow: -2px 2px yellow, -4px 4px green, -6px 6px red;*/
 }
 
 #navigation-button-question {
-  background-color: #0653f4;
+  /*background-color: #0653f4;
 
   -moz-box-shadow: -6px 6px #54bef9;
   -webkit-box-shadow: -6px 6px #54bef9;
-  box-shadow: -6px 6px #54bef9;
+  box-shadow: -6px 6px #54bef9;*/
 }
 
 #navigation-button-causeandeffect {
-  background-color: #28c565;
+  /*background-color: #28c565;
 
   -moz-box-shadow: -6px 6px #b1e583;
   -webkit-box-shadow: -6px 6px #b1e583;
-  box-shadow: -6px 6px #b1e583;
+  box-shadow: -6px 6px #b1e583;*/
 }
 
 #navigation-button-investigation {
-  background-color: #c2314e;
+  /*background-color: #c2314e;
 
   -moz-box-shadow: -6px 6px #fb6e69;
   -webkit-box-shadow: -6px 6px #fb6e69;
-  box-shadow: -6px 6px #fb6e69;
+  box-shadow: -6px 6px #fb6e69;*/
 }
 
 
@@ -204,6 +180,17 @@
     text-shadow: none;
     margin-bottom: 10px;
 }
+
+/*@media all and (max-width: 50em) {
+  .my-breakpoint .ui-block-a, 
+  .my-breakpoint .ui-block-b, 
+  .my-breakpoint .ui-block-c,
+  .my-breakpoint .ui-block-d,
+  .my-breakpoint .ui-block-e { 
+    width: 100%; 
+    float:none; 
+  }
+}*/
 
 /**
  * Chosen element section
@@ -313,7 +300,7 @@
 
 #selected-question-element .spacer,
 #create-question-section .spacer {
-  background-color: #b1e583;
+  background-color: #54bef9;
 }
 
 /**
@@ -471,7 +458,7 @@
 }
 
 .causeandeffect .effect {
-  top: 3.8em;
+  top: 4.9em;
   left: 0.5em;
   /*bottom: 1.6em;*/
   font-size: 1.05em;
@@ -589,7 +576,7 @@
 #question-horizontalScroller {
   width: 3240px;  /* max number scroll elements + 1 times their width */
   height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
-  background-color: #0f0;
+  background-color: #333;
 }
 
 #question-horizontalScroller li {
@@ -608,7 +595,7 @@
 #causeandeffect-horizontalScroller {
   width: 3240px;  /* max number scroll elements + 1 times their width */
   height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
-  background-color: #0f0;
+  background-color: #333;
 }
 
 #causeandeffect-horizontalScroller li {
@@ -627,7 +614,7 @@
 #investigation-horizontalScroller {
   width: 3240px;  /* max number scroll elements + 1 times their width */
   height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
-  background-color: #0f0;
+  background-color: #333;
 }
 
 #investigation-horizontalScroller li {
