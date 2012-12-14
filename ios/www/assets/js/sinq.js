@@ -15,8 +15,8 @@
 //    http://patorjk.com/software/taag/
 
 // SINQ server URL
-var serverUrl = 'http://10.10.0.141';
-// var serverUrl = 'http://129.2.101.49';
+// var serverUrl = 'http://10.10.0.141';
+var serverUrl = 'http://129.2.101.49';
 
 /*
  if (location.host == 'localhost') {
@@ -62,7 +62,7 @@ var serverUrl = 'http://10.10.0.141';
                 //var date = $elem.hasClass('element') ? $elem.find('.number').text() : $elem.attr('data-number');
                 var date = $elem.attr('data-date-last-modified');
                 return date;
-            },
+            }
         }
     });
 
@@ -194,17 +194,17 @@ var serverUrl = 'http://10.10.0.141';
         if (create_investigation_step_counter == 1) {
             placeholderText = 'Touch here to type the what to do first.';
         }
-        var step_div 
-            = '<div id="create-investigation-step-' + create_investigation_step_counter + '" class="create-investigation-step" data-investigation-step-number="' + create_investigation_step_counter + '">'
-                    + '<div data-role="fieldcontain" class="ui-hide-label">'
-                        + '<h2>Step ' + create_investigation_step_counter + '</h2>'
-                        + '<label for="investigation-step-' + create_investigation_step_counter + '-text">Type step ' + create_investigation_step_counter + ' below:</label>'
-                        + '<input id="investigation-step-' + create_investigation_step_counter + '-text" name="investigation-step-' + create_investigation_step_counter + '-text" type="text" placeholder="' + placeholderText + '" style="font-size: 18pt;" />'
-                    + '</div>'
-                + '</div>'
-            + '</div>'
+        var step_div = 
+            '<div id="create-investigation-step-' + create_investigation_step_counter + '" class="create-investigation-step" data-investigation-step-number="' + create_investigation_step_counter + '">' +
+                '<div data-role="fieldcontain" class="ui-hide-label">' +
+                        '<h2>Step ' + create_investigation_step_counter + '</h2>' +
+                        '<label for="investigation-step-' + create_investigation_step_counter + '-text">Type step ' + create_investigation_step_counter + ' below:</label>' +
+                        '<input id="investigation-step-' + create_investigation_step_counter + '-text" name="investigation-step-' + create_investigation_step_counter + '-text" type="text" placeholder="' + placeholderText + '" style="font-size: 18pt;" />' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
 
-            + '<div class="spacer">&nbsp;</div>';
+            '<div class="spacer">&nbsp;</div>';
         create_investigation_step_counter++;
         $('#create-investigation-steps').append(step_div).trigger('create'); // Trigger "create" event to make jQuery Mobile initialize the new markup
     });
@@ -359,9 +359,9 @@ var serverUrl = 'http://10.10.0.141';
 
 
 
-var local_questions       = new Array();
-var local_causeandeffects = new Array();
-var local_investigations  = new Array();
+var local_questions       = [];
+var local_causeandeffects = [];
+var local_investigations  = [];
 
 // if(typeof(Storage) !== "undefined") {
 //     // localStorage and sessionStorage are supported.
@@ -411,7 +411,7 @@ function init_iScroll() {
 var pictureSource;   // picture source
 var destinationType; // sets the format of returned value
 
-var pictureUriCache = new Array();
+var pictureUriCache = [];
 
 // Wait for Cordova to connect with the device
 //
@@ -492,7 +492,7 @@ function onCauseAndEffectPhotoURISuccess(imageURI) {
     // alert(imageURI);
 
     // Cache image URI globally for later upload (upon form submit)
-    pictureUriCache['causeandeffect'] = imageURI;
+    pictureUriCache.causeandeffect = imageURI;
     
     // Get image handle
     //
@@ -505,7 +505,7 @@ function onCauseAndEffectPhotoURISuccess(imageURI) {
     // Show the captured photo
     // The inline CSS rules are used to resize the image
     //
-    cause_and_effect_photo.src = pictureUriCache['causeandeffect'];
+    cause_and_effect_photo.src = pictureUriCache.causeandeffect;
 }
 
 // Called when a photo is successfully retrieved
@@ -515,7 +515,7 @@ function onQuestionPhotoURISuccess(imageURI) {
     // console.log(imageURI);
 
     // Cache image URI globally for later upload (upon form submit)
-    pictureUriCache['question'] = imageURI;
+    pictureUriCache.question = imageURI;
     
     // Get image handle
     //
@@ -528,7 +528,7 @@ function onQuestionPhotoURISuccess(imageURI) {
     // Show the captured photo
     // The inline CSS rules are used to resize the image
     //
-    question_photo.src = pictureUriCache['question'];
+    question_photo.src = pictureUriCache.question;
 }
 
 // Called when a photo is successfully retrieved
@@ -538,7 +538,7 @@ function onInvestigationPhotoURISuccess(imageURI) {
     // console.log(imageURI);
 
     // Cache image URI globally for later upload (upon form submit)
-    pictureUriCache['investigation'] = imageURI;
+    pictureUriCache.investigation = imageURI;
     
     // Get image handle
     //
@@ -551,7 +551,7 @@ function onInvestigationPhotoURISuccess(imageURI) {
     // Show the captured photo
     // The inline CSS rules are used to resize the image
     //
-    investigation_photo.src = pictureUriCache['investigation'];
+    investigation_photo.src = pictureUriCache.investigation;
 }
 
 // Called if something bad happens.
@@ -696,14 +696,14 @@ function onCauseAndEffectClick(pk) {
     // Set options for selected elements
     var options = {};
 
-    options['causeandeffect_id'] = pk;
+    options.causeandeffect_id = pk;
     
     if( $('#selected-question-element').is(':visible') ) {
-        options['question_id'] = $('#selected-question-pk').val();
+        options.question_id = $('#selected-question-pk').val();
     }
 
     if( $('#selected-investigation-element').is(':visible') ) {
-        options['investigation_id'] = $('#selected-investigation-pk').val();
+        options.investigation_id = $('#selected-investigation-pk').val();
     }
 
     loadQuestions(options);
@@ -785,7 +785,7 @@ function loadCauseAndEffects(options) {
                     local_causeandeffects[datum.pk]['images'] = new Array();
                 }
 
-                var item = '<div id="causeandeffect_' + datum.pk + '" class="causeandeffect causeandeffect-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".causeandeffect-' + datum.pk + '" data-date-created="' + datum.fields.date_created + '" data-date-last-modified="' + datum.fields.date_last_modified + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #28c565; background-image:url(\'\');">'
+                item = '<div id="causeandeffect_' + datum.pk + '" class="causeandeffect causeandeffect-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".causeandeffect-' + datum.pk + '" data-date-created="' + datum.fields.date_created + '" data-date-last-modified="' + datum.fields.date_last_modified + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #28c565; background-image:url(\'\');">'
                             + '<a href="javascript:onCauseAndEffectClick(' + datum.pk + ');" data-option-value=".causeandeffect-' + datum.pk + '">'
                             + '<div id="causeandeffect-' + datum.pk + '-image" style="background-size: cover; width: 230px; height: 230px; border: 1px solid #30a382; padding: 0px; margin: 0px;">'
                                 + '<h2 class="cause">' + datum.fields.cause + '</h2>'
@@ -1092,7 +1092,7 @@ function storeQuestion() {
 
             // Attach photo to question
             if ($("#question-photo").attr('src') !== '') {
-                alert('Attaching photo to question ' + responseData[0].pk + '.');
+                // alert('Attaching photo to question ' + responseData[0].pk + '.');
                 var question_pk = parseInt(responseData[0].pk);
                 storeQuestionImage(question_pk);
             }
