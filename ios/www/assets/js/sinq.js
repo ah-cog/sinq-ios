@@ -17,6 +17,7 @@
 // SINQ server URL
 // var serverUrl = 'http://10.10.0.141';
 var serverUrl = 'http://129.2.101.49';
+// var serverUrl = '192.168.1.141';
 
 /*
  if (location.host == 'localhost') {
@@ -47,20 +48,19 @@ var serverUrl = 'http://129.2.101.49';
         sortBy: 'dateLastModified',
         sortAscending: false,
         getSortData: {
-            number: function( $elem ) {
-                var number = $elem.hasClass('element') ? 
-                    $elem.find('.number').text() :
-                    $elem.attr('data-number');
+            number: function( elem ) {
+                var number = elem.hasClass('element') ? 
+                    elem.find('.number').text() :
+                    elem.attr('data-number');
                 return parseInt( number, 10 );
             },
-            alphabetical: function( $elem ) {
-                var text = $elem.find('.text'),
-                itemText = name.length ? text : $elem;
+            alphabetical: function(elem) {
+                var text = elem.find('.text'),
+                itemText = name.length ? text : elem;
                 return itemText.text();
             },
-            dateLastModified: function( $elem ) {
-                //var date = $elem.hasClass('element') ? $elem.find('.number').text() : $elem.attr('data-number');
-                var date = $elem.attr('data-date-last-modified');
+            dateLastModified: function(elem) {
+                var date = elem.attr('data-date-last-modified');
                 return date;
             }
         }
@@ -718,11 +718,15 @@ function onCauseAndEffectClick(pk) {
 
             // Add photos to scroller
             $('#selected-causeandeffect-images').html('');
-            var causeAndEffectImages = local_causeandeffects[pk]['images'];
-            for (causeandeffect_image_pk in causeAndEffectImages) {
-                var imageUrl = serverUrl + '/media/' + causeAndEffectImages[causeandeffect_image_pk].fields.image;
-                var imageItem = '<li><div style="background-size: cover; width: 200px; height: 200px; border: 0px solid #54bef9; padding: 0px; margin: 0px; background-image: url(\'' + imageUrl + '\');"></div></li>';
-                $('#selected-causeandeffect-images').append(imageItem);
+            if(local_causeandeffects[pk].images.length > 0) {
+                $('#causeandeffect-image-section').show();
+                for (var causeandeffect_image_pk in local_causeandeffects[pk].images) {
+                    var imageUrl = serverUrl + '/media/' + local_causeandeffects[pk].images[causeandeffect_image_pk].fields.image;
+                    var imageItem = '<li><div style="background-size: cover; width: 200px; height: 200px; border: 0px solid #54bef9; padding: 0px; margin: 0px; background-image: url(\'' + imageUrl + '\');"></div></li>';
+                    $('#selected-causeandeffect-images').append(imageItem);
+                }
+            } else {
+                $('#causeandeffect-image-section').hide();
             }
 
             // Initialize iScroll element
@@ -752,11 +756,11 @@ function loadCauseAndEffects(options) {
 
     // Construt URI
     var requestUri = serverUrl + "/sinq/api/causeandeffects/?format=json";
-    if (options['question_id'] !== undefined) {
-        requestUri = requestUri + "&question_id=" + options['question_id'];
+    if (options.question_id !== undefined) {
+        requestUri = requestUri + "&question_id=" + options.question_id;
     }
-    if (options['investigation_id'] !== undefined) {
-        requestUri = requestUri + "&investigation_id=" + options['investigation_id'];
+    if (options.investigation_id !== undefined) {
+        requestUri = requestUri + "&investigation_id=" + options.investigation_id;
     }
 
 
@@ -776,26 +780,26 @@ function loadCauseAndEffects(options) {
             var item_ids = [];
 
             // Create HTML markup for retreived questions and add to a list
-            for ( var i=0, len = data.length; i < len; i++ ) {
+            for (var i = 0, len = data.length; i < len; i++) {
                 datum = data[i];
 
                 // Create or update locally cached copy
                 local_causeandeffects[datum.pk] = datum;
                 if(!local_causeandeffects[datum.pk].hasOwnProperty('images')) {
-                    local_causeandeffects[datum.pk]['images'] = new Array();
+                    local_causeandeffects[datum.pk].images = [];
                 }
 
-                item = '<div id="causeandeffect_' + datum.pk + '" class="causeandeffect causeandeffect-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".causeandeffect-' + datum.pk + '" data-date-created="' + datum.fields.date_created + '" data-date-last-modified="' + datum.fields.date_last_modified + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #28c565; background-image:url(\'\');">'
-                            + '<a href="javascript:onCauseAndEffectClick(' + datum.pk + ');" data-option-value=".causeandeffect-' + datum.pk + '">'
-                            + '<div id="causeandeffect-' + datum.pk + '-image" style="background-size: cover; width: 230px; height: 230px; border: 1px solid #30a382; padding: 0px; margin: 0px;">'
-                                + '<h2 class="cause">' + datum.fields.cause + '</h2>'
-                                + '<div style="background-color: #b1e583; width: 224px; top: 4.2em; left: 0.5em; margin: 0px -14px 0px -14px; border-right: 6px solid #ffffff; height: 10px;">'
-                                    + '<img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_6344.svg" height="30" style="margin-top: -10px; margin-bottom: -15px; margin-left: 10px;" />'
-                                + '</div>'
-                                + '<h2 class="effect">' + datum.fields.effect + '</h2>'
-                            + '</div>'
-                            + '</a>'
-                        + '</div>';
+                item = '<div id="causeandeffect_' + datum.pk + '" class="causeandeffect causeandeffect-' + datum.pk + ' element feature  width2 height2" data-option-key="filter" data-option-value=".causeandeffect-' + datum.pk + '" data-date-created="' + datum.fields.date_created + '" data-date-last-modified="' + datum.fields.date_last_modified + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #28c565; background-image:url(\'\');">' +
+                            '<a href="javascript:onCauseAndEffectClick(' + datum.pk + ');" data-option-value=".causeandeffect-' + datum.pk + '">' +
+                            '<div id="causeandeffect-' + datum.pk + '-image" style="background-size: cover; width: 230px; height: 230px; border: 1px solid #30a382; padding: 0px; margin: 0px;">' +
+                                    '<h2 class="cause">' + datum.fields.cause + '</h2>' +
+                                    '<div style="background-color: #b1e583; width: 224px; top: 4.2em; left: 0.5em; margin: 0px -14px 0px -14px; border-right: 6px solid #ffffff; height: 10px;">' +
+                                    '<img id="selected-causeandeffect-add-photo" src="./assets/img/noun_project_6344.svg" height="30" style="margin-top: -10px; margin-bottom: -15px; margin-left: 10px;" />' +
+                                '</div>' +
+                                '<h2 class="effect">' + datum.fields.effect + '</h2>' +
+                            '</div>' +
+                            '</a>' +
+                        '</div>';
 
                 items.push( item );
                 item_ids.push( datum.pk );
@@ -825,7 +829,7 @@ function loadCauseAndEffects(options) {
             });
 
             // Request images
-            for(var i = 0   , len = item_ids.length; i < len; i++) {
+            for(var i = 0, len = item_ids.length; i < len; i++) {
                 loadCauseAndEffectImages(item_ids[i]);
             }
         }
@@ -839,20 +843,21 @@ function loadCauseAndEffectImages(pk) {
     $.ajax({
        type: "GET",
        url: serverUrl + "/sinq/api/causeandeffects/" + pk + "/images/?format=json",
-       // data: ({name: theName}),
        cache: false,
        success: function(responseData) {
-           for(i in responseData) {
-               var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
-               // alert(imageUrl);
-               //$('#question_' + pk + '_image').attr('src', imageUrl); // Reset all contents
-               $('#causeandeffect-' + pk + '-image').css('background-image', 'url(' + imageUrl + ')'); // Reset all contents
-               //$('#question_images').append('<img src="' + imageUrl + '" width="320" height="240" />');
+            for(var i in responseData) {
+                if (responseData.hasOwnProperty(i)) {
+                    var imageUrl = serverUrl + '/media/' + responseData[i].fields.image;
+                    // alert(imageUrl);
+                    //$('#question_' + pk + '_image').attr('src', imageUrl); // Reset all contents
+                    $('#causeandeffect-' + pk + '-image').css('background-image', 'url(' + imageUrl + ')'); // Reset all contents
+                    //$('#question_images').append('<img src="' + imageUrl + '" width="320" height="240" />');
 
-               // Create or update locally cached copy
-               local_causeandeffects[pk]['images'][responseData[i].pk] = responseData[i];
-           }
-       }
+                    // Create or update locally cached copy
+                    local_causeandeffects[pk].images[responseData[i].pk] = responseData[i];
+                }
+            }
+        }
     });
 }
 
@@ -866,13 +871,13 @@ function storeCauseAndEffect() {
     var effect_text = $('#effect_text').val();
 
     // Validate form
-    if(cause_text == '' || effect_text == '') {
+    if(cause_text === '' || effect_text === '') {
         alert("You have to snap a photo and type a cause and effect.");
         return;
     }
 
     // Serialize data in JSON format
-    var causeandeffect = new Object();
+    var causeandeffect = {};
 
     // Get question pk if a question is selected and visible
     if( $('#selected-question-element').is(':visible') ) {
@@ -887,7 +892,7 @@ function storeCauseAndEffect() {
     causeandeffect.cause_text = cause_text;
     causeandeffect.effect_text = effect_text;
 
-    var data = new Object(); // "Wrapper object" for cause-and-effect to be sent to server.
+    var data = {}; // "Wrapper object" for cause-and-effect to be sent to server.
     data.causeandeffect = causeandeffect;
 
     var causeandeffect_json = JSON.stringify(data);
@@ -927,7 +932,7 @@ function storeCauseAndEffect() {
             // Attach photo to question
             if ($("#cause-and-effect-photo").attr('src') !== '') {
                 // alert('Attaching photo to causeandeffect ' + responseData[0].pk + '.');
-                var causeandeffect_pk = parseInt(responseData[0].pk);
+                var causeandeffect_pk = parseInt(responseData[0].pk, 10);
                 storeCauseAndEffectImage(causeandeffect_pk);
             }
 
@@ -954,7 +959,7 @@ function storeCauseAndEffectImage(causeandeffect_pk) {
     
     var options2 = new FileUploadOptions();
     options2.fileKey = "causeandeffect_image"; // parameter name of file -- in POST data?
-    options2.fileName = pictureUriCache['causeandeffect'].substr(pictureUriCache['causeandeffect'].lastIndexOf('/') + 1); // name of file
+    options2.fileName = pictureUriCache.causeandeffect.substr(pictureUriCache.causeandeffect.lastIndexOf('/') + 1); // name of file
     options2.mimeType = "image/jpeg";
 
     // alert("b");
@@ -963,10 +968,10 @@ function storeCauseAndEffectImage(causeandeffect_pk) {
     // alert("c - " + pictureUriCache['causeandeffect'] + " { TO } " + requestUri);
     // cause_and_effect_photo.src = pictureUriCache['causeandeffect'];
     var ft2 = new FileTransfer();
-    ft2.upload(pictureUriCache['causeandeffect'], requestUri, success, fail, options2);
+    ft2.upload(pictureUriCache.causeandeffect, requestUri, success, fail, options2);
 
     // Reset image URI
-    pictureUriCache['causeandeffect'] = '';
+    pictureUriCache.causeandeffect = '';
 }
 
 //  _____                     _   _             _   _             
@@ -981,13 +986,13 @@ function storeCauseAndEffectImage(causeandeffect_pk) {
 function storeInvestigation() {
     // Get form data
     //var question_id = $('#question_id').val();
-    var investigation_steps = new Array();
+    var investigation_steps = [];
 
     var investigation_step_elements = $('#create-investigation-steps').children('.create-investigation-step');
 
     investigation_step_elements.each(function(index) {
         // alert( $(this).html() );
-        var investigation_step = new Object();
+        var investigation_step = {};
 
         investigation_step.number = $(this).data('investigation-step-number');
         investigation_step.text = $('#investigation-step-' + investigation_step.number + '-text').val();
@@ -1002,7 +1007,7 @@ function storeInvestigation() {
     // }
 
     // Serialize data in JSON format
-    var investigation = new Object();
+    var investigation = {};
     // if (question_id != '') {
     //     hypothesis.question_id = question_id;
     //     alert('has question id');
@@ -1019,7 +1024,7 @@ function storeInvestigation() {
         investigation.causeandeffect_id = $('#selected-causeandeffect-pk').val();
     }
 
-    var data = new Object(); // "Wrapper object" for investigation to be sent to server.
+    var data = {}; // "Wrapper object" for investigation to be sent to server.
     data.investigation = investigation;
 
     var investigation_json = JSON.stringify(data);
@@ -1058,12 +1063,12 @@ function storeQuestion() {
     var question_text = $('#question_text').val();
 
     // // Validate form
-    if(question_text == '') {
+    if(question_text === '') {
         showMessage("You have to snap a photo and type a question.");
     }
 
     // Serialize data in JSON format
-    var question = new Object();
+    var question = {};
     question.text = question_text;
 
     // Get cause-and-effect pk if a cause-and-effect is selected and visible
@@ -1076,7 +1081,7 @@ function storeQuestion() {
         question.investigation_id = $('#selected-investigation-pk').val();
     }
 
-    var data = new Object();
+    var data = {};
     data.question = question;
 
     var question_json = JSON.stringify(data);
@@ -1093,7 +1098,7 @@ function storeQuestion() {
             // Attach photo to question
             if ($("#question-photo").attr('src') !== '') {
                 // alert('Attaching photo to question ' + responseData[0].pk + '.');
-                var question_pk = parseInt(responseData[0].pk);
+                var question_pk = parseInt(responseData[0].pk, 10);
                 storeQuestionImage(question_pk);
             }
 
@@ -1128,7 +1133,7 @@ function storeQuestionImage(question_pk) {
     
     var options = new FileUploadOptions();
     options.fileKey = "question_image"; // parameter name of file -- in POST data?
-    options.fileName = pictureUriCache['question'].substr(pictureUriCache['question'].lastIndexOf('/') + 1); // name of file
+    options.fileName = pictureUriCache.question.substr(pictureUriCache.question.lastIndexOf('/') + 1); // name of file
     options.mimeType = "image/jpeg";
 
     // alert(pictureUriCache['question']);
@@ -1137,10 +1142,10 @@ function storeQuestionImage(question_pk) {
     // alert(requestUri);
 
     var ft = new FileTransfer();
-    ft.upload(pictureUriCache['question'], requestUri, success, fail, options);
+    ft.upload(pictureUriCache.question, requestUri, success, fail, options);
 
     // Reset image URI
-    pictureUriCache['question'] = '';
+    pictureUriCache.question = '';
 }
 
 function loadQuestions(options) {
@@ -1148,11 +1153,11 @@ function loadQuestions(options) {
 
     // Construt URI
     var requestUri = serverUrl + "/sinq/api/questions/?format=json";
-    if (options['causeandeffect_id'] !== undefined) {
-        requestUri = requestUri + "&causeandeffect_id=" + options['causeandeffect_id'];
+    if (options.causeandeffect_id !== undefined) {
+        requestUri = requestUri + "&causeandeffect_id=" + options.causeandeffect_id;
     }
-    if (options['investigation_id'] !== undefined) {
-        requestUri = requestUri + "&investigation_id=" + options['investigation_id'];
+    if (options.investigation_id !== undefined) {
+        requestUri = requestUri + "&investigation_id=" + options.investigation_id;
     }
 
     $.ajax({
@@ -1177,21 +1182,21 @@ function loadQuestions(options) {
                 // Create or update locally cached copy
                 local_questions[datum.pk] = datum;
                 if(!local_questions[datum.pk].hasOwnProperty('images')) {
-                    local_questions[datum.pk]['images'] = new Array();
+                    local_questions[datum.pk].images = [];
                 }
 
                 // Create HTML element to show in Isotope container
-                var item = '<div id="question_' + datum.pk + '" class="question question-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-date-created="' + datum.fields.date_created + '" data-date-last-modified="' + datum.fields.date_last_modified + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #0653f4; background-image:url(\'\');">'
-                            + '<a href="javascript:onQuestionClick(' + datum.pk + ');" data-option-value=".question-' + datum.pk + '">'
-                            + '<div id="question-' + datum.pk + '-image" style="background-size: cover; width: 230px; height: 230px; border: 0px solid #54bef9; padding: 0px; margin: 0px;">'
-                                + '<h2 class="text">' 
-                                    + '<span style="color: white; /*font: normal 24px/45px Helvetica, Sans-Serif;*/ letter-spacing: 0px; background: rgb(0, 0, 0); /* fallback color */ background: rgba(0, 0, 0, 0.5); padding: 5px; margin: -15px -15px 0px -15px;">'
-                                        + datum.fields.text
-                                    + '</span>'
-                                + '</h2>'
-                            + '</div>'
-                            + '</a>'
-                        + '</div>';
+                var item = '<div id="question_' + datum.pk + '" class="question question-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-date-created="' + datum.fields.date_created + '" data-date-last-modified="' + datum.fields.date_last_modified + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #0653f4; background-image:url(\'\');">' +
+                            '<a href="javascript:onQuestionClick(' + datum.pk + ');" data-option-value=".question-' + datum.pk + '">' +
+                            '<div id="question-' + datum.pk + '-image" style="background-size: cover; width: 230px; height: 230px; border: 0px solid #54bef9; padding: 0px; margin: 0px;">' +
+                                '<h2 class="text">' +
+                                    '<span style="color: white; /*font: normal 24px/45px Helvetica, Sans-Serif;*/ letter-spacing: 0px; background: rgb(0, 0, 0); /* fallback color */ background: rgba(0, 0, 0, 0.5); padding: 5px; margin: -15px -15px 0px -15px;">' +
+                                        datum.fields.text +
+                                    '</span>' +
+                                '</h2>' +
+                            '</div>' +
+                            '</a>' +
+                        '</div>';
 
                 items.push( item );
                 item_ids.push( datum.pk );
@@ -1243,7 +1248,7 @@ function loadQuestionImages(pk) {
                //$('#question_images').append('<img src="' + imageUrl + '" width="320" height="240" />');
 
                 // Create or update locally cached copy
-                local_questions[pk]['images'][responseData[i].pk] = responseData[i];
+                local_questions[pk].images[responseData[i].pk] = responseData[i];
            }
        }
     });
@@ -1254,11 +1259,11 @@ function loadInvestigations(options) {
 
     // Construt URI
     var requestUri = serverUrl + "/sinq/api/investigations/?format=json";
-    if (options['question_id'] !== undefined) {
-        requestUri = requestUri + "&question_id=" + options['question_id'];
+    if (options.question_id !== undefined) {
+        requestUri = requestUri + "&question_id=" + options.question_id;
     }
-    if (options['causeandeffect_id'] !== undefined) {
-        requestUri = requestUri + "&causeandeffect_id=" + options['causeandeffect_id'];
+    if (options.causeandeffect_id !== undefined) {
+        requestUri = requestUri + "&causeandeffect_id=" + options.causeandeffect_id;
     }
 
     $.ajax({
@@ -1286,17 +1291,17 @@ function loadInvestigations(options) {
                 // TODO: Move this.  Create function to give complete, empty datastructure (local and remote versions).
                 local_investigations[datum.pk] = datum;
                 if(!local_investigations[datum.pk].hasOwnProperty('steps')) {
-                    local_investigations[datum.pk]['steps'] = new Array();
+                    local_investigations[datum.pk].steps = [];
                 }
 
                 // Create HTML element to show in Isotope container
-                var item = '<div id="investigation_' + datum.pk + '" class="investigation investigation-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-date-created="' + datum.fields.date_created + '" data-date-last-modified="' + datum.fields.date_last_modified + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #c2314e; background-image:url(\'\');">'
-                            + '<a href="javascript:onInvestigationClick(' + datum.pk + ');" data-option-value=".investigation-' + datum.pk + '">'
-                            + '<div id="investigation-' + datum.pk + '-image" style="background-size: cover; width: 230px; height: 230px; border: 0px solid #54bef9; padding: 0px; margin: 0px;">'
+                var item = '<div id="investigation_' + datum.pk + '" class="investigation investigation-' + datum.pk + ' element feature width2 height2" data-option-key="filter" data-date-created="' + datum.fields.date_created + '" data-date-last-modified="' + datum.fields.date_last_modified + '" data-symbol="Mg" data-category="alkaline-earth" style="background-color: #c2314e; background-image:url(\'\');">' +
+                            '<a href="javascript:onInvestigationClick(' + datum.pk + ');" data-option-value=".investigation-' + datum.pk + '">' +
+                            '<div id="investigation-' + datum.pk + '-image" style="background-size: cover; width: 230px; height: 230px; border: 0px solid #54bef9; padding: 0px; margin: 0px;">' +
                                 // + '<h2 class="text">' + datum.fields.text + '</h2>'
-                            + '</div>'
-                            + '</a>'
-                        + '</div>';
+                            '</div>' +
+                            '</a>' +
+                        '</div>';
 
                 items.push( item );
                 item_ids.push( datum.pk );
@@ -1367,7 +1372,7 @@ function loadInvestigationSteps(investigation_pk) {
                 }
 
                 // Create or update locally cached copy
-                local_investigations[investigation_pk]['steps'][datum.pk] = datum;
+                local_investigations[investigation_pk].steps[datum.pk] = datum;
                 // alert(data[i].fields.number);
 
                 // Create HTML element to show in Isotope container
@@ -1375,15 +1380,15 @@ function loadInvestigationSteps(investigation_pk) {
 
                 if (i < stepPreviewMax) {
                     var stepItem
-                        = '<div style="position: relative;"><h2 style="position: relative; padding: 5px;">' + datum.fields.text + '</h2></div>'
-                        + '<div style="position: relative; background-color: #fb6e69; width: 224px; /*top: 4.2em;*/ left: 0.5em; margin: 0px -14px 0px -13px; border-right: 6px solid #ffffff; height: 10px;">&nbsp;</div>'
+                        = '<div style="position: relative;"><h2 style="position: relative; padding: 5px;">' + datum.fields.text + '</h2></div>' +
+                          '<div style="position: relative; background-color: #fb6e69; width: 224px; /*top: 4.2em;*/ left: 0.5em; margin: 0px -14px 0px -13px; border-right: 6px solid #ffffff; height: 10px;">&nbsp;</div>';
                     // $('#investigation-' + investigation_pk + '-image').append('' + datum.fields.number + '. ~~<br />');
                     $('#investigation-' + investigation_pk + '-image').append(stepItem);
                     // $('#selected-investigation-steps').append(item);
                 }
             }
 
-            var remainingStepCount = len - stepPreviewMax;
+            remainingStepCount = len - stepPreviewMax;
             if (remainingStepCount > 0) {
                 var stepItem
                         = '<div style="position: relative;"><h2 style="position: relative; padding: 5px;">...' + remainingStepCount + ' more steps</h2></div>';
@@ -1519,14 +1524,14 @@ function onQuestionClick(pk) {
     // Set options for selected elements
     var options = {};
 
-    options['question_id'] = pk;
+    options.question_id = pk;
 
     if( $('#selected-causeandeffect-element').is(':visible') ) {
-        options['causeandeffect_id'] = $('#selected-causeandeffect-pk').val();
+        options.causeandeffect_id = $('#selected-causeandeffect-pk').val();
     }
     
     if( $('#selected-investigation-element').is(':visible') ) {
-        options['investigation_id'] = $('#selected-investigation-pk').val();
+        options.investigation_id = $('#selected-investigation-pk').val();
     }
 
     loadCauseAndEffects(options);
@@ -1538,11 +1543,16 @@ function onQuestionClick(pk) {
 
             // Add photos to scroller
             $('#selected-question-images').html('');
-            var questionImages = local_questions[pk]['images'];
-            for (question_image_pk in questionImages) {
-                var imageUrl = serverUrl + '/media/' + questionImages[question_image_pk].fields.image;
-                var imageItem = '<li><div style="background-size: cover; width: 200px; height: 200px; border: 0px solid #54bef9; padding: 0px; margin: 0px; background-image: url(\'' + imageUrl + '\');"></div></li>';
-                $('#selected-question-images').append(imageItem);
+            var questionImages = local_questions[pk].images;
+            if(questionImages.length > 0) {
+                $('#question-image-section').show();
+                for (question_image_pk in questionImages) {
+                    var imageUrl = serverUrl + '/media/' + questionImages[question_image_pk].fields.image;
+                    var imageItem = '<li><div style="background-size: cover; width: 200px; height: 200px; border: 0px solid #54bef9; padding: 0px; margin: 0px; background-image: url(\'' + imageUrl + '\');"></div></li>';
+                    $('#selected-question-images').append(imageItem);
+                }
+            } else {
+                $('#question-image-section').hide();
             }
 
             // Initialize iScroll element
@@ -1618,14 +1628,14 @@ function onInvestigationClick(pk) {
     // Set options for selected elements
     var options = {};
 
-    options['investigation_id'] = pk;
+    options.investigation_id = pk;
     
     if( $('#selected-question-element').is(':visible') ) {
-        options['question_id'] = $('#selected-question-pk').val();
+        options.question_id = $('#selected-question-pk').val();
     }
 
     if( $('#selected-causeandeffect-element').is(':visible') ) {
-        options['causeandeffect_id'] = $('#selected-causeandeffect-pk').val();
+        options.causeandeffect_id = $('#selected-causeandeffect-pk').val();
     }
 
     loadQuestions(options);
@@ -1636,7 +1646,7 @@ function onInvestigationClick(pk) {
         $('#selected-investigation-element').slideDown('slow', function() {
 
             // Create HTML markup for retreived questions and add to a list
-            var investigationSteps = local_investigations[pk]['steps'];
+            var investigationSteps = local_investigations[pk].steps;
             var i = 0;
             var len = getObjectLength(investigationSteps);
             // var len = investigationSteps.length;

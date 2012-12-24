@@ -1,0 +1,647 @@
+$question-primary-color:         #0653f4;
+$question-secondary-color:       #54bef9;
+$question-tertiary-color:        #333333;
+$causeandeffect-primary-color:   #28c565;
+$causeandeffect-secondary-color: #b1e583;
+$caseandeffect-tertiary-color:   #333333;
+$investigation-primary-color:    #c2314e;
+$investigation-secondary-color:  #fb6e69;
+$investigation-tertiary-color:   #333333;
+
+.logo {
+    font-family: 'Raleway', cursive;
+    font-size: 60px;
+    color: #c2314e;
+    font-style: none;
+    font-weight: 400;
+    text-shadow: none;
+}
+
+.homepage {
+  background-color: #ffffff;
+  background-image: url('./assets/img/graph_paper_background.gif');
+}
+
+/**
+ * Navigation buttons
+ */
+
+#navigation-button-list {
+  padding: 8px;
+  margin-top: -1px;
+  margin-bottom: 0px;
+  background-color: #ffffff;
+  height: 85px;
+}
+
+.navigation-button {
+  float: left;
+  margin-top: 8px;
+  margin-right: 10px;
+  padding: 22px 0px 0px 0px;  
+
+  /*width: 210px;*/
+  height: 50px;
+
+  color: #333;
+  font-size: 28px;
+  font-family: 'Raleway', sans-serif;
+  font-style: none;
+  text-shadow: none;
+  font-weight: 400;
+}
+
+#navigation-button-discover {
+  background-color: #fff;
+  height: 90px;
+  margin-top: -20px;
+  margin-right: 10px;
+
+  color: #ddd;
+
+  /*-moz-box-shadow: -2px 2px yellow, -4px 4px green, -6px 6px red;
+  -webkit-box-shadow: -2px 2px yellow, -4px 4px green, -6px 6px red;
+  box-shadow: -2px 2px yellow, -4px 4px green, -6px 6px red;*/
+}
+
+#navigation-button-question {
+  /*background-color: #0653f4;
+
+  -moz-box-shadow: -6px 6px #54bef9;
+  -webkit-box-shadow: -6px 6px #54bef9;
+  box-shadow: -6px 6px #54bef9;*/
+}
+
+#navigation-button-causeandeffect {
+  /*background-color: #28c565;
+
+  -moz-box-shadow: -6px 6px #b1e583;
+  -webkit-box-shadow: -6px 6px #b1e583;
+  box-shadow: -6px 6px #b1e583;*/
+}
+
+#navigation-button-investigation {
+  /*background-color: #c2314e;
+
+  -moz-box-shadow: -6px 6px #fb6e69;
+  -webkit-box-shadow: -6px 6px #fb6e69;
+  box-shadow: -6px 6px #fb6e69;*/
+}
+
+
+
+
+.element-attach-question-button {
+  background-color: $question-primary-color;
+
+  /*-moz-box-shadow: -6px 6px #54bef9;
+  -webkit-box-shadow: -6px 6px #54bef9;
+  box-shadow: -6px 6px #54bef9;*/
+}
+
+.element-attach-causeandeffect-button {
+  background-color: $causeandeffect-primary-color;
+
+  /*-moz-box-shadow: -6px 6px #b1e583;
+  -webkit-box-shadow: -6px 6px #b1e583;
+  box-shadow: -6px 6px #b1e583;*/
+}
+
+.element-attach-investigation-button {
+  background-color: $investigation-primary-color;
+
+  /*-moz-box-shadow: -6px 6px #fb6e69;
+  -webkit-box-shadow: -6px 6px #fb6e69;
+  box-shadow: -6px 6px #fb6e69;*/
+}
+
+
+
+
+#navigation { 
+  li {
+    display: inline;
+    list-style-type: none;
+    padding-right: 20px;
+
+    font-size: 26pt;
+    font-style: none;
+    font-weight: normal;
+
+    font-family: 'Josefin Sans', sans-serif;
+
+    a {
+      font-size: 26pt;
+      font-style: none;
+      font-weight: normal;
+
+      font-family: 'Raleway', sans-serif;
+
+      text-shadow: none;
+    }
+  }
+}
+
+/**
+ * Create element sections
+ */
+
+.create-element-section {
+  border: 0px solid #666;
+  padding: 5px;
+  margin-bottom: 10px;
+  display: none;
+}
+
+/**
+ * Create question form
+ */
+
+#create-question-section {
+  background-color: $question-primary-color;
+
+  -moz-box-shadow: -6px 6px $question-secondary-color;
+  -webkit-box-shadow: -6px 6px $question-secondary-color;
+  box-shadow: -6px 6px $question-secondary-color;
+}
+
+#create-causeandeffect-section {
+  background-color: $causeandeffect-primary-color;
+
+  -moz-box-shadow: -6px 6px $causeandeffect-secondary-color;
+  -webkit-box-shadow: -6px 6px $causeandeffect-secondary-color;
+  box-shadow: -6px 6px $causeandeffect-secondary-color;
+}
+
+#create-investigation-section {
+  background-color: $investigation-primary-color;
+
+  -moz-box-shadow: -6px 6px $investigation-secondary-color;
+  -webkit-box-shadow: -6px 6px $investigation-secondary-color;
+  box-shadow: -6px 6px $investigation-secondary-color;
+}
+
+#create-investigation-steps {
+  .create-investigation-step {
+    font-family: 'Raleway', cursive;
+    font-size: 26px;
+    color: #000000;
+    font-style: none;
+    font-weight: 100;
+    text-shadow: none;
+    margin-bottom: 10px;
+  }
+}
+
+/*@media all and (max-width: 50em) {
+  .my-breakpoint .ui-block-a, 
+  .my-breakpoint .ui-block-b, 
+  .my-breakpoint .ui-block-c,
+  .my-breakpoint .ui-block-d,
+  .my-breakpoint .ui-block-e { 
+    width: 100%; 
+    float:none; 
+  }
+}*/
+
+/**
+ * Chosen element section
+ */
+
+.selected-element h1,
+.selected-element h2, 
+.create-element-section h1,
+.create-element-section h2,
+.selected-element-relation h1,
+.selected-element-relation h2 {
+    font-size: 26pt;
+    font-style: none;
+    font-weight: normal;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 100;
+    text-shadow: none;
+}
+
+.selected-element #selected-question-text {
+    font-size: 18pt;
+    font-style: none;
+    font-weight: normal;
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
+    text-shadow: none;
+}
+
+/**
+ * Selected element relation section
+ */
+
+.selected-element-relation {
+    background-color: none;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    padding: 0px;
+
+}
+
+.selected-element-relation .selected-element-relation-content {
+  background-color: none;
+
+  margin: 0px;
+  padding: 5px;
+}
+
+.selected-element-relation .spacer {
+  margin: 0px -5px 0px -5px;
+  border-right: 6px solid #ffffff;
+}
+
+/**
+ * Selected element section
+ */
+
+.selected-element {
+    background-color: none;
+    margin-bottom: 10px;
+    padding: 0px;
+
+    /* Hide selected element by default. */
+    display: none;
+}
+
+.selected-element .selected-element-content {
+  background-color: none;
+
+  margin: 0px;
+  padding: 5px;
+}
+
+.selected-element .selected-element-options {
+  margin-left: -6px;
+  margin-top: 0px;
+  margin-right: 6px;
+  margin-bottom: 0px;
+
+  padding: 6px;
+}
+
+#selected-question-element .spacer, 
+#selected-causeandeffect-element .spacer,
+#selected-investigation-element .spacer,
+#create-question-section .spacer,
+#create-causeandeffect-section .spacer,
+#create-investigation-section .spacer {
+  margin: 0px -5px 0px -5px;
+  border-right: 6px solid #ffffff;
+}
+
+/**
+ * Chosen question section
+ */
+
+#selected-question-element #selected-question-content {
+  background-color: $question-primary-color;
+
+  -moz-box-shadow: -6px 6px $question-secondary-color;
+  -webkit-box-shadow: -6px 6px $question-secondary-color;
+  box-shadow: -6px 6px $question-secondary-color;
+}
+
+#selected-question-element #selected-question-options {
+    background-color: $question-secondary-color;
+}
+
+#selected-question-element .spacer,
+#create-question-section .spacer {
+  background-color: $question-secondary-color;
+}
+
+/**
+ * Chosen cause-and-effect section
+ */
+
+#selected-causeandeffect-element #selected-causeandeffect-content {
+  background-color: $causeandeffect-primary-color;
+
+  -moz-box-shadow: -6px 6px $causeandeffect-secondary-color;
+  -webkit-box-shadow: -6px 6px $causeandeffect-secondary-color;
+  box-shadow: -6px 6px $causeandeffect-secondary-color;
+}
+
+#selected-causeandeffect-element #selected-causeandeffect-options {
+    background-color: $causeandeffect-secondary-color;
+}
+
+#selected-causeandeffect-element .spacer,
+#create-causeandeffect-section .spacer {
+  background-color: $causeandeffect-secondary-color;
+}
+
+/**
+ * Chosen investigation section
+ */
+
+#selected-investigation-element #selected-investigation-content {
+  background-color: $investigation-primary-color;
+
+  -moz-box-shadow: -6px 6px $investigation-secondary-color;
+  -webkit-box-shadow: -6px 6px $investigation-secondary-color;
+  box-shadow: -6px 6px $investigation-secondary-color;
+}
+
+#selected-investigation-element #selected-investigation-options {
+    background-color: $investigation-secondary-color;
+}
+
+#selected-investigation-element .spacer,
+#create-investigation-section .spacer {
+  background-color: $investigation-secondary-color;
+}
+
+/**
+ * Isotope styles
+ */
+
+/** Override Isotope default Styles **/
+
+#container {
+  /*background-color: #54bef9;*/
+  background-color: #ffffff;
+  margin-left: -15px;
+  margin-right: -15px;
+  border: 0px solid #666;
+  padding: 5px;
+  margin-bottom: 20px;
+}
+
+.horizontal #container {
+  height: 80%;
+}
+
+/** Isotope Styles **/
+
+.element {
+  width: 110px;
+  height: 110px;
+  margin: 5px;
+  float: left;
+  overflow: hidden;
+  position: relative;
+  background: #888;
+  color: #222;
+  /*border: 1px solid #54bef9;*/
+  -webkit-border-top-right-radius: 0em;
+      -moz-border-radius-topright: 0em;
+          border-top-right-radius: 0em;
+}
+
+/*
+.element.alkali          { background: #F00; background: hsl(   0, 100%, 50%); }
+.element.alkaline-earth  { background: #F80; background: hsl(  36, 100%, 50%); }
+.element.lanthanoid      { background: #FF0; background: hsl(  72, 100%, 50%); }
+.element.actinoid        { background: #0F0; background: hsl( 108, 100%, 50%); }
+.element.transition      { background: #0F8; background: hsl( 144, 100%, 50%); }
+.element.post-transition { background: #0FF; background: hsl( 180, 100%, 50%); }
+.element.metalloid       { background: #08F; background: hsl( 216, 100%, 50%); }
+.element.other.nonmetal  { background: #00F; background: hsl( 252, 100%, 50%); }
+.element.halogen         { background: #F0F; background: hsl( 288, 100%, 50%); }
+.element.noble-gas       { background: #F08; background: hsl( 324, 100%, 50%); }
+*/
+
+.element * {
+  position: absolute;
+  margin: 0;
+}
+
+.element .symbol {
+  left: 0.2em;
+  top: 0.4em;
+  font-size: 3.8em;
+  line-height: 1.0em;
+  color: #FFF;
+}
+.element.large .symbol {
+  font-size: 4.5em;
+}
+
+.element.fake .symbol {
+  color: #000;
+}
+
+.element .name {
+  left: 0.5em;
+  bottom: 1.6em;
+  font-size: 1.05em;
+}
+
+.question {
+  -moz-box-shadow: -6px 6px $question-secondary-color;
+  -webkit-box-shadow: -6px 6px $question-secondary-color;
+  box-shadow: -6px 6px $question-secondary-color;
+}
+
+.causeandeffect {
+  -moz-box-shadow: -6px 6px $causeandeffect-secondary-color;
+  -webkit-box-shadow: -6px 6px $causeandeffect-secondary-color;
+  box-shadow: -6px 6px $causeandeffect-secondary-color;
+}
+
+.investigation {
+  -moz-box-shadow: -6px 6px $investigation-secondary-color;
+  -webkit-box-shadow: -6px 6px $investigation-secondary-color;
+  box-shadow: -6px 6px $investigation-secondary-color;
+}
+
+/* Question text */
+.question {
+  .text {
+    top: 0.4em;
+    left: 0.5em;
+    right: 0.5em;
+    /*bottom: 1.6em;*/
+    font-size: 1.05em;
+    color: #ffffff;
+  }
+}
+
+.causeandeffect {
+  .cause {
+    top: 0.4em;
+    left: 0.5em;
+    /*bottom: 1.6em;*/
+    font-size: 1.05em;
+    color: #ffffff;
+  }
+}
+
+.causeandeffect {
+  .effect {
+    top: 4.9em;
+    left: 0.5em;
+    /*bottom: 1.6em;*/
+    font-size: 1.05em;
+    color: #ffffff;
+  }
+}
+
+.element .weight {
+  font-size: 0.9em;
+  left: 0.5em;
+  bottom: 0.5em;
+}
+
+.element .number {
+  font-size: 1.25em;
+  font-weight: bold;
+  color: hsla(0,0%,0%,.5);
+  right: 0.5em;
+  top: 0.5em;
+}
+
+.expanded-element .element.width2 {
+  width: 100%;
+}
+
+.expanded-element .element.height2 {
+  height: 230px;
+}
+
+.height3 {
+    height: 225px;
+}
+
+.expanded-element .element.width2.height2 {
+  font-size: 2.0em;
+}
+
+.element.large,
+.expanded-element .element.large,
+.expanded-element .element.large.width2.height2 {
+  font-size: 3.0em;
+  width: 350px;
+  height: 350px;
+  z-index: 100;
+}
+
+.clickable .element:hover {
+  cursor: pointer;
+}
+
+.clickable .element:hover h3 {
+  text-shadow:
+    0 0 10px white,
+    0 0 10px white
+  ;
+}
+
+.clickable .element:hover h2 {
+  color: white;
+}
+
+/***
+ * iScroll Styles
+ */
+
+
+/* valid both vertically and horizontally */
+.scroller {
+  margin: 0;
+  padding: 0;
+}
+
+.scroller ul {
+  display: block;
+  float: left;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  list-style: none;
+}
+
+.scroller li {
+  display: block;
+  float: left;
+  padding: 0;
+  margin: 0;
+  text-align: center;
+  background-color: #f5f5f5;
+  font-size: 120px;
+}
+
+/* only for vertical scrolling */
+#verticalWrapper {
+  width: 100%;     /* will be the same as the width of the content area */
+  height: 240px;   /* will be changed by JavaScript to the height of the content area */
+  overflow: auto;
+}
+
+#verticalScroller {
+  width: 100%;
+  height: 3240px;  /* max number scroll elements + 1 times their height */
+  background-color: #f00;
+}
+
+#verticalScroller li {
+  width: 100%;
+  height: 120px;  /* this is the height of an individual element */
+  border-top: 1px solid #ccc;
+  border-bottom: 1px solid #fff;
+}
+
+/* only for horizontal scrolling */
+#question-horizontalWrapper {
+  width: 100%;
+  height: 200px;   /* will be changed by JavaScript to the height of the content area */
+  overflow: auto;
+}
+
+#question-horizontalScroller {
+  width: 3240px;  /* max number scroll elements + 1 times their width */
+  height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
+  background-color: $question-tertiary-color;
+}
+
+#question-horizontalScroller li {
+  width: 200px;       /* this is the width of an individual element */
+  height: 100%;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #ffffff;
+}
+
+#causeandeffect-horizontalWrapper {
+  width: 100%;
+  height: 200px;   /* will be changed by JavaScript to the height of the content area */
+  overflow: auto;
+}
+
+#causeandeffect-horizontalScroller {
+  width: 3240px;  /* max number scroll elements + 1 times their width */
+  height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
+  background-color: $caseandeffect-tertiary-color;
+}
+
+#causeandeffect-horizontalScroller li {
+  width: 200px;       /* this is the width of an individual element */
+  height: 100%;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #ffffff;
+}
+
+#investigation-horizontalWrapper {
+  width: 100%;
+  height: 200px;   /* will be changed by JavaScript to the height of the content area */
+  overflow: auto;
+}
+
+#investigation-horizontalScroller {
+  width: 3240px;  /* max number scroll elements + 1 times their width */
+  height: 100%;   /* it will be the same as the wrapper's height even after it is changed */
+  background-color: $investigation-tertiary-color;
+}
+
+#investigation-horizontalScroller li {
+  width: 200px;       /* this is the width of an individual element */
+  height: 100%;
+  border-left: 1px solid #cccccc;
+  border-right: 1px solid #ffffff;
+}
