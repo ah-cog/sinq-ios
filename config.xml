@@ -4,9 +4,9 @@
     <description>Scientific inquiry: questions, cause and effect, and investigations.</description>
     <author>University of Maryland HCIL</author>
     <content src="index.html" />
-    <access origin="http://localhost:8000" />
-    <access origin="http://127.0.0.1:8000" />
-    <access origin="http://10.0.2.2:8000" />
+    <access origin="http://localhost:18000" />
+    <access origin="http://127.0.0.1:18000" />
+    <access origin="http://10.0.2.2:18000" />
     <allow-intent href="https://*/*" />
     <preference name="DisallowOverscroll" value="true" />
     <platform name="ios">

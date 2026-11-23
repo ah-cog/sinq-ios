@@ -6,21 +6,21 @@ Scientific inquiry client for the SINQ Django server. Runs in a browser, iOS/iPa
 
 ```sh
 docker build -t sinq-mobile .
-docker run --rm -p 127.0.0.1:8080:8080 sinq-mobile
+docker run --rm -p 127.0.0.1:18080:8080 sinq-mobile
 ```
 
 The Node.js 24 image serves the active client as an unprivileged user with no third-party runtime JavaScript dependencies. It uses the same local API URL as the native apps. Prefer the parent repository's Docker Compose setup to start the API and client together. Xcode and Android emulator builds run on the host.
 
 ## Browser
 
-Requires Node.js 24+, and the server running on port 8000.
+Requires Node.js 24+, and the server running on port 18000.
 
 ```sh
 npm ci
 npm start
 ```
 
-Open <http://localhost:8080/>. Ask questions, attach photos, connect explanations, and create investigations with numbered steps. Data persists in the server's database. Use the parent repository `ah-cog/sinq` to set up and run the full system.
+Open <http://localhost:18080/>. Ask questions, attach photos, connect explanations, and create investigations with numbered steps. Data persists in the server's database. Use the parent repository `ah-cog/sinq` to set up and run the full system.
 
 ## Native apps
 
@@ -37,7 +37,7 @@ The checked-in `config.xml`, root `www/`, and `package-lock.json` are authoritat
 
 - iOS requires Xcode with first-launch components and a simulator runtime installed. Deployment target: iOS 15+.
 - Android requires JDK 17, Android SDK platform 36/build tools 36.0.0, a compatible Gradle installation, and an emulator. Set `JAVA_HOME` and `ANDROID_HOME` for your installation.
-- Default API server: `http://localhost:8000`; Android emulator: `http://10.0.2.2:8000`. The Server connection control switches among local addresses. Local HTTP permissions and CSP are scoped to this development workflow. Physical-device/hosted deployments need their own API origin, CSP, Cordova access, and server CORS configuration.
+- Default API server: `http://localhost:18000`; Android emulator: `http://10.0.2.2:18000`. The Server connection control switches among local addresses. Local HTTP permissions and CSP are scoped to this development workflow. Physical-device/hosted deployments need their own API origin, CSP, Cordova access, and server CORS configuration.
 
 ## Verification
 

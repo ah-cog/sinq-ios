@@ -14,4 +14,4 @@ http.createServer(async (req, res) => {
     res.writeHead(200, {'Content-Type':types[path.extname(file)] || 'application/octet-stream', 'Cache-Control':'no-store'});
     res.end(await readFile(file));
   } catch { res.writeHead(404); res.end('Not found'); }
-}).listen(Number(process.env.PORT || 8080), process.env.HOST || '127.0.0.1', () => console.log('SINQ mobile preview: http://localhost:' + (process.env.PORT || 8080)));
+}).listen(Number(process.env.PORT || 18080), process.env.HOST || '127.0.0.1', () => console.log('SINQ mobile preview: http://localhost:' + (process.env.PORT || 18080)));

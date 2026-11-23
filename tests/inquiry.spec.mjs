@@ -38,7 +38,7 @@ test('creates and persists a linked inquiry with a photo', async ({page, request
   await expect(card).toBeVisible();
   expect(errors).toEqual([]);
   await page.screenshot({path:'.local/mobile-browser.png',fullPage:true});
-  const response = await request.get('http://localhost:8000/sinq/api/questions/');
+  const response = await request.get('http://localhost:18000/sinq/api/questions/');
   const saved = (await response.json()).find(item => item.fields.text === question);
   expect(saved.fields.causeandeffects).toHaveLength(1);
   expect(saved.fields.investigations).toHaveLength(1);

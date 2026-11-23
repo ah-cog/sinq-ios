@@ -2,7 +2,7 @@
 const $ = id => document.getElementById(id);
 const kinds = {questions:'Question', causeandeffects:'Cause & effect', investigations:'Investigation'};
 const titles = {question:'Ask a question', causeandeffect:'Cause & effect', investigation:'Plan an investigation'};
-const defaultServer = /Android/i.test(navigator.userAgent) ? 'http://10.0.2.2:8000' : 'http://localhost:8000';
+const defaultServer = /Android/i.test(navigator.userAgent) ? 'http://10.0.2.2:18000' : 'http://localhost:18000';
 let server = localStorage.getItem('sinq.server') || defaultServer;
 let items = [], filter = 'all', editing = 'question', parent = null, generation = 0;
 $('server-url').value = server;
@@ -147,7 +147,7 @@ document.querySelectorAll('[data-filter]').forEach(button => button.onclick = ()
 $('server-form').onsubmit = event => {
   event.preventDefault();
   const value = $('server-url').value.replace(/\/$/, '');
-  if (!['http://localhost:8000','http://127.0.0.1:8000','http://10.0.2.2:8000'].includes(value)) {
+  if (!['http://localhost:18000','http://127.0.0.1:18000','http://10.0.2.2:18000'].includes(value)) {
     $('status').textContent = 'Use one of the local development servers listed below.'; return;
   }
   server = value; localStorage.setItem('sinq.server', server); refresh();

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' http://localhost:8000 http://127.0.0.1:8000 http://10.0.2.2:8000; img-src 'self' data: blob: http://localhost:8000 http://127.0.0.1:8000 http://10.0.2.2:8000; style-src 'self'">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' http://localhost:18000 http://127.0.0.1:18000 http://10.0.2.2:18000; img-src 'self' data: blob: http://localhost:18000 http://127.0.0.1:18000 http://10.0.2.2:18000; style-src 'self'">
   <title>SINQ · Scientific inquiry</title>
   <link rel="stylesheet" href="style.css">
   <script defer src="cordova.js"></script>
@@ -19,7 +19,7 @@
     <p id="status" role="status" aria-live="polite">Connecting to SINQ…</p>
     <section class="actions" aria-label="Create an inquiry"><button data-create="question">+ Ask a question</button><button data-create="causeandeffect">+ Cause & effect</button><button data-create="investigation">+ Investigation</button></section>
     <section id="cards" aria-label="Inquiries"></section>
-    <details class="settings"><summary>Server connection</summary><form id="server-form"><label for="server-url">API server</label><input id="server-url" type="url" required><button>Connect</button></form><p>Local development: localhost:8000. Android emulator: 10.0.2.2:8000.</p></details>
+    <details class="settings"><summary>Server connection</summary><form id="server-form"><label for="server-url">API server</label><input id="server-url" type="url" required><button>Connect</button></form><p>Local development: localhost:18000. Android emulator: 10.0.2.2:18000.</p></details>
   </main>
   <dialog id="editor"><form id="create-form">
     <div class="dialog-header"><h2 id="editor-title">Ask a question</h2><button type="button" data-close="editor" aria-label="Close">×</button></div>
