@@ -1,0 +1,10 @@
+.git
+node_modules
+platforms
+plugins
+.local
+playwright-report
+test-results
+ios
+
+legacy

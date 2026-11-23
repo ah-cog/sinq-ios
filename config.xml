@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="edu.umd.hcil.sinq" version="3.1.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>SINQ</name>
+    <description>Scientific inquiry: questions, cause and effect, and investigations.</description>
+    <author>University of Maryland HCIL</author>
+    <content src="index.html" />
+    <access origin="http://localhost:8000" />
+    <access origin="http://127.0.0.1:8000" />
+    <access origin="http://10.0.2.2:8000" />
+    <allow-intent href="https://*/*" />
+    <preference name="DisallowOverscroll" value="true" />
+    <platform name="ios">
+        <preference name="deployment-target" value="15.0" />
+        <preference name="scheme" value="app" />
+        <preference name="hostname" value="localhost" />
+        <edit-config target="NSAppTransportSecurity" file="*-Info.plist" mode="merge"><dict><key>NSAllowsLocalNetworking</key><true/><key>NSAllowsArbitraryLoadsInWebContent</key><true/></dict></edit-config>
+        <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge"><string>Attach photos to your scientific questions and observations.</string></edit-config>
+        <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge"><string>Choose photos for your questions and observations.</string></edit-config>
+    </platform>
+    <platform name="android">
+        <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application" mode="merge"><application android:usesCleartextTraffic="true" xmlns:android="http://schemas.android.com/apk/res/android" /></edit-config>
+    </platform>
+</widget>

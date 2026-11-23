@@ -1,0 +1,55 @@
+import {test, expect} from '@playwright/test';
+
+test('creates and persists a linked inquiry with a photo', async ({page, request}) => {
+  const errors = [];
+  page.on('pageerror', error => errors.push(error.message));
+  const question = 'Why do leaves change color? ' + Date.now();
+  await page.goto('/');
+  await expect(page.getByRole('status')).toContainText('Connected');
+  await page.getByRole('button', {name:'+ Ask a question',exact:true}).click();
+  await page.getByLabel('What do you wonder about?').fill(question);
+  await page.getByLabel('Attach a photo').setInputFiles('www/img/sinq_logo.png');
+  await page.getByRole('button',{name:'Save inquiry'}).click();
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  const card = page.locator('.card').filter({hasText:question});
+  await expect(card).toBeVisible(); await card.click();
+  await expect(page.getByRole('img',{name:'Inquiry photo'})).toBeVisible();
+  await page.getByRole('button',{name:'+ Cause & effect',exact:true}).last().click();
+  await page.getByLabel('What do you notice?').fill('Leaves turn gold');
+  await page.getByLabel('Why do you think it happened?').fill('Less daylight changes pigments');
+  await page.getByRole('button',{name:'Save inquiry'}).click();
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await card.click();
+  await expect(page.getByRole('button',{name:'Cause & effect: Leaves turn gold'})).toBeVisible();
+  await page.getByRole('button',{name:'+ Plan an investigation'}).click();
+  await page.getByLabel('Step 1').fill('Record leaf colors each day');
+  await page.getByRole('button',{name:'+ Add step'}).click();
+  await page.getByLabel('Step 2').fill('Compare daylight hours');
+  await page.getByRole('button',{name:'Save inquiry'}).click();
+  await expect(page.getByRole('dialog')).not.toBeVisible();
+  await page.reload(); await expect(page.getByRole('status')).toContainText('Connected');
+  await card.click();
+  await page.getByRole('button',{name:'Investigation: How could we find out?'}).click();
+  await expect(page.getByText('Record leaf colors each day',{exact:true})).toBeVisible();
+  await expect(page.getByText('Compare daylight hours',{exact:true})).toBeVisible();
+  await page.getByRole('button',{name:'Close',exact:true}).last().click();
+  await page.getByRole('button',{name:'Questions',exact:true}).click();
+  await expect(page.locator('.card[data-kind="causeandeffects"]')).toHaveCount(0);
+  await expect(card).toBeVisible();
+  expect(errors).toEqual([]);
+  await page.screenshot({path:'.local/mobile-browser.png',fullPage:true});
+  const response = await request.get('http://localhost:8000/sinq/api/questions/');
+  const saved = (await response.json()).find(item => item.fields.text === question);
+  expect(saved.fields.causeandeffects).toHaveLength(1);
+  expect(saved.fields.investigations).toHaveLength(1);
+});
+
+test('shows save errors without closing the form',async ({page}) => {
+  await page.goto('/'); await expect(page.getByRole('status')).toContainText('Connected');
+  await page.getByRole('button',{name:'+ Ask a question',exact:true}).click();
+  await page.getByLabel('What do you wonder about?').fill('Can this be saved?');
+  await page.route('**/api/questions/create/', route => route.fulfill({status:400,contentType:'application/json',body:JSON.stringify({error:'Validation failed'})}));
+  await page.getByRole('button',{name:'Save inquiry'}).click();
+  await expect(page.getByRole('alert')).toContainText('Validation failed');
+  await expect(page.getByRole('button',{name:'Save inquiry'})).toBeEnabled();
+});

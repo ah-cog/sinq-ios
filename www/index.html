@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' http://localhost:8000 http://127.0.0.1:8000 http://10.0.2.2:8000; img-src 'self' data: blob: http://localhost:8000 http://127.0.0.1:8000 http://10.0.2.2:8000; style-src 'self'">
+  <title>SINQ · Scientific inquiry</title>
+  <link rel="stylesheet" href="style.css">
+  <script defer src="cordova.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <header><a class="brand" href="#"><img src="img/sinq_logo.png" alt="SINQ"></a><span>Scientific inquiry</span><button id="refresh" type="button">Refresh</button></header>
+  <main>
+    <section class="intro"><p class="eyebrow">START WITH CURIOSITY</p><h1>What do you wonder about?</h1><p>Ask a question. Share an explanation. Plan a way to find out.</p></section>
+    <nav aria-label="Browse inquiry types">
+      <button data-filter="all" aria-pressed="true">Everything</button><button data-filter="questions" aria-pressed="false">Questions</button><button data-filter="causeandeffects" aria-pressed="false">Cause & effect</button><button data-filter="investigations" aria-pressed="false">Investigations</button>
+    </nav>
+    <p id="status" role="status" aria-live="polite">Connecting to SINQ…</p>
+    <section class="actions" aria-label="Create an inquiry"><button data-create="question">+ Ask a question</button><button data-create="causeandeffect">+ Cause & effect</button><button data-create="investigation">+ Investigation</button></section>
+    <section id="cards" aria-label="Inquiries"></section>
+    <details class="settings"><summary>Server connection</summary><form id="server-form"><label for="server-url">API server</label><input id="server-url" type="url" required><button>Connect</button></form><p>Local development: localhost:8000. Android emulator: 10.0.2.2:8000.</p></details>
+  </main>
+  <dialog id="editor"><form id="create-form">
+    <div class="dialog-header"><h2 id="editor-title">Ask a question</h2><button type="button" data-close="editor" aria-label="Close">×</button></div>
+    <p id="relationship"></p>
+    <div id="question-fields"><label for="question-text">What do you wonder about?</label><textarea id="question-text" rows="3"></textarea></div>
+    <div id="cause-fields" hidden><label for="effect-text">What do you notice?</label><textarea id="effect-text" rows="2"></textarea><label for="cause-text">Why do you think it happened?</label><textarea id="cause-text" rows="2"></textarea></div>
+    <div id="investigation-fields" hidden><p>How could you find out?</p><div id="steps"></div><button id="add-step" type="button">+ Add step</button></div>
+    <div id="photo-field"><label for="photo">Attach a photo (optional)</label><input id="photo" type="file" accept="image/*"></div>
+    <p id="form-error" role="alert"></p><button id="save" type="submit">Save inquiry</button>
+  </form></dialog>
+  <dialog id="detail"><div class="dialog-header"><h2 id="detail-title">Inquiry</h2><button type="button" data-close="detail" aria-label="Close">×</button></div><div id="detail-body"></div><div id="detail-actions" class="actions"></div></dialog>
+  <footer>University of Maryland · Human–Computer Interaction Lab</footer>
+</body>
+</html>
