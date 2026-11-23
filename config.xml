@@ -18,6 +18,8 @@
         <edit-config target="NSPhotoLibraryUsageDescription" file="*-Info.plist" mode="merge"><string>Choose photos for your questions and observations.</string></edit-config>
     </platform>
     <platform name="android">
+        <preference name="scheme" value="http" />
+        <preference name="hostname" value="localhost" />
         <edit-config file="app/src/main/AndroidManifest.xml" target="/manifest/application" mode="merge"><application android:usesCleartextTraffic="true" xmlns:android="http://schemas.android.com/apk/res/android" /></edit-config>
     </platform>
 </widget>
